@@ -1,0 +1,17 @@
+# Executables
+*.exe
+*.out
+*.app
+
+# Visual Studio
+.vs/
+x64/
+
+# CLion
+.idea
+
+# Build
+cmake-build-debug/
+Debug/
+Install/
+
