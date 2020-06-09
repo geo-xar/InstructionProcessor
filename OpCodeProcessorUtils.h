@@ -5,12 +5,12 @@
 #include <stdexcept>
 
 /**
-* OpCode mode options.
+* Parameter mode options.
 */
-enum class OpCodeMode : uint8_t
+enum class ParameterMode : uint8_t
 {
     Position,
-    Parameter
+    Immediate
 };
 
 /**
@@ -35,7 +35,7 @@ template <typename NumberType>
     }
 }
 
-inline void ValidateOpCodeMode(const uint8_t digit)
+inline void ValidateParameterMode(const uint8_t digit)
 {
     if (digit != 0 && digit != 1)
     {
@@ -44,12 +44,12 @@ inline void ValidateOpCodeMode(const uint8_t digit)
 }
 
 /**
-* Extract the OpCode modes given a number.
-* @param number The number to extract the OpCode modes.
+* Extract the parameter modes given a number.
+* @param number The number to extract the parameter modes.
 */
-using OpCodeModeVector = std::vector<OpCodeMode>;
+using ParameterModeVector = std::vector<ParameterMode>;
 template <typename NumberType>
-[[nodiscard]] inline OpCodeModeVector ExtractParameterModesFromNumber(const NumberType number)
+[[nodiscard]] inline ParameterModeVector ExtractParameterModesFromNumber(const NumberType number)
 {
     auto digits = GetDigitsFromNumber(number);
 
@@ -58,69 +58,69 @@ template <typename NumberType>
     std::reverse(digits.begin(), digits.end());
     if (digits.size() <= 2)
     {
-        return { OpCodeMode::Position, OpCodeMode::Position, OpCodeMode::Position };
+        return { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
     }
     else if (digits.size() == 3)
     {
-        ValidateOpCodeMode(digits[2]);
+        ValidateParameterMode(digits[2]);
 
-        OpCodeMode opCodeMode = OpCodeMode::Position;
+        ParameterMode parameterMode = ParameterMode::Position;
         if (digits[2] == 1)
         {
-            opCodeMode = OpCodeMode::Parameter;
+            parameterMode = ParameterMode::Immediate;
         }
 
-        return { opCodeMode, OpCodeMode::Position, OpCodeMode::Position };
+        return { parameterMode, ParameterMode::Position, ParameterMode::Position };
     }
     else if (digits.size() == 4)
     {
-        ValidateOpCodeMode(digits[2]);
-        ValidateOpCodeMode(digits[3]);
+        ValidateParameterMode(digits[2]);
+        ValidateParameterMode(digits[3]);
 
-        OpCodeMode opCodeMode1 = OpCodeMode::Position;
+        ParameterMode parameterMode1 = ParameterMode::Position;
         if (digits[2] == 1)
         {
-            opCodeMode1 = OpCodeMode::Parameter;
+            parameterMode1 = ParameterMode::Immediate;
         }
 
-        OpCodeMode opCodeMode2 = OpCodeMode::Position;
+        ParameterMode parameterMode2 = ParameterMode::Position;
         if (digits[3] == 1)
         {
-            opCodeMode2 = OpCodeMode::Parameter;
+            parameterMode2 = ParameterMode::Immediate;
         }
 
-        return { opCodeMode1, opCodeMode2, OpCodeMode::Position };
+        return { parameterMode1, parameterMode2, ParameterMode::Position };
     }
     else if (digits.size() == 5)
     {
-        ValidateOpCodeMode(digits[2]);
-        ValidateOpCodeMode(digits[3]);
-        ValidateOpCodeMode(digits[4]);
+        ValidateParameterMode(digits[2]);
+        ValidateParameterMode(digits[3]);
+        ValidateParameterMode(digits[4]);
 
-        OpCodeMode opCodeMode1 = OpCodeMode::Position;
+        ParameterMode parameterMode1 = ParameterMode::Position;
         if (digits[2] == 1)
         {
-            opCodeMode1 = OpCodeMode::Parameter;
+            parameterMode1 = ParameterMode::Immediate;
         }
 
-        OpCodeMode opCodeMode2 = OpCodeMode::Position;
+        ParameterMode parameterMode2 = ParameterMode::Position;
         if (digits[3] == 1)
         {
-            opCodeMode2 = OpCodeMode::Parameter;
+            parameterMode2 = ParameterMode::Immediate;
         }
 
-        OpCodeMode opCodeMode3 = OpCodeMode::Position;
+        ParameterMode parameterMode3 = ParameterMode::Position;
         if (digits[4] == 1)
         {
-            opCodeMode3 = OpCodeMode::Parameter;
+            parameterMode3 = ParameterMode::Immediate;
         }
 
-        return { opCodeMode1, opCodeMode2, opCodeMode3 };
+        return { parameterMode1, parameterMode2, parameterMode3 };
     }
     else
     {
         // We should never reach this else statement.
         assert(false);
-        return { OpCodeMode::Position, OpCodeMode::Position, OpCodeMode::Position };
+        return { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
     }
 }

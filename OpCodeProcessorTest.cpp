@@ -10,7 +10,7 @@ TEST_CASE("Process instructions - 1st part - 2nd day - 1st sample", "[OpCodeProc
     };
 
     OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint16_t>(input, 1);
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint16_t>(input);
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == 3500);
 }
@@ -23,9 +23,22 @@ TEST_CASE("Process instructions - 1st part - 2nd day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint32_t>(input, 1);
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint32_t>(input);
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == 3790645);
+}
+
+TEST_CASE("Process instructions - 1st part - 5th day- 1st sample", "[OpCodeProcessor]")
+{
+    std::vector<uint16_t> input =
+    {
+        3,0,4,0,99
+    };
+
+    OpCodeProcessor opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint16_t>(input, 1989);
+    REQUIRE(printedOut.size() == 1);
+    CHECK(printedOut[0] == 1989);
 }
 
 /*
@@ -35,17 +48,7 @@ TEST_CASE("Process instructions - 1st part - 2nd day", "[OpCodeProcessor]")
     };
  * 
  * 
-TEST_CASE("Process instructions 1st part - output whatever get as input", "[CodeAdventureDay5]")
-{
-    std::vector<uint16_t> input =
-    {
-        3,0,4,0,99
-    };
 
-    auto result = CodeAdventureDay5::ProcessInsructions<uint16_t>(input, 1);
-    REQUIRE(result.size() == 1);
-    CHECK(result[0] == 1);
-}
 
 TEST_CASE("Process instructions 1st part - basic instruction input", "[CodeAdventureDay5]")
 {

@@ -21,29 +21,29 @@ TEST_CASE("Get OpCode from number test", "[OpCodeProcessor]")
     CHECK(ExtractOpCodeFromNumber(negativeNumber) == expectedOpCode);
 }
 
-TEST_CASE("Get OpCode mode from number test", "[OpCodeProcessor]")
+TEST_CASE("Get parameter modes from number test", "[OpCodeProcessor]")
 {
-    uint16_t number = 1;
-    OpCodeModeVector expectedModes = { OpCodeMode::Position, OpCodeMode::Position, OpCodeMode::Position };
+    uint32_t number = 1;
+    ParameterModeVector expectedModes = { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 12;
-    expectedModes = { OpCodeMode::Position, OpCodeMode::Position, OpCodeMode::Position };
+    expectedModes = { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 123;
-    expectedModes = { OpCodeMode::Parameter, OpCodeMode::Position, OpCodeMode::Position };
+    expectedModes = { ParameterMode::Immediate, ParameterMode::Position, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 323;
     CHECK_THROWS_AS(ExtractParameterModesFromNumber(number), std::runtime_error);
 
     number = 1034;
-    expectedModes = { OpCodeMode::Position, OpCodeMode::Parameter, OpCodeMode::Position };
+    expectedModes = { ParameterMode::Position, ParameterMode::Immediate, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 1134;
-    expectedModes = { OpCodeMode::Parameter, OpCodeMode::Parameter, OpCodeMode::Position };
+    expectedModes = { ParameterMode::Immediate, ParameterMode::Immediate, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 1434;
@@ -53,19 +53,19 @@ TEST_CASE("Get OpCode mode from number test", "[OpCodeProcessor]")
     CHECK_THROWS_AS(ExtractParameterModesFromNumber(number), std::runtime_error);
 
     number = 10034;
-    expectedModes = { OpCodeMode::Position, OpCodeMode::Position, OpCodeMode::Parameter };
+    expectedModes = { ParameterMode::Position, ParameterMode::Position, ParameterMode::Immediate };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 10134;
-    expectedModes = { OpCodeMode::Parameter, OpCodeMode::Position, OpCodeMode::Parameter };
+    expectedModes = { ParameterMode::Immediate, ParameterMode::Position, ParameterMode::Immediate };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 11034;
-    expectedModes = { OpCodeMode::Position, OpCodeMode::Parameter, OpCodeMode::Parameter };
+    expectedModes = { ParameterMode::Position, ParameterMode::Immediate, ParameterMode::Immediate };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 11134;
-    expectedModes = { OpCodeMode::Parameter, OpCodeMode::Parameter, OpCodeMode::Parameter };
+    expectedModes = { ParameterMode::Immediate, ParameterMode::Immediate, ParameterMode::Immediate };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 10634;
