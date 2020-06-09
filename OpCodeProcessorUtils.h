@@ -47,8 +47,9 @@ inline void ValidateOpCodeMode(const uint8_t digit)
 * Extract the OpCode modes given a number.
 * @param number The number to extract the OpCode modes.
 */
+using OpCodeModeVector = std::vector<OpCodeMode>;
 template <typename NumberType>
-[[nodiscard]] inline std::tuple<OpCodeMode, OpCodeMode, OpCodeMode> ExtractOpCodeModes(const NumberType number)
+[[nodiscard]] inline OpCodeModeVector ExtractParameterModesFromNumber(const NumberType number)
 {
     auto digits = GetDigitsFromNumber(number);
 

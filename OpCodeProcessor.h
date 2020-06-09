@@ -5,6 +5,7 @@
 #include "OpCodeProcessorUtils.h"
 #include <vector>
 #include <optional>
+#include <tuple>
 
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
@@ -41,6 +42,7 @@ public:
 
         using Vector = std::vector<T>;
         using Iterator = Vector::iterator;
+        using OpCodeModeOpt = std::optional<Vector>;
 
         Vector input;
         input.resize(inputCollection.size());
@@ -48,125 +50,89 @@ public:
         Iterator iterator = input.begin();
 
         Vector printedOutput;
-        size_t index = 0;
 
-        auto GetInputValuesGivenParameterModes =
-        [&input]
-        (const OpCodeMode opCodeModeA, const OpCodeMode opCodeModeB, const size_t index) -> std::tuple<T,T>
+        auto TryToClaimNumbers =
+        [&input, &iterator]
+        (size_t howManyNumbersRequiredToDoTheCalculation,
+         const  OpCodeModeVector& parameterModes,
+         size_t howManyIndexNumbersRequiredToStoreTheCalculationResult = 1) -> std::optional<Vector>
         {
-            T tempValue1, tempValue2;
+            assert( (howManyNumbersRequiredToDoTheCalculation > 0) && (howManyNumbersRequiredToDoTheCalculation <= 2) );
+            assert( parameterModes.size() >= howManyNumbersRequiredToDoTheCalculation );
+            assert( howManyIndexNumbersRequiredToStoreTheCalculationResult == 1 );
 
-            assert(index < input.size());
-            if (opCodeModeA == OpCodeMode::Parameter)
-            {
-                tempValue1 = input[index];
-            }
-            else
-            {
-                assert(input[index] >= 0);
-                assert(input[index] < input.size());
-                tempValue1 = input[input[index]];
-            }
-
-            assert( (index + 1) < input.size());
-            if (opCodeModeB == OpCodeMode::Parameter)
-            {
-                tempValue2 = input[index + 1];
-            }
-            else
-            {
-                assert(input[index + 1] >= 0);
-                assert(input[index + 1] < input.size());
-                tempValue2 = input[input[index + 1]];
-            }
-
-            return { tempValue1 , tempValue2 };
-        };
-
-        auto GetInputValueGivenParameterMode =
-        [&input]
-        (const OpCodeMode opCodeMode, const size_t index) -> T
-        {
-            assert(index < input.size());
-            if (opCodeMode == OpCodeMode::Parameter)
-            {
-                return input[index];
-            }
-            else
-            {
-                assert(input[index] >= 0);
-                assert(input[index] < input.size());
-                return input[input[index]];
-            }
-        };
-
-        auto SetInputValueGivenParameterMode =
-        [&input]
-        (const OpCodeMode opCodeMode, const size_t index, const T value) -> void
-        {
-            assert(index < input.size());
-            if (opCodeMode == OpCodeMode::Parameter)
-            {
-                input[index] = value;
-            }
-            else
-            {
-                assert(input[index] >= 0);
-                assert(input[index] < input.size());
-                input[input[index]] = value;
-            }
-        };
-
-        auto tryToClaimNumbers = [&input](size_t howManyToClaim, Iterator& iterator) -> std::optional<Vector>
-        {
-            if ( std::distance(iterator, input.end()) < howManyToClaim )
+            if ( std::distance(iterator, input.end()) <
+                 (howManyNumbersRequiredToDoTheCalculation + howManyIndexNumbersRequiredToStoreTheCalculationResult) )
             {
                 return std::nullopt;
             }
 
             Vector claimedNumbers;
-            while (howManyToClaim)
+
+            // At first claim the numbers that are part of the calculation
+            for (size_t i = 0; i < howManyNumbersRequiredToDoTheCalculation; i++)
+            {
+                if ( parameterModes[i] == OpCodeMode::Parameter )
+                {
+                    claimedNumbers.emplace_back(*iterator);
+                }
+                // OpCodeMode::Parameter
+                else
+                {
+                    assert(*iterator >= 0);
+                    assert(*iterator < input.size());
+                    claimedNumbers.emplace_back(input[*iterator]);
+                }
+                iterator++;
+            }
+
+            // Claim also the index to store the calculation result
+            if (howManyIndexNumbersRequiredToStoreTheCalculationResult == 1)
             {
                 claimedNumbers.emplace_back(*iterator);
                 iterator++;
-                howManyToClaim--;
             }
+
             return claimedNumbers;
         };
 
-        while (index < input.size())
+        // Iterate the whole input
+        while (iterator < input.end())
         {
-            const auto opCode = ExtractOpCodeFromNumber(input[index]);
-            const auto [modA, modB, modC] = ExtractOpCodeModes(input[index]);
+            // Extract the next OpCode and the ParameterModes
+            const auto opCode = ExtractOpCodeFromNumber(*iterator);
+            auto parameterModes = ExtractParameterModesFromNumber(*iterator);
 
-            std::tuple<T,T> values;
+            // Jump to the next number
+            iterator++;
 
+            std::optional<Vector> claimedNumbersOptional = std::nullopt;
             switch (opCode)
             {
+            // OpCode 1: Add 2 numbers read from the first and the second position
+            // and store the result in the index described by the third position
             case 1:
-                // In each iteration we need to have at least 4 parameters left to be processed.
-                if (!TryToClaimNumbers(input.size(), 4, index))
+                // In each iteration we need to have at least 3 parameters left to be processed
+                claimedNumbersOptional = TryToClaimNumbers(2, parameterModes);
+                if (!claimedNumbersOptional.has_value())
                 {
                     return {input, printedOutput};
                 }
 
-                values = GetInputValuesGivenParameterModes(modA, modB, index + 1);
-                SetInputValueGivenParameterMode(OpCodeMode::Position, index + 3, std::get<0>(values) + std::get<1>(values));
-
-                index += 4;
+                input[claimedNumbersOptional.value()[2]] = claimedNumbersOptional.value()[0] + claimedNumbersOptional.value()[1];
                 break;
 
+            // OpCode 2: Multiply 2 numbers read from the first and the second position
+            // and store the result in the index described by the third position
             case 2:
-                // In each iteration we need to have at least 4 parameters left to be processed.
-                if (!TryToClaimNumbers(input.size(), 4, index))
+                // In each iteration we need to have at least 3 parameters left to be processed.
+                claimedNumbersOptional = TryToClaimNumbers(2, parameterModes);
+                if (!claimedNumbersOptional.has_value())
                 {
                     return {input, printedOutput};
                 }
 
-                values = GetInputValuesGivenParameterModes(modA, modB, index + 1);
-                SetInputValueGivenParameterMode(OpCodeMode::Position, index + 3, std::get<0>(values) * std::get<1>(values));
-
-                index += 4;
+                input[claimedNumbersOptional.value()[2]] = claimedNumbersOptional.value()[0] * claimedNumbersOptional.value()[1];
                 break;
 
 /*            case 3:
@@ -260,7 +226,6 @@ public:
                 break;*/
 
             case 99:
-                index += 1;
                 return {input, printedOutput};
 
             default:
@@ -271,11 +236,5 @@ public:
         }
 
         return {input, printedOutput};
-    }
-
-private:
-    [[nodiscard]] bool TryToClaimNumbers(const size_t inputSize, const uint8_t howMany, const size_t index)
-    {
-        return (inputSize - index) >= howMany;
     }
 };
