@@ -1,6 +1,5 @@
 #include "catch2.hpp"
 #include "OpCodeProcessorUtils.h"
-#include <limits>
 
 TEST_CASE("Get OpCode from number test", "[OpCodeProcessor]")
 {

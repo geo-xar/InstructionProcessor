@@ -14,7 +14,7 @@ public:
     /**
     * The program is finished and should immediately halt.
     */
-    [[nodiscard]] std::optional<uint64_t> Execute() final
+    [[nodiscard]] std::optional<Result> Execute() final
     {
         return std::nullopt;
     };

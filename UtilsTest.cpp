@@ -1,5 +1,4 @@
 #include "catch2.hpp"
-
 #include "Utils.h"
 
 TEST_CASE("Build number from digits test", "[OpCodeProcessor]")

@@ -3,9 +3,17 @@
 #include "NonCopyable.h"
 #include "NonMovable.h"
 #include "OpCodeProcessorUtils.h"
+#include "OpCodeOne.h"
+#include "OpCodeTwo.h"
+#include "OpCodeThree.h"
+#include "OpCodeFour.h"
+#include "OpCodeNinetyNine.h"
+
 #include <vector>
 #include <optional>
 #include <tuple>
+#include <deque>
+#include <memory>
 
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
@@ -14,7 +22,7 @@ public:
     * Process OpCodes and update the input values.
     * 1:  Add together numbers read from two positions and store the result in a third position.
     * 2:  Work exactly like OpCode 1, but multiply the two inputs instead of adding them.
-    * 3:  Take a single integer as input and save it to the position given by the unique parameter.
+    * 3:  Take a single integer as user input and save it to the position given by the unique parameter.
     * 4:  Output the value of the unique parameter.
     * 5:  If the first parameter is non-zero then set the instruction pointer to the value from the second parameter.
     *     Otherwise do nothing.
@@ -26,72 +34,39 @@ public:
     *     Otherwise store 0.
     * 99: The program is finished and shall immediately halt.
     *
-    * @input Collection of numbers to be processed.
+    * @param inputCollection Collection of numbers to be processed.
+    * @param userSelection Optional user input to be stored in the collection (OpCodeThree).
     *
-    * @return Modified input and printed output.
+    * @return Modified input collection and printed output.
     */
     template <typename T>
     [[nodiscard]] std::tuple<std::vector<T>, std::vector<T>> ProcessInstructions(
         const std::vector<T>& inputCollection,
-        std::optional<T> userSelection = {})
+        std::optional<T> userSelection = std::nullopt)
     {
+        // There is no reason doing any kind of calculations if the input collection is empty.
         if (!inputCollection.size())
         {
             return { {}, {} };
         }
 
         using Vector = std::vector<T>;
-        using Iterator = Vector::iterator;
 
+        // Copy the input collection to a local variable.
         Vector input;
         input.resize(inputCollection.size());
         std::copy(inputCollection.begin(), inputCollection.end(), input.begin());
-        Iterator iterator = input.begin();
 
+        // Declare the printed output collection.
         Vector printedOutput;
 
-        auto TryToClaimNumbers =
-        [&input, &iterator]
-        (size_t howManyNumbersTakingIntoAccountOpCodeModes,
-         size_t howManyNumbersUsedAsIndexes,
-         const  ParameterModeVector& parameterModes) -> std::optional<Vector>
-        {
-            assert( parameterModes.size() >= howManyNumbersTakingIntoAccountOpCodeModes );
-            assert( howManyNumbersUsedAsIndexes <= 1 );
+        // Declare the iterator which is used to manipulate the input collection.
+        using Iterator = Vector::iterator;
+        Iterator iterator = input.begin();
 
-            if ( std::distance(iterator, input.end()) <
-                 (howManyNumbersTakingIntoAccountOpCodeModes + howManyNumbersUsedAsIndexes) )
-            {
-                return std::nullopt;
-            }
-
-            Vector claimedNumbers;
-
-            for (size_t i = 0; i < howManyNumbersTakingIntoAccountOpCodeModes; i++)
-            {
-                if ( parameterModes[i] == ParameterMode::Immediate )
-                {
-                    claimedNumbers.emplace_back(*iterator);
-                }
-                // ParameterMode::Position
-                else
-                {
-                    assert(*iterator >= 0);
-                    assert(*iterator < input.size());
-                    claimedNumbers.emplace_back(input[*iterator]);
-                }
-                iterator++;
-            }
-
-            // Claim also the index to store the calculation result.
-            if (howManyNumbersUsedAsIndexes == 1)
-            {
-                claimedNumbers.emplace_back(*iterator);
-                iterator++;
-            }
-
-            return claimedNumbers;
-        };
+        // Declare an OpCode deque useful to manage the OpCode execution.
+        using OpCodeUniquePtr = std::unique_ptr<OpCode>;
+        std::deque<OpCodeUniquePtr> pendingInstructions;
 
         // Iterate the whole input.
         while (iterator < input.end())
@@ -103,75 +78,39 @@ public:
             // Jump to the next number.
             iterator++;
 
-            std::optional<Vector> claimedNumbersOptional = std::nullopt;
             switch (opCode)
             {
-            // OpCode 1: Accumulate 2 numbers read from the first and the second position
-            // and store the result in the index described by the third position.
-            case 1:
-                // Try to claim 3 numbers.
-                // The 2 first numbers will be part of the calculation.
-                // The calculation result will be stored to the index which is pointed by the third number.
-                claimedNumbersOptional = TryToClaimNumbers(2, 1, parameterModes);
-                if (!claimedNumbersOptional.has_value())
-                {
-                    return {input, printedOutput};
-                }
 
-                // TODO: Proper error handling.
-                assert(claimedNumbersOptional.value()[2] >= 0);
-                assert(claimedNumbersOptional.value()[2] < input.size());
-                input[claimedNumbersOptional.value()[2]] = claimedNumbersOptional.value()[0] + claimedNumbersOptional.value()[1];
+            // OpCode 1: Accumulate 2 numbers read from the first and the second position
+            // and store the result in the index described by the third number.
+            case 1:
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T>>(input, iterator, parameterModes) ) );
                 break;
+            }
 
             // OpCode 2: Multiply 2 numbers read from the first and the second position
-            // and store the result in the index described by the third position.
+            // and store the result in the index described by the third number.
             case 2:
-                // Try to claim 3 numbers.
-                // The 2 first numbers will be part of the calculation.
-                // The calculation result will be stored to the index which is pointed by the third number.
-                claimedNumbersOptional = TryToClaimNumbers(2, 1, parameterModes);
-                if (!claimedNumbersOptional.has_value())
-                {
-                    return {input, printedOutput};
-                }
-
-                // TODO: Proper error handling.
-                assert(claimedNumbersOptional.value()[2] >= 0);
-                assert(claimedNumbersOptional.value()[2] < input.size());
-                input[claimedNumbersOptional.value()[2]] = claimedNumbersOptional.value()[0] * claimedNumbersOptional.value()[1];
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeTwo<T>>(input, iterator, parameterModes) ) );
                 break;
+            }
 
+            // OpCode 3: Take a single number as user input
+            // and store it in the index described by the unique number claimed.
             case 3:
-                // Try to claim 1 number.
-                // The user input value will be stored to the index which is pointed by the claimed number.
-                claimedNumbersOptional = TryToClaimNumbers(0, 1, parameterModes);
-                if (!claimedNumbersOptional.has_value())
-                {
-                    return {input, printedOutput};
-                }
-
-                // TODO: Proper error handling.
-                assert(claimedNumbersOptional.value()[0] >= 0);
-                assert(claimedNumbersOptional.value()[0] < input.size());
-                assert(userSelection.has_value());
-                input[claimedNumbersOptional.value()[0]] = userSelection.value();
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeThree<T>>(input, iterator, userSelection) ) );
                 break;
+            }
 
+            // OpCode 4: Print the value in the index described by the unique number claimed.
             case 4:
-                // Try to claim 1 number.
-                // Print the value stored to the index which is pointed by the claimed number.
-                claimedNumbersOptional = TryToClaimNumbers(0, 1, parameterModes);
-                if (!claimedNumbersOptional.has_value())
-                {
-                    return {input, printedOutput};
-                }
-
-                // TODO: Proper error handling.
-                assert(claimedNumbersOptional.value()[0] >= 0);
-                assert(claimedNumbersOptional.value()[0] < input.size());
-                printedOutput.emplace_back(input[claimedNumbersOptional.value()[0]]);
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFour<T>>(input, iterator, printedOutput) ) );
                 break;
+            }
 /*
             case 5:
                 // In each iteration we need to have at least 3 parameters left to be processed.
@@ -239,14 +178,40 @@ public:
                 index += 4;
                 break;*/
 
+            // OpCode 99: The program is finished and shall immediately halt.
             case 99:
-                return {input, printedOutput};
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeNinetyNine>() ) );
+                break;
+            }
 
             default:
+            {
                 // We should never reach this point.
                 assert(false);
                 return {input, printedOutput};
             }
+
+            } // end of switch(OpCode)
+
+            // If no more instructions to be processed then terminate the execution.
+            if (pendingInstructions.empty())
+            {
+                return {input, printedOutput};
+            }
+
+            // Retrieve the first instruction to be executed.
+            // If the result optional has no value then terminate the execution.
+            OpCode* opCodeToBeExecuted = pendingInstructions.front().get();
+            auto result = opCodeToBeExecuted->Execute();
+            if (!result.has_value())
+            {
+                return {input, printedOutput};
+            }
+
+            // Remove the instruction which was just executed and jump to the next number (if any).
+            pendingInstructions.pop_front();
+            iterator++;
         }
 
         return {input, printedOutput};
