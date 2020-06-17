@@ -70,6 +70,9 @@ public:
         assert( (index >= 0) && (index < _input.size()) );
         _input[index] = claimedMultiplyNumbers[0] * claimedMultiplyNumbers[1];
 
+        // Jump to the next number (if any).
+        _iterator++;
+
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
         return std::make_optional<Result>();

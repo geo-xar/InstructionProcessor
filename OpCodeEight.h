@@ -5,11 +5,12 @@
 #include <vector>
 
 /**
-* @class OpCodeOne specialisation.
-* Accumulate 2 numbers.
+* @class OpCodeEight specialisation.
+* If the first parameter is equal to the second parameter then
+* store 1 in the position given by the third parameter, otherwise store 0.
 */
 template <typename T>
-class OpCodeOne final : public OpCode
+class OpCodeEight final : public OpCode
 {
 using ParameterModeVector = std::vector<ParameterMode>;
 using Vector = std::vector<T>;
@@ -24,7 +25,7 @@ public:
     *                 which points to the first number to be claimed.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeOne(
+    OpCodeEight(
         Vector& input,
         VectorIterator& iterator,
         const ParameterModeVector& parameterModes)
@@ -33,42 +34,51 @@ public:
     , _parameterModes{parameterModes}
     {}
 
-    ~OpCodeOne() final = default;
+    ~OpCodeEight() final = default;
 
     /**
-    * Accumulate 2 numbers and store the result in the index pointed by the third number.
+    * If the first parameter is equal to the second parameter then
+    * store 1 in the position given by the third parameter, otherwise store 0.
     */
     [[nodiscard]] std::optional<Result> Execute() final
     {
         // Check if there are enough numbers to be claimed to complete the operation.
-        // Numbers to be claimed are 2 for the accumulation and 1 for the index to store the result.
+        // Numbers to be claimed are 2 for the comparison and 1 for the index to store the result.
         if ( std::distance(_iterator, _input.end()) < (NumberOfParametersToClaim + 1) )
         {
             return std::nullopt;
         }
 
-        // Claim the numbers to be accumulated based on the parameter modes.
-        Vector claimedAccumulationNumbers;
+        // Claim the numbers to be compared based on the parameter modes.
+        Vector claimedComparisonNumbers;
         for (size_t i = 0; i < NumberOfParametersToClaim; i++)
         {
             if ( _parameterModes[i] == ParameterMode::Immediate )
             {
-                claimedAccumulationNumbers.emplace_back(*_iterator);
+                claimedComparisonNumbers.emplace_back(*_iterator);
             }
             // ParameterMode::Position
             else
             {
                 assert(*_iterator >= 0);
                 assert(*_iterator < _input.size());
-                claimedAccumulationNumbers.emplace_back(_input[*_iterator]);
+                claimedComparisonNumbers.emplace_back(_input[*_iterator]);
             }
             _iterator++;
         }
 
-        // Claim the index to store the accumulation result.
+        // Claim the index to store the comparison result.
         const auto index = *_iterator;
         assert( (index >= 0) && (index < _input.size()) );
-        _input[index] = claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1];
+
+        if (claimedComparisonNumbers[0] == claimedComparisonNumbers[1])
+        {
+            _input[index] = 1;
+        }
+        else
+        {
+            _input[index] = 0;
+        }
 
         // Jump to the next number (if any).
         _iterator++;

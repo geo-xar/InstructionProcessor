@@ -7,6 +7,10 @@
 #include "OpCodeTwo.h"
 #include "OpCodeThree.h"
 #include "OpCodeFour.h"
+#include "OpCodeFive.h"
+#include "OpCodeSix.h"
+#include "OpCodeSeven.h"
+#include "OpCodeEight.h"
 #include "OpCodeNinetyNine.h"
 
 #include <vector>
@@ -81,104 +85,54 @@ public:
             switch (opCode)
             {
 
-            // OpCode 1: Accumulate 2 numbers read from the first and the second position
-            // and store the result in the index described by the third number.
             case 1:
             {
                 pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T>>(input, iterator, parameterModes) ) );
                 break;
             }
 
-            // OpCode 2: Multiply 2 numbers read from the first and the second position
-            // and store the result in the index described by the third number.
             case 2:
             {
                 pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeTwo<T>>(input, iterator, parameterModes) ) );
                 break;
             }
 
-            // OpCode 3: Take a single number as user input
-            // and store it in the index described by the unique number claimed.
             case 3:
             {
                 pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeThree<T>>(input, iterator, userSelection) ) );
                 break;
             }
 
-            // OpCode 4: Print the value in the index described by the unique number claimed.
             case 4:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFour<T>>(input, iterator, printedOutput) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFour<T>>(input, iterator, parameterModes, printedOutput) ) );
                 break;
             }
-/*
-            case 5:
-                // In each iteration we need to have at least 3 parameters left to be processed.
-                if ((input.size() - index) < 3)
-                {
-                    return printedOutput;
-                }
 
-                if (input[index + 1] != 0)
-                {
-                    index = getInputValueGivenParameterMode(b, index + 2);
-                }
+            case 5:
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFive<T>>(input, iterator, parameterModes) ) );
                 break;
+            }
 
             case 6:
-                // In each iteration we need to have at least 3 parameters left to be processed.
-                if ((input.size() - index) < 3)
-                {
-                    return printedOutput;
-                }
-
-                if (input[index + 1] == 0)
-                {
-                    index = getInputValueGivenParameterMode(b, index + 2);
-                }
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSix<T>>(input, iterator, parameterModes) ) );
                 break;
+            }
 
             case 7:
-                // In each iteration we need to have at least 4 parameters left to be processed.
-                if ((input.size() - index) < 4)
-                {
-                    return printedOutput;
-                }
-
-                if (input[input[index + 1]] < input[input[index + 2]])
-                {
-                    setInputValueGivenParameterMode(c, index + 3, 1);
-                }
-                else
-                {
-                    setInputValueGivenParameterMode(c, index + 3, 0);
-                }
-
-                index += 4;
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSeven<T>>(input, iterator, parameterModes) ) );
                 break;
+            }
 
             case 8:
-                // In each iteration we need to have at least 4 parameters left to be processed.
-                if ((input.size() - index) < 4)
-                {
-                    return printedOutput;
-                }
+            {
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeEight<T>>(input, iterator, parameterModes) ) );
+                break;
+            }
 
-                if (input[input[index + 1]] == input[input[index + 2]])
-                {
-                    setInputValueGivenParameterMode(c, index + 3, 1);
-                    //input[index + 3] = 1;
-                }
-                else
-                {
-                    setInputValueGivenParameterMode(c, index + 3, 0);
-                    //input[index + 3] = 0;
-                }
-
-                index += 4;
-                break;*/
-
-            // OpCode 99: The program is finished and shall immediately halt.
             case 99:
             {
                 pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeNinetyNine>() ) );
@@ -209,9 +163,8 @@ public:
                 return {input, printedOutput};
             }
 
-            // Remove the instruction which was just executed and jump to the next number (if any).
+            // Remove the instruction which was just executed.
             pendingInstructions.pop_front();
-            iterator++;
         }
 
         return {input, printedOutput};

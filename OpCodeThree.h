@@ -50,6 +50,9 @@ public:
         assert(_userInput.has_value());
         _input[index] = _userInput.value();
 
+        // Jump to the next number (if any).
+        _iterator++;
+
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
         return std::make_optional<Result>();
