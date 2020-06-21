@@ -42,7 +42,7 @@ public:
     [[nodiscard]] std::optional<Result> Execute() final
     {
         // Check if there are enough numbers to be claimed to complete the operation.
-        if ( std::distance(_iterator, _input.end()) < 2 )
+        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, 2))
         {
             return std::nullopt;
         }

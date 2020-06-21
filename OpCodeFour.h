@@ -43,7 +43,7 @@ public:
     {
         // Check if there are enough numbers to be claimed to complete the operation.
         // A single number is needed to be stored in the printed output collection.
-        if ( std::distance(_iterator, _input.end()) < 1 )
+        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, 1))
         {
             return std::nullopt;
         }

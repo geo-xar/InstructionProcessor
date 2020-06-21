@@ -42,7 +42,7 @@ public:
     {
         // Check if there are enough numbers to be claimed to complete the operation.
         // Numbers to be claimed are 2 for the accumulation and 1 for the index to store the result.
-        if ( std::distance(_iterator, _input.end()) < (NumberOfParametersToClaim + 1) )
+        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, NumberOfParametersToClaim + 1))
         {
             return std::nullopt;
         }

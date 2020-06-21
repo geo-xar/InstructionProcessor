@@ -8,6 +8,9 @@ TEST_CASE("Build number from digits test", "[OpCodeProcessor]")
 
     digits = {};
     CHECK(BuildNumberFromDigits<uint16_t>(digits) == 0);
+
+    std::vector<int> negativeDigits{-1, -9, 8, -9};
+    CHECK(BuildNumberFromDigits<int>(negativeDigits) == 1989);
 }
 
 TEST_CASE("Get digits from number test", "[OpCodeProcessor]")
@@ -28,4 +31,3 @@ TEST_CASE("Get digits from number test", "[OpCodeProcessor]")
     digits = GetDigitsFromNumber(100);
     CHECK(std::equal(digits.begin(), digits.end(), expectedDigits.begin()));
 }
-
