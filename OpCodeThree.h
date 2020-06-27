@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpCodeInterface.h"
+#include "OpCodeProcessorUtils.h"
 #include <vector>
 
 /**
@@ -61,5 +62,5 @@ public:
 private:
     Vector& _input;
     VectorIterator& _iterator;
-    const std::optional<T> _userInput;
+    const std::optional<T>& _userInput;
 };

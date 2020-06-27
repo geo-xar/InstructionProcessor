@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpCodeInterface.h"
+#include "OpCodeProcessorUtils.h"
 #include <vector>
 
 /**
@@ -10,7 +11,6 @@
 template <typename T>
 class OpCodeFour final : public OpCode
 {
-using ParameterModeVector = std::vector<ParameterMode>;
 using Vector = std::vector<T>;
 using VectorIterator = typename Vector::iterator;
 
@@ -24,7 +24,7 @@ public:
     * @param printedOutput Collection of values to be printed out.
     */
     OpCodeFour(
-        Vector& input,
+        const Vector& input,
         VectorIterator& iterator,
         const ParameterModeVector& parameterModes,
         Vector& printedOutput)
@@ -72,7 +72,7 @@ public:
     };
 
 private:
-    Vector& _input;
+    const Vector& _input;
     VectorIterator& _iterator;
     const ParameterModeVector& _parameterModes;
     Vector& _printedOutput;

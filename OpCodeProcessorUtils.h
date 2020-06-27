@@ -13,6 +13,8 @@ enum class ParameterMode : uint8_t
     Immediate
 };
 
+using ParameterModeVector = std::vector<ParameterMode>;
+
 /**
 * Extract the OpCode given a number.
 * @param number The number to extract the OpCode
@@ -47,7 +49,6 @@ inline void ValidateParameterMode(const uint8_t digit)
 * Extract the parameter modes given a number.
 * @param number The number to extract the parameter modes.
 */
-using ParameterModeVector = std::vector<ParameterMode>;
 template <typename NumberType>
 [[nodiscard]] inline ParameterModeVector ExtractParameterModesFromNumber(const NumberType number)
 {

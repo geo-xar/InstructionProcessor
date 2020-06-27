@@ -12,7 +12,6 @@
 template <typename T>
 class OpCodeSix final : public OpCode
 {
-using ParameterModeVector = std::vector<ParameterMode>;
 using Vector = std::vector<T>;
 using VectorIterator = typename Vector::iterator;
 
