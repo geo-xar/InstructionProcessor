@@ -1,7 +1,7 @@
 #include "catch2.hpp"
 #include "OpCodeProcessor.h"
 
-TEST_CASE("OpCodeFour - Single element, collection shall not be processed", "[OpCodeProcessor]")
+TEST_CASE("OpCodeFour - Single element, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {

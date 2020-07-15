@@ -1,7 +1,7 @@
 #include "catch2.hpp"
 #include "OpCodeProcessor.h"
 
-TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is missing), collection shall not be processed)", "[OpCodeProcessor]")
+TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is missing), input shall not be processed)", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {
@@ -13,7 +13,7 @@ TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is 
     CHECK(modifiedInput == input);
 }
 
-TEST_CASE("OpCodeThree - Single element, collection shall not be processed", "[OpCodeProcessor]")
+TEST_CASE("OpCodeThree - Single element, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {

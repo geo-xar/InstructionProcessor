@@ -22,6 +22,7 @@ add_executable(InstructionProcessor
     OpCodeFour.h
     OpCodeFourTest.cpp
     OpCodeFive.h
+    OpCodeFiveTest.cpp
     OpCodeSix.h
     OpCodeSeven.h
     OpCodeEight.h

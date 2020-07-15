@@ -1,7 +1,7 @@
 #include "catch2.hpp"
 #include "OpCodeProcessor.h"
 
-TEST_CASE("OpCodeOne - Single element, collection shall not be processed", "[OpCodeProcessor]")
+TEST_CASE("OpCodeOne - Single element, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {
@@ -13,7 +13,7 @@ TEST_CASE("OpCodeOne - Single element, collection shall not be processed", "[OpC
     CHECK(modifiedInput == input);
 }
 
-TEST_CASE("OpCodeOne - Two elements, collection shall not be processed", "[OpCodeProcessor]")
+TEST_CASE("OpCodeOne - Two elements, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {
@@ -25,7 +25,7 @@ TEST_CASE("OpCodeOne - Two elements, collection shall not be processed", "[OpCod
     CHECK(modifiedInput == input);
 }
 
-TEST_CASE("OpCodeOne - Three elements, collection shall not be processed", "[OpCodeProcessor]")
+TEST_CASE("OpCodeOne - Three elements, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {
