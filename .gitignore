@@ -13,7 +13,11 @@ x64/
 
 # Build
 cmake-build-debug/
+Build/
+BuildDebug/
 Debug/
+BuildRelease/
+Release/
 Install/
 
 # CMake
