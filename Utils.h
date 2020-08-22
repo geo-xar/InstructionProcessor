@@ -89,5 +89,5 @@ template <typename CollectionType, typename Iterator>
     const Iterator iterator,
     IndexType numberOfElements)
 {
-    return std::distance<CollectionType::const_iterator>(iterator, collection.end()) >= numberOfElements;
+    return std::distance<typename CollectionType::const_iterator>(iterator, collection.end()) >= numberOfElements;
 }

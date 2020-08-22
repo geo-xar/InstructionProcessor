@@ -65,7 +65,7 @@ public:
         Vector printedOutput;
 
         // Declare the iterator which is used to manipulate the input collection.
-        using Iterator = Vector::iterator;
+        using Iterator = typename Vector::iterator;
         Iterator iterator = input.begin();
 
         // Declare an OpCode deque useful to manage the OpCode execution.
