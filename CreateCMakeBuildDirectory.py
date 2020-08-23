@@ -34,5 +34,7 @@ def main():
 
     os.system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(configuration, codeCoverage))
 
+    os.system('make -j4')
+
 if __name__== "__main__":
    main()
