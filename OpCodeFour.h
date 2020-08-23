@@ -57,7 +57,7 @@ public:
         else
         {
             assert(*_iterator >= 0);
-            assert(*_iterator < _input.size());
+            assert(static_cast<size_t>(*_iterator) < _input.size());
             number = _input[*_iterator];
         }
 

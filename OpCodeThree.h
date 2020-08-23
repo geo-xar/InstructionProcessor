@@ -47,7 +47,7 @@ public:
 
         // Claim the index to store the user input value.
         const auto index = *_iterator;
-        assert( (index >= 0) && (index < _input.size()) );
+        assert( (index >= 0) && (static_cast<size_t>(index) < _input.size()) );
         assert(_userInput.has_value());
         _input[index] = _userInput.value();
 

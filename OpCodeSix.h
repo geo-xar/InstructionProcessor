@@ -56,7 +56,7 @@ public:
         else
         {
             assert(*_iterator >= 0);
-            assert(*_iterator < _input.size());
+            assert(static_cast<size_t>(*_iterator) < _input.size());
             option = _input[*_iterator];
         }
 
@@ -81,12 +81,12 @@ public:
         else
         {
             assert(*_iterator >= 0);
-            assert(*_iterator < _input.size());
+            assert(static_cast<size_t>(*_iterator) < _input.size());
             number = _input[*_iterator];
         }
 
         assert( number >= 0);
-        assert( number < _input.size() );
+        assert( static_cast<size_t>(number) < _input.size() );
         // Update instruction pointer.
         _iterator = _input.begin() + number;
 

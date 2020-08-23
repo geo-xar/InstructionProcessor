@@ -60,14 +60,14 @@ public:
             else
             {
                 assert(*_iterator >= 0);
-                assert(*_iterator < _input.size());
+                assert(static_cast<size_t>(*_iterator) < _input.size());
                 claimedComparisonNumbers.emplace_back(_input[*_iterator]);
             }
             _iterator++;
         }
 
         // Claim the index to store the comparison result.
-        const auto index = *_iterator;
+        const auto index = static_cast<size_t>(*_iterator);
         assert( (index >= 0) && (index < _input.size()) );
 
         if (claimedComparisonNumbers[0] == claimedComparisonNumbers[1])

@@ -58,7 +58,7 @@ public:
             else
             {
                 assert(*_iterator >= 0);
-                assert(*_iterator < _input.size());
+                assert(static_cast<size_t>(*_iterator) < _input.size());
                 claimedAccumulationNumbers.emplace_back(_input[*_iterator]);
             }
             _iterator++;
@@ -66,7 +66,7 @@ public:
 
         // Claim the index to store the accumulation result.
         const auto index = *_iterator;
-        assert( (index >= 0) && (index < _input.size()) );
+        assert( (index >= 0) && (static_cast<size_t>(index) < _input.size()) );
         _input[index] = claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1];
 
         // Jump to the next number (if any).
