@@ -19,6 +19,7 @@ Debug/
 BuildRelease/
 Release/
 Install/
+Coverage/
 
 # CMake
 CMakeCache.txt
