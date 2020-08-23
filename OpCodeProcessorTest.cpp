@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "catch2.hpp"
+#include "catch/catch2.hpp"
 #include "OpCodeProcessor.h"
 
 TEST_CASE("Process instructions - 1st part - 2nd day - 1st sample", "[OpCodeProcessor]")

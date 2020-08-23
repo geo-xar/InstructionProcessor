@@ -1,4 +1,4 @@
-#include "catch2.hpp"
+#include "catch/catch2.hpp"
 #include "OpCodeProcessorUtils.h"
 
 TEST_CASE("Get OpCode from number test", "[OpCodeProcessor]")

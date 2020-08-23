@@ -1,4 +1,4 @@
-#include "catch2.hpp"
+#include "catch/catch2.hpp"
 #include "OpCodeProcessor.h"
 
 TEST_CASE("OpCodeFour - Single element, input shall not be processed", "[OpCodeProcessor]")
