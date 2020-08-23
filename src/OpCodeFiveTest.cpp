@@ -1,4 +1,4 @@
-#include "catch/catch2.hpp"
+#include "catch2.hpp"
 #include "OpCodeProcessor.h"
 #include <algorithm>
 
