@@ -30,7 +30,9 @@ def main():
 
     os.chdir('{0}'.format(directory))
 
-    os.system('cmake ../ -DCMAKE_BUILD_TYPE={0}'.format(configuration))
+    codeCoverage = "ON"
+
+    os.system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(configuration, codeCoverage))
 
 if __name__== "__main__":
    main()
