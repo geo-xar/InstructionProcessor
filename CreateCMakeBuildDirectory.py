@@ -2,6 +2,7 @@ import sys
 import os
 from os import path
 
+
 def main():
 
     configuration = "Debug"
@@ -16,9 +17,9 @@ def main():
 
     if path.exists(directory):
 
-        userInput = input("The {0} directory already exists. Do you want to delete it or not, please? (y/n)\n".format(directory))
+        user_input = input("The {0} directory already exists. Do you want to delete it or not, please? (y/n)\n".format(directory))
 
-        if userInput.lower() == "y" or userInput.lower() == "yes":
+        if user_input.lower() == "y" or user_input.lower() == "yes":
 
             os.system('rm -rf {0}'.format(directory))
 
@@ -30,11 +31,17 @@ def main():
 
     os.chdir('{0}'.format(directory))
 
-    codeCoverage = "ON"
+    code_coverage = "ON"
 
-    os.system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(configuration, codeCoverage))
+    if configuration == "Release":
+
+        code_coverage = "OFF"
+
+    os.system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(configuration, code_coverage))
 
     os.system('make -j4')
 
-if __name__== "__main__":
-   main()
+
+if __name__ == "__main__":
+
+    main()
