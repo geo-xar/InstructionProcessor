@@ -21,6 +21,7 @@ add_executable(
     OpCodeFive.h
     OpCodeFiveTest.cpp
     OpCodeSix.h
+    OpCodeSixTest.cpp
     OpCodeSeven.h
     OpCodeEight.h
     OpCodeNinetyNine.h
