@@ -85,8 +85,8 @@ public:
             number = _input[*_iterator];
         }
 
-        assert( number >= 0);
-        assert( static_cast<size_t>(number) < _input.size() );
+        assert(number >= 0);
+        assert(static_cast<size_t>(number) < _input.size() );
         // Update instruction pointer.
         _iterator = _input.begin() + number;
 

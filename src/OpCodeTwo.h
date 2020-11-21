@@ -13,7 +13,7 @@ class OpCodeTwo final : public OpCode
 {
 using Vector = std::vector<T>;
 using VectorIterator = typename Vector::iterator;
-static const size_t NumberOfParametersToClaim = 2;
+static constexpr size_t NumberOfParametersToClaim = 2;
 
 public:
     /**
