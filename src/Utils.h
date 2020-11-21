@@ -49,7 +49,7 @@ template <typename NumberType, typename DigitsCollection>
 
 /**
 * Get the digits given a number.
-* @param number The number to be split to digits. 
+* @param number The number to be split to digits.
 */
 template <typename NumberType>
 [[nodiscard]] inline std::vector<DigitType> GetDigitsFromNumber(NumberType number)

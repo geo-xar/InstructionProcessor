@@ -41,7 +41,7 @@ inline void ValidateParameterMode(const uint8_t digit)
 {
     if (digit != 0 && digit != 1)
     {
-        throw std::runtime_error("Invalid OpCode mode: " + digit);
+        throw std::runtime_error("Invalid OpCode mode: " + std::to_string(digit));
     }
 }
 

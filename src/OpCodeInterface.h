@@ -1,7 +1,7 @@
 #pragma once
 
-#include "NonMovable.h"
 #include "NonCopyable.h"
+#include "NonMovable.h"
 #include <optional>
 
 class Result final
