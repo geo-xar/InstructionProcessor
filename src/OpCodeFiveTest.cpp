@@ -11,8 +11,8 @@ TEST_CASE("OpCodeFive - Single element, input shall not be processed", "[OpCodeP
 
     OpCodeProcessor opCodeProcessor;
     auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input);
-    REQUIRE(modifiedInput.size() == 1);
-    CHECK(modifiedInput[0] == 5);
+    REQUIRE(modifiedInput.size() == input.size());
+    CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
 
 TEST_CASE("OpCodeFive - First parameter is zero, do nothing (ParameterMode::Immediate)", "[OpCodeProcessor]")
