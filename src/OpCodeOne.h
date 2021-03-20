@@ -13,22 +13,16 @@ class OpCodeOne final : public OpCode
 {
 using Vector = std::vector<T>;
 using VectorIterator = typename Vector::iterator;
-static constexpr size_t NumberOfParametersToClaim = 2;
+static constexpr IndexType NumberOfParametersToClaim = 2;
 
 public:
     /**
     * Constructor
     * @param input The user input vector.
-    * @param iterator User input vector iterator
-    *                 which points to the first number to be claimed.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeOne(
-        Vector& input,
-        VectorIterator& iterator,
-        const ParameterModeVector& parameterModes)
+    OpCodeOne(Vector& input, const ParameterModeVector& parameterModes)
     : _input{input}
-    , _iterator{iterator}
     , _parameterModes{parameterModes}
     {}
 
@@ -37,48 +31,50 @@ public:
     /**
     * Accumulate 2 numbers and store the result in the index pointed by the third number.
     */
-    [[nodiscard]] std::optional<Result> Execute() final
+    [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
+        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
+        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+
         // Check if there are enough numbers to be claimed to complete the operation.
         // Numbers to be claimed are 2 for the accumulation and 1 for the index to store the result.
-        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, NumberOfParametersToClaim + 1))
+        if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, NumberOfParametersToClaim + 1))
         {
-            return std::nullopt;
+            return { std::nullopt, {} };
         }
 
         // Claim the numbers to be accumulated based on the parameter modes.
         Vector claimedAccumulationNumbers;
-        for (size_t i = 0; i < NumberOfParametersToClaim; i++)
+        for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
-            if ( _parameterModes[i] == ParameterMode::Immediate )
+            if (_parameterModes[i] == ParameterMode::Immediate)
             {
-                claimedAccumulationNumbers.emplace_back(*_iterator);
+                claimedAccumulationNumbers.emplace_back(*iterBegin);
             }
             // ParameterMode::Position
             else
             {
-                assert(*_iterator >= 0);
-                assert(static_cast<size_t>(*_iterator) < _input.size());
-                claimedAccumulationNumbers.emplace_back(_input[*_iterator]);
+                assert(*iterBegin >= 0);
+                assert(static_cast<IndexType>(*iterBegin) < _input.size());
+                claimedAccumulationNumbers.emplace_back(_input[*iterBegin]);
             }
-            _iterator++;
+            iterBegin++;
         }
 
         // Claim the index to store the accumulation result.
-        const auto index = *_iterator;
-        assert( (index >= 0) && (static_cast<size_t>(index) < _input.size()) );
+        const auto index = *iterBegin;
+        assert( (index >= 0) && (static_cast<IndexType>(index) < _input.size()) );
         _input[index] = claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1];
 
         // Jump to the next number (if any).
-        _iterator++;
+        iterBegin++;
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
-        return std::make_optional<Result>();
+        return { std::make_optional<Result>(), {iterBegin} };
     };
 
 private:
     Vector& _input;
-    VectorIterator& _iterator;
     const ParameterModeVector& _parameterModes;
 };

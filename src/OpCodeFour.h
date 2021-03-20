@@ -17,19 +17,12 @@ using VectorIterator = typename Vector::iterator;
 public:
     /**
     * Constructor
-    * @param input    The user input vector.
-    * @param iterator User input vector iterator
-    *                 which points to the first number to be claimed.
+    * @param input The user input vector.
     * @param parameterModes The collection of the parameter modes.
     * @param printedOutput Collection of values to be printed out.
     */
-    OpCodeFour(
-        const Vector& input,
-        VectorIterator& iterator,
-        const ParameterModeVector& parameterModes,
-        Vector& printedOutput)
+    OpCodeFour(const Vector& input, const ParameterModeVector& parameterModes, Vector& printedOutput)
     : _input{input}
-    , _iterator{iterator}
     , _parameterModes{parameterModes}
     , _printedOutput{printedOutput}
     {}
@@ -39,41 +32,43 @@ public:
     /**
     * Claim a number and store it in the printed output collection.
     */
-    [[nodiscard]] std::optional<Result> Execute() final
+    [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
+        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
+        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+
         // Check if there are enough numbers to be claimed to complete the operation.
         // A single number is needed to be stored in the printed output collection.
-        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, 1))
+        if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, 1))
         {
-            return std::nullopt;
+            return { std::nullopt, {} };
         }
 
         T number;
         if ( _parameterModes[0] == ParameterMode::Immediate )
         {
-            number = *_iterator;
+            number = *iterBegin;
         }
         // ParameterMode::Position
         else
         {
-            assert(*_iterator >= 0);
-            assert(static_cast<size_t>(*_iterator) < _input.size());
-            number = _input[*_iterator];
+            assert(*iterBegin >= 0);
+            assert(static_cast<IndexType>(*iterBegin) < _input.size());
+            number = _input[*iterBegin];
         }
 
         _printedOutput.emplace_back(number);
 
         // Jump to the next number (if any).
-        _iterator++;
+        iterBegin++;
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
-        return std::make_optional<Result>();
+        return { std::make_optional<Result>(), {iterBegin} };
     };
 
 private:
     const Vector& _input;
-    VectorIterator& _iterator;
     const ParameterModeVector& _parameterModes;
     Vector& _printedOutput;
 };

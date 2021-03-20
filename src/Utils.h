@@ -79,15 +79,15 @@ template <typename NumberType>
 
 /**
 * Find if the distance between iterator and collection end is more or less than given input.
-* @param collection A collection of numbers.
-* @param iterator An iterator to the given collection.
+* @param iteratorBegin An iterator pointing to the next collection element.
+* @param iteratorEnd An iterator pointing to the end of thr collection.
 * @param numberOfElements The number of elements that are needed for the calculation.
 */
-template <typename CollectionType, typename Iterator>
+template <typename IteratorType>
 [[nodiscard]] inline bool AreThereEnoughElementsIntoTheCollection(
-    const CollectionType& collection,
-    const Iterator iterator,
+    const IteratorType& iteratorBegin,
+    const IteratorType& iteratorEnd,
     IndexType numberOfElements)
 {
-    return static_cast<IndexType>(std::distance<typename CollectionType::const_iterator>(iterator, collection.end())) >= numberOfElements;
+    return static_cast<IndexType>(std::distance(iteratorBegin, iteratorEnd)) >= numberOfElements;
 }

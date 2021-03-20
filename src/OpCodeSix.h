@@ -19,16 +19,10 @@ public:
     /**
     * Constructor
     * @param input    The user input vector.
-    * @param iterator User input vector iterator
-    *                 which points to the first number to be claimed.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeSix(
-        Vector& input,
-        VectorIterator& iterator,
-        const ParameterModeVector& parameterModes)
+    OpCodeSix(Vector& input, const ParameterModeVector& parameterModes)
     : _input{input}
-    , _iterator{iterator}
     , _parameterModes{parameterModes}
     {}
 
@@ -38,65 +32,67 @@ public:
     * If the first parameter is zero then set the instruction pointer to the value from the second parameter.
     * Otherwise do nothing.
     */
-    [[nodiscard]] std::optional<Result> Execute() final
+    [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
+        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
+        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+
         // Check if there are enough numbers to be claimed to complete the operation.
-        if (!AreThereEnoughElementsIntoTheCollection(_input, _iterator, 2))
+        if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, 2))
         {
-            return std::nullopt;
+            return { std::nullopt, {} };
         }
 
         // Claim the first parameter based on parameter mode.
         T option;
-        if ( _parameterModes[0] == ParameterMode::Immediate )
+        if (_parameterModes[0] == ParameterMode::Immediate)
         {
-            option = *_iterator;
+            option = *iterBegin;
         }
         // ParameterMode::Position
         else
         {
-            assert(*_iterator >= 0);
-            assert(static_cast<size_t>(*_iterator) < _input.size());
-            option = _input[*_iterator];
+            assert(*iterBegin >= 0);
+            assert(static_cast<IndexType>(*iterBegin) < _input.size());
+            option = _input[*iterBegin];
         }
 
         // Jump to the next number.
-        _iterator++;
+        iterBegin++;
 
         // If non-zero number then do nothing.
         if (option != 0)
         {
             // Skip the number.
-            _iterator++;
-            return std::make_optional<Result>();
+            iterBegin++;
+            return { std::make_optional<Result>(), {iterBegin} };
         }
 
         // Move the instruction pointer to the index pointed by the second number.
         T number;
-        if ( _parameterModes[1] == ParameterMode::Immediate )
+        if (_parameterModes[1] == ParameterMode::Immediate)
         {
-            number = *_iterator;
+            number = *iterBegin;
         }
         // ParameterMode::Position
         else
         {
-            assert(*_iterator >= 0);
-            assert(static_cast<size_t>(*_iterator) < _input.size());
-            number = _input[*_iterator];
+            assert(*iterBegin >= 0);
+            assert(static_cast<IndexType>(*iterBegin) < _input.size());
+            number = _input[*iterBegin];
         }
 
         assert( number >= 0);
-        assert( static_cast<size_t>(number) < _input.size() );
+        assert( static_cast<IndexType>(number) < _input.size() );
         // Update instruction pointer.
-        _iterator = _input.begin() + number;
+        iterBegin = _input.begin() + number;
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
-        return std::make_optional<Result>();
+        return { std::make_optional<Result>(), {iterBegin} };
     };
 
 private:
     Vector& _input;
-    VectorIterator& _iterator;
     const ParameterModeVector& _parameterModes;
 };

@@ -2,8 +2,12 @@
 
 #include "NonCopyable.h"
 #include "NonMovable.h"
+#include <any>
 #include <optional>
 
+/**
+* @class The Result class will be used for future error handling.
+*/
 class Result final
 {
 public:
@@ -16,9 +20,13 @@ public:
 class OpCode : public NonCopyable, NonMovable
 {
 public:
+    using ReturnType = std::pair<std::optional<Result>, std::any>;
+
     /**
-    * Execute the OpCode and return a result optional.
+    * Execute the OpCode and return a result optional and the updated iterator.
+    * @param nextElementIter The iterator pointing to the next element of the integer collection to be processed.
+    * @param endIter The iterator pointing to the end of the integer collection.
     * If the return optional is equal to std::nullopt then the execution was not successful.
     */
-    virtual std::optional<Result> Execute() = 0;
+    virtual ReturnType Execute(std::any& nextElementIter, std::any& endIter) = 0;
 };

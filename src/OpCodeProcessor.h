@@ -87,55 +87,55 @@ public:
 
             case 1:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 2:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeTwo<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeTwo<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 3:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeThree<T>>(input, iterator, userSelection) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeThree<T>>(input, userSelection) ) );
                 break;
             }
 
             case 4:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFour<T>>(input, iterator, parameterModes, printedOutput) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFour<T>>(input, parameterModes, printedOutput) ) );
                 break;
             }
 
             case 5:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFive<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeFive<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 6:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSix<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSix<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 7:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSeven<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeSeven<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 8:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeEight<T>>(input, iterator, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeEight<T>>(input, parameterModes) ) );
                 break;
             }
 
             case 99:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeNinetyNine>() ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeNinetyNine<T>>() ) );
                 break;
             }
 
@@ -157,10 +157,16 @@ public:
             // Retrieve the first instruction to be executed.
             // If the result optional has no value then terminate the execution.
             OpCode* opCodeToBeExecuted = pendingInstructions.front().get();
-            auto result = opCodeToBeExecuted->Execute();
-            if (!result.has_value())
+            std::any nextElement{iterator};
+            std::any iterEnd{input.end()};
+            auto result = opCodeToBeExecuted->Execute(nextElement, iterEnd);
+            if (!result.first.has_value())
             {
                 return {input, printedOutput};
+            }
+            else
+            {
+                iterator = std::any_cast<Iterator&>(result.second);
             }
 
             // Remove the instruction which was just executed.
