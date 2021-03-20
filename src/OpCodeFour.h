@@ -45,7 +45,7 @@ public:
         }
 
         T number;
-        if ( _parameterModes[0] == ParameterMode::Immediate )
+        if (_parameterModes[0] == ParameterMode::Immediate)
         {
             number = *iterBegin;
         }
