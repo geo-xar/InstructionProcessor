@@ -75,4 +75,7 @@ TEST_CASE("Get parameter modes from number test", "[OpCodeProcessor]")
 
     number = 90034;
     CHECK_THROWS_AS(ExtractParameterModesFromNumber(number), std::runtime_error);
+
+    number = 900034;
+    CHECK_THROWS_AS(ExtractParameterModesFromNumber(number), std::runtime_error);
 }

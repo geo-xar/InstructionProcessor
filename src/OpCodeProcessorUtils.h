@@ -121,7 +121,6 @@ template <typename NumberType>
     else
     {
         // We should never reach this else statement.
-        assert(false);
-        return { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
+        throw std::runtime_error("Invalid number");
     }
 }
