@@ -2,27 +2,28 @@
 
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
-#include <vector>
 
 /**
 * @class OpCodeOne specialisation.
 * Accumulate 2 numbers.
 */
-template <typename T>
+template <typename T, typename IteratorType>
 class OpCodeOne final : public OpCode
 {
-using Vector = std::vector<T>;
-using VectorIterator = typename Vector::iterator;
+using SetFunctionType = std::function<void(IndexType index, T element)>;
+using GetFunctionType = std::function<T(IteratorType& iterator)>;
 static constexpr IndexType NumberOfParametersToClaim = 2;
 
 public:
     /**
     * Constructor
-    * @param input The user input vector.
+    * @param setElementAtIndex Function to store an element to the given index.
+    * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeOne(Vector& input, const ParameterModeVector& parameterModes)
-    : _input{input}
+    OpCodeOne(SetFunctionType& setElementAtIndex, GetFunctionType& getElementAt, const ParameterModeVector& parameterModes)
+    : _setElementAtIndex{setElementAtIndex}
+    , _getElementAt{getElementAt}
     , _parameterModes{parameterModes}
     {}
 
@@ -33,8 +34,8 @@ public:
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
-        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
-        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
+        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         // Numbers to be claimed are 2 for the accumulation and 1 for the index to store the result.
@@ -44,7 +45,7 @@ public:
         }
 
         // Claim the numbers to be accumulated based on the parameter modes.
-        Vector claimedAccumulationNumbers;
+        std::vector<T> claimedAccumulationNumbers;
         for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
             if (_parameterModes[i] == ParameterMode::Immediate)
@@ -54,17 +55,13 @@ public:
             // ParameterMode::Position
             else
             {
-                assert(*iterBegin >= 0);
-                assert(static_cast<IndexType>(*iterBegin) < _input.size());
-                claimedAccumulationNumbers.emplace_back(_input[*iterBegin]);
+                claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin));
             }
             iterBegin++;
         }
 
         // Claim the index to store the accumulation result.
-        const auto index = *iterBegin;
-        assert( (index >= 0) && (static_cast<IndexType>(index) < _input.size()) );
-        _input[index] = claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1];
+        _setElementAtIndex(*iterBegin, claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1]);
 
         // Jump to the next number (if any).
         iterBegin++;
@@ -75,6 +72,7 @@ public:
     };
 
 private:
-    Vector& _input;
+    SetFunctionType& _setElementAtIndex;
+    GetFunctionType& _getElementAt;
     const ParameterModeVector& _parameterModes;
 };

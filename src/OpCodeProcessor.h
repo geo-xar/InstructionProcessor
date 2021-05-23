@@ -18,6 +18,7 @@
 #include <tuple>
 #include <deque>
 #include <memory>
+#include <functional>
 
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
@@ -65,8 +66,25 @@ public:
         Vector printedOutput;
 
         // Declare the iterator which is used to manipulate the input collection.
-        using Iterator = typename Vector::iterator;
-        Iterator iterator = input.begin();
+        using IteratorType = typename Vector::iterator;
+        IteratorType iterator = input.begin();
+
+        using SetFunctionType = std::function<void(IndexType index, T element)>;
+        SetFunctionType SetElementAtIndex =
+        [&input](IndexType index, T element) mutable
+        {
+            assert( (index >= 0) && (index < input.size()) );
+            input[index] = element;
+        };
+
+        using GetFunctionType = std::function<T(IteratorType& iterator)>;
+        GetFunctionType GetElementAt =
+        [&input](IteratorType& iterator)
+        {
+            assert(*iterator >= 0);
+            assert(static_cast<IndexType>(*iterator) < input.size());
+            return input[*iterator];
+        };
 
         // Declare an OpCode deque useful to manage the OpCode execution.
         using OpCodeUniquePtr = std::unique_ptr<OpCode>;
@@ -87,7 +105,7 @@ public:
 
             case 1:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T>>(input, parameterModes) ) );
+                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeOne<T, IteratorType>>(SetElementAtIndex, GetElementAt, parameterModes) ) );
                 break;
             }
 
@@ -168,7 +186,7 @@ public:
             }
             else
             {
-                iterator = std::any_cast<Iterator&>(result.second);
+                iterator = std::any_cast<IteratorType&>(result.second);
             }
 
             // Remove the instruction which was just executed.
