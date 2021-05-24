@@ -2,27 +2,26 @@
 
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
-#include <vector>
 
 /**
 * @class OpCodeFour specialisation.
 * Claim a number and store it in the printed output collection.
 */
-template <typename T>
+template <typename T, typename IteratorType, typename GetElementAtFunctionType>
 class OpCodeFour final : public OpCode
 {
-using Vector = std::vector<T>;
-using VectorIterator = typename Vector::iterator;
-
 public:
     /**
     * Constructor
-    * @param input The user input vector.
+    * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     * @param printedOutput Collection of values to be printed out.
     */
-    OpCodeFour(const Vector& input, const ParameterModeVector& parameterModes, Vector& printedOutput)
-    : _input{input}
+    OpCodeFour(
+        GetElementAtFunctionType& getElementAt,
+        const ParameterModeVector& parameterModes,
+        std::vector<T>& printedOutput)
+    : _getElementAt{getElementAt}
     , _parameterModes{parameterModes}
     , _printedOutput{printedOutput}
     {}
@@ -34,8 +33,8 @@ public:
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
-        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
-        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
+        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         // A single number is needed to be stored in the printed output collection.
@@ -52,9 +51,7 @@ public:
         // ParameterMode::Position
         else
         {
-            assert(*iterBegin >= 0);
-            assert(static_cast<IndexType>(*iterBegin) < _input.size());
-            number = _input[*iterBegin];
+            number = _getElementAt(iterBegin);
         }
 
         _printedOutput.emplace_back(number);
@@ -68,7 +65,7 @@ public:
     };
 
 private:
-    const Vector& _input;
+    GetElementAtFunctionType& _getElementAt;
     const ParameterModeVector& _parameterModes;
-    Vector& _printedOutput;
+    std::vector<T>& _printedOutput;
 };

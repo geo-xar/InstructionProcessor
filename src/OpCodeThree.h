@@ -2,26 +2,22 @@
 
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
-#include <vector>
 
 /**
 * @class OpCodeThree specialisation.
 * Claim a number and store the user input value to the index which it points to.
 */
-template <typename T>
+template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType>
 class OpCodeThree final : public OpCode
 {
-using Vector = std::vector<T>;
-using VectorIterator = typename Vector::iterator;
-
 public:
     /**
     * Constructor
-    * @param input    The user input vector.
+    * @param setElementAtIndex Function to store an element to the given index.
     * @param userInput User selection optional.
     */
-    OpCodeThree(Vector& input, const std::optional<T>& userInput)
-    : _input{input}
+    OpCodeThree(SetElementAtIndexFunctionType& setElementAtIndex, const std::optional<T>& userInput)
+    : _setElementAtIndex{setElementAtIndex}
     , _userInput{userInput}
     {}
 
@@ -32,8 +28,8 @@ public:
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
-        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
-        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
+        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         // A single number is needed (index) to store the user input.
@@ -43,10 +39,8 @@ public:
         }
 
         // Claim the index to store the user input value.
-        const auto index = *iterBegin;
-        assert( (index >= 0) && (static_cast<IndexType>(index) < _input.size()) );
         assert(_userInput.has_value());
-        _input[index] = _userInput.value();
+        _setElementAtIndex(*iterBegin, _userInput.value());
 
         // Jump to the next number (if any).
         iterBegin++;
@@ -57,6 +51,6 @@ public:
     };
 
 private:
-    Vector& _input;
+    SetElementAtIndexFunctionType& _setElementAtIndex;
     const std::optional<T>& _userInput;
 };

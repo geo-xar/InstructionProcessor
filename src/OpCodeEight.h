@@ -2,28 +2,30 @@
 
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
-#include <vector>
 
 /**
 * @class OpCodeEight specialisation.
 * If the first parameter is equal to the second parameter then
 * store 1 in the position given by the third parameter, otherwise store 0.
 */
-template <typename T>
+template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 class OpCodeEight final : public OpCode
 {
-using Vector = std::vector<T>;
-using VectorIterator = typename Vector::iterator;
 static constexpr IndexType NumberOfParametersToClaim = 2;
 
 public:
     /**
     * Constructor
-    * @param input The user input vector.
+    * @param setElementAtIndex Function to store an element to the given index.
+    * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeEight(Vector& input, const ParameterModeVector& parameterModes)
-    : _input{input}
+    OpCodeEight(
+        SetElementAtIndexFunctionType& setElementAtIndex,
+        GetElementAtFunctionType& getElementAt,
+        const ParameterModeVector& parameterModes)
+    : _setElementAtIndex{setElementAtIndex}
+    , _getElementAt{getElementAt}
     , _parameterModes{parameterModes}
     {}
 
@@ -35,8 +37,8 @@ public:
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
     {
-        VectorIterator& iterBegin = std::any_cast<VectorIterator&>(nextElementIter);
-        VectorIterator& iterEnd = std::any_cast<VectorIterator&>(endIter);
+        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
+        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         // Numbers to be claimed are 2 for the comparison and 1 for the index to store the result.
@@ -46,7 +48,7 @@ public:
         }
 
         // Claim the numbers to be compared based on the parameter modes.
-        Vector claimedComparisonNumbers;
+        std::vector<T> claimedComparisonNumbers;
         for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
             if (_parameterModes[i] == ParameterMode::Immediate)
@@ -56,24 +58,18 @@ public:
             // ParameterMode::Position
             else
             {
-                assert(*iterBegin >= 0);
-                assert(static_cast<IndexType>(*iterBegin) < _input.size());
-                claimedComparisonNumbers.emplace_back(_input[*iterBegin]);
+                claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin));
             }
             iterBegin++;
         }
 
-        // Claim the index to store the comparison result.
-        const auto index = static_cast<IndexType>(*iterBegin);
-        assert( (index >= 0) && (index < _input.size()) );
-
         if (claimedComparisonNumbers[0] == claimedComparisonNumbers[1])
         {
-            _input[index] = 1;
+            _setElementAtIndex(*iterBegin, 1);
         }
         else
         {
-            _input[index] = 0;
+            _setElementAtIndex(*iterBegin, 0);
         }
 
         // Jump to the next number (if any).
@@ -85,6 +81,7 @@ public:
     };
 
 private:
-    Vector& _input;
+    SetElementAtIndexFunctionType& _setElementAtIndex;
+    GetElementAtFunctionType& _getElementAt;
     const ParameterModeVector& _parameterModes;
 };

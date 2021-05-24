@@ -7,11 +7,9 @@
 * @class OpCodeOne specialisation.
 * Accumulate 2 numbers.
 */
-template <typename T, typename IteratorType>
+template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 class OpCodeOne final : public OpCode
 {
-using SetFunctionType = std::function<void(IndexType index, T element)>;
-using GetFunctionType = std::function<T(IteratorType& iterator)>;
 static constexpr IndexType NumberOfParametersToClaim = 2;
 
 public:
@@ -21,7 +19,10 @@ public:
     * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeOne(SetFunctionType& setElementAtIndex, GetFunctionType& getElementAt, const ParameterModeVector& parameterModes)
+    OpCodeOne(
+        SetElementAtIndexFunctionType& setElementAtIndex,
+        GetElementAtFunctionType& getElementAt,
+        const ParameterModeVector& parameterModes)
     : _setElementAtIndex{setElementAtIndex}
     , _getElementAt{getElementAt}
     , _parameterModes{parameterModes}
@@ -72,7 +73,7 @@ public:
     };
 
 private:
-    SetFunctionType& _setElementAtIndex;
-    GetFunctionType& _getElementAt;
+    SetElementAtIndexFunctionType& _setElementAtIndex;
+    GetElementAtFunctionType& _getElementAt;
     const ParameterModeVector& _parameterModes;
 };
