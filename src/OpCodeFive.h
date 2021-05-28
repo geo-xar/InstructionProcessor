@@ -3,6 +3,9 @@
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
 
+namespace InstructionProcessor
+{
+
 /**
 * @class OpCodeFive specialisation.
 * If the first parameter is non-zero then set the instruction pointer to the value from the second parameter.
@@ -19,12 +22,11 @@ public:
     * @param parameterModes The collection of the parameter modes.
     */
     OpCodeFive(
-        GetElementAtFunctionType& getElementAt,
-        GetIterFromBeginPlusOffsetFunctionType& getIterFromBeginPlusOffset,
-        const ParameterModeVector& parameterModes)
-    : _getElementAt{getElementAt}
-    , _getIterFromBeginPlusOffset{getIterFromBeginPlusOffset}
-    , _parameterModes{parameterModes}
+            GetElementAtFunctionType &getElementAt,
+            GetIterFromBeginPlusOffsetFunctionType &getIterFromBeginPlusOffset,
+            const ParameterModeVector &parameterModes)
+            : _getElementAt{getElementAt}, _getIterFromBeginPlusOffset{getIterFromBeginPlusOffset},
+              _parameterModes{parameterModes}
     {}
 
     ~OpCodeFive() final = default;
@@ -33,15 +35,15 @@ public:
     * If the first parameter is non-zero then set the instruction pointer to the value from the second parameter.
     * Otherwise do nothing.
     */
-    [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
+    [[nodiscard]] OpCode::ReturnType Execute(std::any &nextElementIter, std::any &endIter) final
     {
-        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
-        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
+        IteratorType &iterBegin = std::any_cast<IteratorType &>(nextElementIter);
+        IteratorType &iterEnd = std::any_cast<IteratorType &>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, 2))
         {
-            return { std::nullopt, {} };
+            return {std::nullopt, {}};
         }
 
         // Claim the first parameter based on parameter mode.
@@ -50,7 +52,7 @@ public:
         {
             option = *iterBegin;
         }
-        // ParameterMode::Position
+            // ParameterMode::Position
         else
         {
             option = _getElementAt(iterBegin);
@@ -62,9 +64,9 @@ public:
         // If zero number then do nothing.
         if (option == 0)
         {
-             // Skip the number.
+            // Skip the number.
             iterBegin++;
-            return { std::make_optional<Result>(), {iterBegin} };
+            return {std::make_optional<Result>(), {iterBegin}};
         }
 
         // Move the instruction pointer to the index pointed by the second number.
@@ -73,22 +75,24 @@ public:
         {
             number = *iterBegin;
         }
-        // ParameterMode::Position
+            // ParameterMode::Position
         else
         {
             number = _getElementAt(iterBegin);
         }
-        
+
         // Update instruction pointer.
         iterBegin = _getIterFromBeginPlusOffset(number);
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
-        return { std::make_optional<Result>(), {iterBegin} };
+        return {std::make_optional<Result>(), {iterBegin}};
     };
 
 private:
-    GetElementAtFunctionType& _getElementAt;
-    GetIterFromBeginPlusOffsetFunctionType& _getIterFromBeginPlusOffset;
-    const ParameterModeVector& _parameterModes;
+    GetElementAtFunctionType &_getElementAt;
+    GetIterFromBeginPlusOffsetFunctionType &_getIterFromBeginPlusOffset;
+    const ParameterModeVector &_parameterModes;
 };
+
+}

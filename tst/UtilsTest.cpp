@@ -1,6 +1,8 @@
 #include "catch2.hpp"
 #include "Utils.h"
 
+using namespace InstructionProcessor;
+
 TEST_CASE("Build number from digits test", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> digits{1, 9, 8, 9};

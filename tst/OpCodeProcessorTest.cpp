@@ -2,6 +2,8 @@
 #include "catch2.hpp"
 #include "OpCodeProcessor.h"
 
+using namespace InstructionProcessor;
+
 TEST_CASE("Process instructions - empty input", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input;

@@ -4,6 +4,9 @@
 #include <cassert>
 #include <stdexcept>
 
+namespace InstructionProcessor
+{
+
 /**
 * Parameter mode options.
 */
@@ -59,7 +62,7 @@ template <typename NumberType>
     std::reverse(digits.begin(), digits.end());
     if (digits.size() <= 2)
     {
-        return { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
+        return {ParameterMode::Position, ParameterMode::Position, ParameterMode::Position};
     }
     else if (digits.size() == 3)
     {
@@ -71,7 +74,7 @@ template <typename NumberType>
             parameterMode = ParameterMode::Immediate;
         }
 
-        return { parameterMode, ParameterMode::Position, ParameterMode::Position };
+        return {parameterMode, ParameterMode::Position, ParameterMode::Position};
     }
     else if (digits.size() == 4)
     {
@@ -90,7 +93,7 @@ template <typename NumberType>
             parameterMode2 = ParameterMode::Immediate;
         }
 
-        return { parameterMode1, parameterMode2, ParameterMode::Position };
+        return {parameterMode1, parameterMode2, ParameterMode::Position};
     }
     else if (digits.size() == 5)
     {
@@ -116,11 +119,13 @@ template <typename NumberType>
             parameterMode3 = ParameterMode::Immediate;
         }
 
-        return { parameterMode1, parameterMode2, parameterMode3 };
+        return {parameterMode1, parameterMode2, parameterMode3};
     }
     else
     {
         // We should never reach this else statement.
         throw std::runtime_error("Invalid number");
     }
+}
+
 }

@@ -1,6 +1,8 @@
 #include "catch2.hpp"
 #include "OpCodeProcessor.h"
 
+using namespace InstructionProcessor;
+
 TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is missing), input shall not be processed)", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =

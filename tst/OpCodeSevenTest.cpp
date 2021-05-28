@@ -2,6 +2,8 @@
 #include "OpCodeProcessor.h"
 #include <algorithm>
 
+using namespace InstructionProcessor;
+
 TEST_CASE("OpCodeSeven - Single element, input shall not be processed", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =

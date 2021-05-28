@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <cstdint>
 
+namespace InstructionProcessor
+{
+
 using DigitType = uint8_t;
 using IndexType = std::size_t;
 using IntegerType = uint32_t;
@@ -12,7 +15,7 @@ using IntegerType = uint32_t;
 * @param digits The collection of digits.
 */
 template <typename NumberType, typename DigitsCollection>
-[[nodiscard]] inline NumberType BuildNumberFromDigits(const DigitsCollection& digits)
+[[nodiscard]] inline NumberType BuildNumberFromDigits(const DigitsCollection &digits)
 {
     if (digits.empty())
     {
@@ -27,7 +30,7 @@ template <typename NumberType, typename DigitsCollection>
     {
         if (*iterator < 0)
         {
-            result += ( (*iterator) * -1 ) * multiplier;
+            result += ((*iterator) * -1) * multiplier;
         }
         else
         {
@@ -85,9 +88,11 @@ template <typename NumberType>
 */
 template <typename IteratorType>
 [[nodiscard]] inline bool AreThereEnoughElementsIntoTheCollection(
-    const IteratorType& iteratorBegin,
-    const IteratorType& iteratorEnd,
-    IndexType numberOfElements)
+        const IteratorType &iteratorBegin,
+        const IteratorType &iteratorEnd,
+        IndexType numberOfElements)
 {
     return static_cast<IndexType>(std::distance(iteratorBegin, iteratorEnd)) >= numberOfElements;
+}
+
 }

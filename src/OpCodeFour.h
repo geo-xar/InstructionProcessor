@@ -3,6 +3,9 @@
 #include "OpCodeInterface.h"
 #include "OpCodeProcessorUtils.h"
 
+namespace InstructionProcessor
+{
+
 /**
 * @class OpCodeFour specialisation.
 * Claim a number and store it in the printed output collection.
@@ -18,12 +21,10 @@ public:
     * @param printedOutput Collection of values to be printed out.
     */
     OpCodeFour(
-        GetElementAtFunctionType& getElementAt,
-        const ParameterModeVector& parameterModes,
-        std::vector<InputType>& printedOutput)
-    : _getElementAt{getElementAt}
-    , _parameterModes{parameterModes}
-    , _printedOutput{printedOutput}
+            GetElementAtFunctionType &getElementAt,
+            const ParameterModeVector &parameterModes,
+            std::vector<InputType> &printedOutput)
+            : _getElementAt{getElementAt}, _parameterModes{parameterModes}, _printedOutput{printedOutput}
     {}
 
     ~OpCodeFour() final = default;
@@ -31,16 +32,16 @@ public:
     /**
     * Claim a number and store it in the printed output collection.
     */
-    [[nodiscard]] OpCode::ReturnType Execute(std::any& nextElementIter, std::any& endIter) final
+    [[nodiscard]] OpCode::ReturnType Execute(std::any &nextElementIter, std::any &endIter) final
     {
-        IteratorType& iterBegin = std::any_cast<IteratorType&>(nextElementIter);
-        IteratorType& iterEnd = std::any_cast<IteratorType&>(endIter);
+        IteratorType &iterBegin = std::any_cast<IteratorType &>(nextElementIter);
+        IteratorType &iterEnd = std::any_cast<IteratorType &>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
         // A single number is needed to be stored in the printed output collection.
         if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, 1))
         {
-            return { std::nullopt, {} };
+            return {std::nullopt, {}};
         }
 
         InputType number;
@@ -48,7 +49,7 @@ public:
         {
             number = *iterBegin;
         }
-        // ParameterMode::Position
+            // ParameterMode::Position
         else
         {
             number = _getElementAt(iterBegin);
@@ -61,11 +62,13 @@ public:
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
-        return { std::make_optional<Result>(), {iterBegin} };
+        return {std::make_optional<Result>(), {iterBegin}};
     };
 
 private:
-    GetElementAtFunctionType& _getElementAt;
-    const ParameterModeVector& _parameterModes;
-    std::vector<InputType>& _printedOutput;
+    GetElementAtFunctionType &_getElementAt;
+    const ParameterModeVector &_parameterModes;
+    std::vector<InputType> &_printedOutput;
 };
+
+}

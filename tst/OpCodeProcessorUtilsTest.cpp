@@ -1,6 +1,8 @@
 #include "catch2.hpp"
 #include "OpCodeProcessorUtils.h"
 
+using namespace InstructionProcessor;
+
 TEST_CASE("Get OpCode from number test", "[OpCodeProcessor]")
 {
     uint16_t number = 1;

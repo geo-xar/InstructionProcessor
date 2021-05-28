@@ -5,6 +5,9 @@
 #include <any>
 #include <optional>
 
+namespace InstructionProcessor
+{
+
 /**
 * @class The Result class will be used for future error handling.
 */
@@ -28,5 +31,7 @@ public:
     * @param endIter The iterator pointing to the end of the integer collection.
     * If the return optional is equal to std::nullopt then the execution was not successful.
     */
-    virtual ReturnType Execute(std::any& nextElementIter, std::any& endIter) = 0;
+    virtual ReturnType Execute(std::any &nextElementIter, std::any &endIter) = 0;
 };
+
+}
