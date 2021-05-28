@@ -7,7 +7,7 @@
 * @class OpCodeOne specialisation.
 * Accumulate 2 numbers.
 */
-template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
+template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 class OpCodeOne final : public OpCode
 {
 static constexpr IndexType NumberOfParametersToClaim = 2;
@@ -46,7 +46,7 @@ public:
         }
 
         // Claim the numbers to be accumulated based on the parameter modes.
-        std::vector<T> claimedAccumulationNumbers;
+        std::vector<InputType> claimedAccumulationNumbers;
         for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
             if (_parameterModes[i] == ParameterMode::Immediate)
@@ -61,7 +61,7 @@ public:
             iterBegin++;
         }
 
-        // Claim the index to store the accumulation result.
+        // Store the accumulation result.
         _setElementAtIndex(*iterBegin, claimedAccumulationNumbers[0] + claimedAccumulationNumbers[1]);
 
         // Jump to the next number (if any).

@@ -20,8 +20,12 @@
 #include <memory>
 #include <functional>
 
+template <typename InputType>
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
+using Vector = std::vector<InputType>;
+using ResultType = std::tuple<Vector, Vector>;
+
 public:
     /**
     * Process OpCodes and update the input values.
@@ -44,18 +48,14 @@ public:
     *
     * @return Modified input collection and printed output.
     */
-    template <typename T>
-    [[nodiscard]] std::tuple<std::vector<T>, std::vector<T>> ProcessInstructions(
-        const std::vector<T>& inputCollection,
-        std::optional<T> userSelection = std::nullopt)
+    [[nodiscard]] ResultType ProcessInstructions(
+        const Vector& inputCollection, std::optional<InputType> userSelection = std::nullopt)
     {
         // There is no reason doing any kind of calculations if the input collection is empty.
         if (!inputCollection.size())
         {
             return { {}, {} };
         }
-
-        using Vector = std::vector<T>;
 
         // Copy the input collection to a local variable.
         Vector input;
@@ -70,16 +70,16 @@ public:
         IteratorType iterator = input.begin();
 
         // Function to set the element to the collection given an index
-        using SetElementAtIndexFunction = std::function<void(IndexType index, T element)>;
+        using SetElementAtIndexFunction = std::function<void(IndexType index, InputType element)>;
         SetElementAtIndexFunction SetElementAtIndex =
-        [&input](IndexType index, T element) mutable
+        [&input](IndexType index, InputType element) mutable
         {
             assert( (index >= 0) && (index < input.size()) );
             input[index] = element;
         };
 
         // Function to get an element from the collection given an iterator by using the iterator value as index
-        using GetElementAtFunction = std::function<T(IteratorType& iterator)>;
+        using GetElementAtFunction = std::function<InputType(IteratorType& iterator)>;
         GetElementAtFunction GetElementAt =
         [&input](IteratorType& iterator)
         {
@@ -89,9 +89,9 @@ public:
         };
 
         // Function to get an iterator from the beginning of the collection plus given offset
-        using GetIterFromBeginPlusOffsetFunction = std::function<IteratorType(T offset)>;
+        using GetIterFromBeginPlusOffsetFunction = std::function<IteratorType(InputType offset)>;
         GetIterFromBeginPlusOffsetFunction GetIterFromBeginPlusOffset =
-        [&input](T offset)
+        [&input](InputType offset)
         {
             assert(!input.empty());
             auto offsetCasted = static_cast<IndexType>(offset);
@@ -120,7 +120,7 @@ public:
             case 1:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeOne<T, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                    std::make_unique< OpCodeOne<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
                             (SetElementAtIndex, GetElementAt, parameterModes) ) );
                 break;
             }
@@ -128,7 +128,7 @@ public:
             case 2:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeTwo<T, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                    std::make_unique< OpCodeTwo<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
                             (SetElementAtIndex, GetElementAt, parameterModes) ) );
                 break;
             }
@@ -136,7 +136,7 @@ public:
             case 3:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeThree<T, IteratorType, SetElementAtIndexFunction> >
+                    std::make_unique< OpCodeThree<InputType, IteratorType, SetElementAtIndexFunction> >
                             (SetElementAtIndex, userSelection) ) );
                 break;
             }
@@ -144,7 +144,7 @@ public:
             case 4:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeFour<T, IteratorType, GetElementAtFunction> >
+                    std::make_unique< OpCodeFour<InputType, IteratorType, GetElementAtFunction> >
                             (GetElementAt, parameterModes, printedOutput) ) );
                 break;
             }
@@ -152,7 +152,7 @@ public:
             case 5:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique<OpCodeFive<T, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
+                    std::make_unique<OpCodeFive<InputType, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
                             (GetElementAt, GetIterFromBeginPlusOffset, parameterModes) ) );
                 break;
             }
@@ -160,7 +160,7 @@ public:
             case 6:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeSix<T, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
+                    std::make_unique< OpCodeSix<InputType, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
                             (GetElementAt, GetIterFromBeginPlusOffset, parameterModes) ) );
                 break;
             }
@@ -168,7 +168,7 @@ public:
             case 7:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeSeven<T, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                    std::make_unique< OpCodeSeven<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
                             (SetElementAtIndex, GetElementAt, parameterModes) ) );
                 break;
             }
@@ -176,14 +176,14 @@ public:
             case 8:
             {
                 pendingInstructions.emplace_back( std::move(
-                    std::make_unique< OpCodeEight<T, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                    std::make_unique< OpCodeEight<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
                             (SetElementAtIndex, GetElementAt, parameterModes) ) );
                 break;
             }
 
             case 99:
             {
-                pendingInstructions.emplace_back( std::move( std::make_unique<OpCodeNinetyNine<T>>() ) );
+                pendingInstructions.emplace_back( std::make_unique<OpCodeNinetyNine>() );
                 break;
             }
 

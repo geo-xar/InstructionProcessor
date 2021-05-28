@@ -8,7 +8,7 @@
 * If the first parameter is zero then set the instruction pointer to the value from the second parameter.
 * Otherwise do nothing.
 */
-template <typename T, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromBeginPlusOffsetFunctionType>
+template <typename InputType, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromBeginPlusOffsetFunctionType>
 class OpCodeSix final : public OpCode
 {
 public:
@@ -45,7 +45,7 @@ public:
         }
 
         // Claim the first parameter based on parameter mode.
-        T option;
+        InputType option;
         if (_parameterModes[0] == ParameterMode::Immediate)
         {
             option = *iterBegin;
@@ -68,7 +68,7 @@ public:
         }
 
         // Move the instruction pointer to the index pointed by the second number.
-        T number;
+        InputType number;
         if (_parameterModes[1] == ParameterMode::Immediate)
         {
             number = *iterBegin;

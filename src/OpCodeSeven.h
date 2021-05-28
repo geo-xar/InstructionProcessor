@@ -8,7 +8,7 @@
 * If the first parameter is less than the second parameter then
 * store 1 in the position given by the third parameter, otherwise store 0.
 */
-template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
+template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 class OpCodeSeven final : public OpCode
 {
 static constexpr IndexType NumberOfParametersToClaim = 2;
@@ -48,7 +48,7 @@ public:
         }
 
         // Claim the numbers to be compared based on the parameter modes.
-        std::vector<T> claimedComparisonNumbers;
+        std::vector<InputType> claimedComparisonNumbers;
         for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
             if (_parameterModes[i] == ParameterMode::Immediate)

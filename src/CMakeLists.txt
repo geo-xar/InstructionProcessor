@@ -7,7 +7,6 @@ target_sources(InstructionProcessor INTERFACE
     NonCopyable.h
     NonMovable.h
     Utils.h
-    OpCodeProcessorUtils.h
     OpCodeInterface.h
     OpCodeOne.h
     OpCodeTwo.h
@@ -19,4 +18,5 @@ target_sources(InstructionProcessor INTERFACE
     OpCodeEight.h
     OpCodeNinetyNine.h
     OpCodeProcessor.h
+    OpCodeProcessorUtils.h
 )

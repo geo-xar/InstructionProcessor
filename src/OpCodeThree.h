@@ -7,7 +7,7 @@
 * @class OpCodeThree specialisation.
 * Claim a number and store the user input value to the index which it points to.
 */
-template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType>
+template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType>
 class OpCodeThree final : public OpCode
 {
 public:
@@ -16,7 +16,7 @@ public:
     * @param setElementAtIndex Function to store an element to the given index.
     * @param userInput User selection optional.
     */
-    OpCodeThree(SetElementAtIndexFunctionType& setElementAtIndex, const std::optional<T>& userInput)
+    OpCodeThree(SetElementAtIndexFunctionType& setElementAtIndex, const std::optional<InputType>& userInput)
     : _setElementAtIndex{setElementAtIndex}
     , _userInput{userInput}
     {}
@@ -38,7 +38,7 @@ public:
             return { std::nullopt, {} };
         }
 
-        // Claim the index to store the user input value.
+        // Store the user input value.
         assert(_userInput.has_value());
         _setElementAtIndex(*iterBegin, _userInput.value());
 
@@ -52,5 +52,5 @@ public:
 
 private:
     SetElementAtIndexFunctionType& _setElementAtIndex;
-    const std::optional<T>& _userInput;
+    const std::optional<InputType>& _userInput;
 };

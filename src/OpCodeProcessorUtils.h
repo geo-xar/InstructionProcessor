@@ -37,7 +37,7 @@ template <typename NumberType>
     }
 }
 
-inline void ValidateParameterMode(const uint8_t digit)
+inline void ValidateParameterMode(const DigitType digit)
 {
     if (digit != 0 && digit != 1)
     {

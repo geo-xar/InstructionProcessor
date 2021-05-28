@@ -7,7 +7,7 @@
 * @class OpCodeTwo specialisation.
 * Multiply 2 numbers.
 */
-template <typename T, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
+template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 class OpCodeTwo final : public OpCode
 {
 static constexpr IndexType NumberOfParametersToClaim = 2;
@@ -46,7 +46,7 @@ public:
         }
 
         // Claim the numbers to be multiplied based on the parameter modes.
-        std::vector<T> claimedMultiplyNumbers;
+        std::vector<InputType> claimedMultiplyNumbers;
         for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
         {
             if (_parameterModes[i] == ParameterMode::Immediate)
@@ -61,7 +61,7 @@ public:
             iterBegin++;
         }
 
-        // Claim the index to store the multiplication result.
+        // Store the multiplication result.
         _setElementAtIndex(*iterBegin, claimedMultiplyNumbers[0] * claimedMultiplyNumbers[1]);
 
         // Jump to the next number (if any).

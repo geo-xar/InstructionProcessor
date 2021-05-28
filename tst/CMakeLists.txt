@@ -3,17 +3,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(
     InstructionProcessorTest
-    OpCodeEightTest.cpp
-    OpCodeFiveTest.cpp
     OpCodeOneTest.cpp
+    OpCodeTwoTest.cpp
+    OpCodeThreeTest.cpp
+    OpCodeFourTest.cpp
+    OpCodeFiveTest.cpp
+    OpCodeSixTest.cpp
+    OpCodeSevenTest.cpp
+    OpCodeEightTest.cpp
     OpCodeProcessorTest.cpp
     OpCodeProcessorUtilsTest.cpp
-    OpCodeSevenTest.cpp
-    OpCodeSixTest.cpp
-    OpCodeThreeTest.cpp
-    OpCodeTwoTest.cpp
     UtilsTest.cpp
-    OpCodeFourTest.cpp
 )
 
 target_include_directories(

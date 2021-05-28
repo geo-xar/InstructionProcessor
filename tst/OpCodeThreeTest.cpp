@@ -8,8 +8,8 @@ TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is 
         3
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input);
+    OpCodeProcessor<uint8_t> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     CHECK(modifiedInput == input);
 }
 
@@ -20,8 +20,8 @@ TEST_CASE("OpCodeThree - Single element, input shall not be processed", "[OpCode
         3
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input, 5);
+    OpCodeProcessor<uint8_t> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 5);
     CHECK(modifiedInput == input);
 }
 
@@ -32,8 +32,8 @@ TEST_CASE("OpCodeThree - Two elements", "[OpCodeProcessor]")
         3,0
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<int>(input, -5);
+    OpCodeProcessor<int> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, -5);
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == -5);
 }

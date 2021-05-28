@@ -9,8 +9,8 @@ TEST_CASE("OpCodeSeven - Single element, input shall not be processed", "[OpCode
         7
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input);
+    OpCodeProcessor<uint8_t> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -22,8 +22,8 @@ TEST_CASE("OpCodeSeven - 2 elements, input shall not be processed", "[OpCodeProc
         7,1
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input);
+    OpCodeProcessor<uint8_t> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -35,8 +35,8 @@ TEST_CASE("OpCodeSeven - 3 elements, input shall not be processed", "[OpCodeProc
         7,1,2
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<uint8_t>(input);
+    OpCodeProcessor<uint8_t> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -48,8 +48,8 @@ TEST_CASE("OpCodeSeven - First parameter < second parameter, store 1 in the posi
         7,1,2,3
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<int>(input);
+    OpCodeProcessor<int> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput[3] == 1);
 }
@@ -61,8 +61,8 @@ TEST_CASE("OpCodeSeven - First parameter > second parameter, store 0 in the posi
         1107,2,1,3
     };
 
-    OpCodeProcessor opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions<int>(input);
+    OpCodeProcessor<int> opCodeProcessor;
+    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput[3] == 0);
 }

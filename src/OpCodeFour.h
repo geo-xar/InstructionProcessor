@@ -7,7 +7,7 @@
 * @class OpCodeFour specialisation.
 * Claim a number and store it in the printed output collection.
 */
-template <typename T, typename IteratorType, typename GetElementAtFunctionType>
+template <typename InputType, typename IteratorType, typename GetElementAtFunctionType>
 class OpCodeFour final : public OpCode
 {
 public:
@@ -20,7 +20,7 @@ public:
     OpCodeFour(
         GetElementAtFunctionType& getElementAt,
         const ParameterModeVector& parameterModes,
-        std::vector<T>& printedOutput)
+        std::vector<InputType>& printedOutput)
     : _getElementAt{getElementAt}
     , _parameterModes{parameterModes}
     , _printedOutput{printedOutput}
@@ -43,7 +43,7 @@ public:
             return { std::nullopt, {} };
         }
 
-        T number;
+        InputType number;
         if (_parameterModes[0] == ParameterMode::Immediate)
         {
             number = *iterBegin;
@@ -67,5 +67,5 @@ public:
 private:
     GetElementAtFunctionType& _getElementAt;
     const ParameterModeVector& _parameterModes;
-    std::vector<T>& _printedOutput;
+    std::vector<InputType>& _printedOutput;
 };
