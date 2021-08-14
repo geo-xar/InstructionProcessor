@@ -1,19 +1,45 @@
 import sys
-import os
+from os import chdir
 from os import path
+from os import system
+import argparse
+
+class CmdLineArgParser:
+
+    def is_valid_configuration(self, configuration):
+
+        config = str(configuration).lower()
+
+        if config == 'release' or config == 'debug':
+
+            return config[0].upper() + config[1:]
+
+        else:
+
+            raise argparse.ArgumentTypeError(f"Invalid configuration: {configuration}")
+
+
+    def parse(self):
+
+        self.parser = argparse.ArgumentParser(description='Command Line Argument Parser')
+
+        self.parser.add_argument('--configuration', type=self.is_valid_configuration, required=False, default='Debug', help='Build configuration i.e. Debug or Release')
+
+        self.args = self.parser.parse_args()
+
+
+    def get_config(self):
+
+        return self.args.configuration
 
 
 def main():
 
-    configuration = "Debug"
+    cmdLineArgParser = CmdLineArgParser()
 
-    if len(sys.argv) > 1:
+    cmdLineArgParser.parse()
 
-        if sys.argv[1] == "Release":
-
-            configuration = "Release"
-
-    directory = "Build" + configuration
+    directory = "Build" + cmdLineArgParser.get_config()
 
     if path.exists(directory):
 
@@ -21,25 +47,25 @@ def main():
 
         if user_input.lower() == "y" or user_input.lower() == "yes":
 
-            os.system('rm -rf {0}'.format(directory))
+            system('rm -rf {0}'.format(directory))
 
         else:
 
             sys.exit("The {0} directory will remain intact.\n".format(directory))
 
-    os.system('mkdir {0}'.format(directory))
+    system('mkdir {0}'.format(directory))
 
-    os.chdir('{0}'.format(directory))
+    chdir('{0}'.format(directory))
 
     code_coverage = "ON"
 
-    if configuration == "Release":
+    if cmdLineArgParser.get_config() == "Release":
 
         code_coverage = "OFF"
 
-    os.system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(configuration, code_coverage))
+    system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
 
-    os.system('make -j4')
+    system('make -j4')
 
 
 if __name__ == "__main__":
