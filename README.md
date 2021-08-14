@@ -8,7 +8,7 @@ Instruction processor implementation described in https://adventofcode.com/2019
  - [X] Move tests to test directory.
  - [X] Input collection type erasure. Introduce functions to get and set unique elements.
  - [X] Add namespaces to both source and test code.
- - [ ] Download catch test framework as an external resource.
+ - [X] Download catch test framework as an external resource.
  - [ ] Error handling during code coverage generation.
  - [ ] Extend implementation to meet newer requirements.
 
