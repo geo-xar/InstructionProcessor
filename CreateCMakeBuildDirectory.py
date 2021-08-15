@@ -25,12 +25,19 @@ class CmdLineArgParser:
 
         self.parser.add_argument('--configuration', type=self.is_valid_configuration, required=False, default='Debug', help='Build configuration i.e. Debug or Release')
 
+        self.parser.add_argument('--compiler', type=str, required=False, default='GCC', help='Default compiler in Linux is GCC and in Windows is MSVC. Please specify your desired compiler i.e. Clang')
+
         self.args = self.parser.parse_args()
 
 
     def get_config(self):
 
         return self.args.configuration
+
+
+    def get_compiler(self):
+
+        return self.args.compiler
 
 
 def main():
@@ -77,7 +84,13 @@ def main():
 
             code_coverage = "OFF"
 
-        system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
+        if cmdLineArgParser.get_compiler().lower() == 'clang':
+
+            system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1} -DCMAKE_CXX_COMPILER={2}'.format(cmdLineArgParser.get_config(), code_coverage, 'clang++'))
+
+        else:
+
+            system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
 
     system('make -j4')
 

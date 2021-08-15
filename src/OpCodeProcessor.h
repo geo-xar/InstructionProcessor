@@ -19,6 +19,7 @@
 #include <deque>
 #include <memory>
 #include <functional>
+#include <sstream>
 
 namespace InstructionProcessor
 {
@@ -194,7 +195,9 @@ public:
                 default:
                 {
                     // We should never reach this point.
-                    throw std::runtime_error("Non-supported OpCode: " + opCode);
+                    std::ostringstream oss;
+                    oss << "Non-supported OpCode:" << opCode;
+                    throw std::runtime_error(oss.str());
                 }
 
             } // end of switch(OpCode)
