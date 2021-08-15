@@ -39,31 +39,45 @@ def main():
 
     cmdLineArgParser.parse()
 
-    directory = "Build" + cmdLineArgParser.get_config()
+    build_directory = "Build" + cmdLineArgParser.get_config()
 
-    if path.exists(directory):
+    build_directory_exists = False
 
-        user_input = input("The {0} directory already exists. Do you want to delete it or not, please? (y/n)\n".format(directory))
+    if path.exists(build_directory):
 
-        if user_input.lower() == "y" or user_input.lower() == "yes":
+        user_input = input("The {0} directory already exists. Do you wish to:\n1.Build the already existing project\n2.Delete it and build from scratch\n3.Do nothing\nPlease choose between 1, 2 and 3\n".format(build_directory))
 
-            system('rm -rf {0}'.format(directory))
+        while not (user_input == "1" or user_input == "2" or user_input == "3"):
+
+            user_input = input("The {0} directory already exists. Do you wish to:\n1.Build the already existing project\n2.Delete it and build from scratch\n3.Do nothing\nPlease choose between 1, 2 and 3\n".format(build_directory))
+
+        if user_input == "1":
+
+            build_directory_exists = True
+
+        elif user_input == "2":
+
+            system('rm -rf {0}'.format(build_directory))
 
         else:
 
-            sys.exit("The {0} directory will remain intact.\n".format(directory))
+            sys.exit("The {0} directory will remain intact.\n".format(build_directory))
 
-    system('mkdir {0}'.format(directory))
+    if not build_directory_exists:
 
-    chdir('{0}'.format(directory))
+        system('mkdir {0}'.format(build_directory))
 
-    code_coverage = "ON"
+    chdir('{0}'.format(build_directory))
 
-    if cmdLineArgParser.get_config() == "Release":
+    if not build_directory_exists:
 
-        code_coverage = "OFF"
+        code_coverage = "ON"
 
-    system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
+        if cmdLineArgParser.get_config() == "Release":
+
+            code_coverage = "OFF"
+
+        system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
 
     system('make -j4')
 
