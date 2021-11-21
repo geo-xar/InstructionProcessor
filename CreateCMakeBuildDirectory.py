@@ -1,7 +1,8 @@
-import sys
 from os import chdir
 from os import path
 from os import system
+from sys import exit
+from sys import platform
 import argparse
 
 class CmdLineArgParser:
@@ -64,7 +65,13 @@ def main():
 
         elif user_input == "2":
 
-            system('rm -rf {0}'.format(build_directory))
+            if platform == "linux" or platform == "linux2":
+
+                system('rm -rf {0}'.format(build_directory))
+
+            elif platform == "win32":
+
+                system('rmdir /s /q {0}'.format(build_directory))
 
         else:
 
@@ -92,7 +99,9 @@ def main():
 
             system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
 
-    system('make -j4')
+    if platform == "linux" or platform == "linux2":
+
+        system('make -j4')
 
 
 if __name__ == "__main__":
