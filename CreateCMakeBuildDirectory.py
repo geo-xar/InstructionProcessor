@@ -75,7 +75,7 @@ def main():
 
         else:
 
-            sys.exit("The {0} directory will remain intact.\n".format(build_directory))
+            exit("The {0} directory will remain intact.\n".format(build_directory))
 
     if not build_directory_exists:
 
