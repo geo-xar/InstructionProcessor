@@ -93,11 +93,23 @@ def main():
 
         if cmdLineArgParser.get_compiler().lower() == 'clang':
 
-            system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1} -DCMAKE_CXX_COMPILER={2}'.format(cmdLineArgParser.get_config(), code_coverage, 'clang++'))
+            if platform == "linux" or platform == "linux2":
+
+                system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1} -DCMAKE_CXX_COMPILER={2}'.format(cmdLineArgParser.get_config(), code_coverage, 'clang++'))
+
+            elif platform == "win32":
+
+                system('cmake ../ -T ClangCL -A x64')
 
         else:
 
-            system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
+            if platform == "linux" or platform == "linux2":
+
+                system('cmake ../ -DCMAKE_BUILD_TYPE={0} -DCODE_COVERAGE={1}'.format(cmdLineArgParser.get_config(), code_coverage))
+
+            elif platform == "win32":
+
+                system('cmake ../ -A x64')
 
     if platform == "linux" or platform == "linux2":
 
