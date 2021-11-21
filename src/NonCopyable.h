@@ -4,7 +4,7 @@ namespace InstructionProcessor
 {
 
 /**
- * @interface NonCopyable interface.
+ * NonCopyable class.
  * Derive from this to make your class non-copyable.
  */
 class NonCopyable

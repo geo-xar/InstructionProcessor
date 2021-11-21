@@ -86,11 +86,11 @@ public:
         // Function to get an element from the collection given an iterator by using the iterator value as index
         using GetElementAtFunction = std::function<InputType(IteratorType &iterator)>;
         GetElementAtFunction GetElementAt =
-                [&input](IteratorType &iterator)
+                [&input](IteratorType &it)
                 {
-                    assert(*iterator >= 0);
-                    assert(static_cast<IndexType>(*iterator) < input.size());
-                    return input[*iterator];
+                    assert(*it >= 0);
+                    assert(static_cast<IndexType>(*it) < input.size());
+                    return input[*it];
                 };
 
         // Function to get an iterator from the beginning of the collection plus given offset

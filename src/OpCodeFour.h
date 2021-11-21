@@ -63,7 +63,7 @@ public:
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
         return {std::make_optional<Result>(), {iterBegin}};
-    };
+    }
 
 private:
     GetElementAtFunctionType &_getElementAt;

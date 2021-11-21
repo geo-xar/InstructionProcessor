@@ -18,7 +18,7 @@ public:
 };
 
 /**
-* @intereface The OpCode interface which is implemented by different OpCode specialisations.
+* The OpCode interface which is implemented by different OpCode specialisations.
 */
 class OpCode : public NonCopyable, NonMovable
 {

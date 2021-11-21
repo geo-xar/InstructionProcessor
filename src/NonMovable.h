@@ -4,7 +4,7 @@ namespace InstructionProcessor
 {
 
 /**
- * @interface NonMovable interface.
+ * NonMovable class.
  * Derive from this to make your class non-movable.
  */
 class NonMovable

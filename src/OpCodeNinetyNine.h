@@ -21,7 +21,7 @@ public:
     Execute([[maybe_unused]]std::any &nextElementIter, [[maybe_unused]]std::any &endIter) final
     {
         return {std::nullopt, {}};
-    };
+    }
 };
 
 }

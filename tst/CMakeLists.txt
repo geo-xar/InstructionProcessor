@@ -6,7 +6,7 @@ Include(FetchContent)
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.0.0-preview3
+  GIT_TAG        de6fe184a9ac1a06895cdd1c9b437f0a0bdf14ad # v2.13.4
 )
 
 FetchContent_MakeAvailable(Catch2)
@@ -38,9 +38,3 @@ target_link_libraries(
         InstructionProcessor
         Catch2::Catch2WithMain
 )
-
-#list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)
-
-#include(CTest)
-#include(Catch)
-#catch_discover_tests(InstructionProcessorTest)
