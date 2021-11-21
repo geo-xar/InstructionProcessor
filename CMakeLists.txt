@@ -29,6 +29,11 @@ ENDIF()
 # We don't worry about backward-compat with C++98.
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
 
+IF (WIN32)
+  # Exceptions shall be enabled.
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHa")
+ENDIF()
+
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 

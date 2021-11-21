@@ -75,12 +75,12 @@ public:
         IteratorType iterator = input.begin();
 
         // Function to set the element to the collection given an index
-        using SetElementAtIndexFunction = std::function<void(IndexType index, InputType element)>;
+        using SetElementAtIndexFunction = std::function<void(InputType index, InputType element)>;
         SetElementAtIndexFunction SetElementAtIndex =
-                [&input](IndexType index, InputType element) mutable
+                [&input](InputType index, InputType element) mutable
                 {
-                    assert((index >= 0) && (index < input.size()));
-                    input[index] = element;
+                    assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
+                    input[static_cast<IndexType>(index)] = element;
                 };
 
         // Function to get an element from the collection given an iterator by using the iterator value as index
@@ -90,7 +90,7 @@ public:
                 {
                     assert(*it >= 0);
                     assert(static_cast<IndexType>(*it) < input.size());
-                    return input[*it];
+                    return input[static_cast<IndexType>(*it)];
                 };
 
         // Function to get an iterator from the beginning of the collection plus given offset
@@ -99,10 +99,11 @@ public:
                 [&input](InputType offset)
                 {
                     assert(!input.empty());
-                    auto offsetCasted = static_cast<IndexType>(offset);
-                    assert(offsetCasted >= 0);
-                    assert(offsetCasted < input.size());
-                    return input.begin() + offsetCasted;
+                    assert(offset >= 0);
+                    assert(static_cast<IndexType>(offset) < input.size());
+                    auto iter = input.begin();
+                    std::advance(iter, static_cast<IndexType>(offset));
+                    return iter;
                 };
 
         // Declare an OpCode deque useful to manage the OpCode execution.

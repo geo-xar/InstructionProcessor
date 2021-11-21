@@ -23,14 +23,14 @@ template <typename NumberType, typename DigitsCollection>
     }
 
     NumberType result = 0;
-    IntegerType multiplier = 1;
+    NumberType multiplier = 1;
 
     auto iterator = digits.end() - 1;
     while (true)
     {
         if (*iterator < 0)
         {
-            result += ((*iterator) * -1) * multiplier;
+            result += (static_cast<NumberType>(*iterator) * -1) * multiplier;
         }
         else
         {
@@ -58,9 +58,12 @@ template <typename NumberType>
 [[nodiscard]] inline std::vector<DigitType> GetDigitsFromNumber(NumberType number)
 {
     // If negative number then make it positive.
-    if (number < 0)
+    if constexpr(std::is_signed_v<NumberType>)
     {
-        number *= -1;
+        if (number < 0)
+        {
+            number *= -1;
+        }
     }
 
     // If 0 then return 0.
