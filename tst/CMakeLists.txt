@@ -6,7 +6,7 @@ Include(FetchContent)
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        de6fe184a9ac1a06895cdd1c9b437f0a0bdf14ad # v2.13.4
+  GIT_TAG        v2.13.4
 )
 
 FetchContent_MakeAvailable(Catch2)
