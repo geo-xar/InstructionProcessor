@@ -80,7 +80,7 @@ def main():
 
     # Build code if it is requested (requested by default)
     if cmdLineArgParser.do_build():
-        buildResult = system('make -j4')
+        buildResult = system('cmake --build .')
         if (buildResult):
             exit(f"Build failed, error code: {buildResult}")
 
