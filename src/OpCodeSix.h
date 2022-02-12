@@ -11,7 +11,7 @@ namespace InstructionProcessor
 * If the first parameter is zero then set the instruction pointer to the value from the second parameter.
 * Otherwise do nothing.
 */
-template <typename InputType, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromBeginPlusOffsetFunctionType>
+template <typename InputType, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromPosPlusOffsetFunctionType>
 class OpCodeSix final : public OpCode
 {
 public:
@@ -22,11 +22,11 @@ public:
     * @param parameterModes The collection of the parameter modes.
     */
     OpCodeSix(
-            GetElementAtFunctionType &getElementAt,
-            GetIterFromBeginPlusOffsetFunctionType &getIterFromBeginPlusOffset,
-            const ParameterModeVector &parameterModes)
-            : _getElementAt{getElementAt}, _getIterFromBeginPlusOffset{getIterFromBeginPlusOffset},
-              _parameterModes{parameterModes}
+        GetElementAtFunctionType &getElementAt,
+        GetIterFromPosPlusOffsetFunctionType &getIterFromPosPlusOffset,
+        const ParameterModeVector &parameterModes)
+        : _getElementAt{getElementAt}, _getIterFromPosPlusOffset{ getIterFromPosPlusOffset },
+            _parameterModes{parameterModes}
     {}
 
     ~OpCodeSix() final = default;
@@ -86,7 +86,7 @@ public:
         }
 
         // Update instruction pointer.
-        iterBegin = _getIterFromBeginPlusOffset(number);
+        iterBegin = _getIterFromPosPlusOffset(number);
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
@@ -95,7 +95,7 @@ public:
 
 private:
     GetElementAtFunctionType &_getElementAt;
-    GetIterFromBeginPlusOffsetFunctionType &_getIterFromBeginPlusOffset;
+    GetIterFromPosPlusOffsetFunctionType &_getIterFromPosPlusOffset;
     const ParameterModeVector &_parameterModes;
 };
 

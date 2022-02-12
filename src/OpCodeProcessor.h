@@ -94,14 +94,14 @@ public:
                 };
 
         // Function to get an iterator from the beginning of the collection plus given offset
-        using GetIterFromBeginPlusOffsetFunction = std::function<IteratorType(InputType offset)>;
-        GetIterFromBeginPlusOffsetFunction GetIterFromBeginPlusOffset =
-                [&input](InputType offset)
+        auto GetIterFromPosPlusOffset =
+                [&input](InputType offset, InputType pos = 0) -> IteratorType
                 {
                     assert(!input.empty());
                     assert(offset >= 0);
-                    assert(static_cast<IndexType>(offset) < input.size());
-                    auto iter = input.begin();
+                    assert(pos >= 0);
+                    assert(static_cast<IndexType>(pos + offset) < input.size());
+                    auto iter = input.begin() + static_cast<IndexType>(pos);
                     std::advance(iter, static_cast<IndexType>(offset));
                     return iter;
                 };
@@ -158,16 +158,16 @@ public:
                 case 5:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeFive<InputType, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
-                                    (GetElementAt, GetIterFromBeginPlusOffset, parameterModes)));
+                            std::make_unique<OpCodeFive<InputType, IteratorType, GetElementAtFunction, decltype(GetIterFromPosPlusOffset)> >
+                                    (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
                     break;
                 }
 
                 case 6:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeSix<InputType, IteratorType, GetElementAtFunction, GetIterFromBeginPlusOffsetFunction> >
-                                    (GetElementAt, GetIterFromBeginPlusOffset, parameterModes)));
+                            std::make_unique<OpCodeSix<InputType, IteratorType, GetElementAtFunction, decltype(GetIterFromPosPlusOffset)> >
+                                    (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
                     break;
                 }
 
