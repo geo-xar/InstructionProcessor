@@ -75,8 +75,7 @@ public:
         IteratorType iterator = input.begin();
 
         // Function to set the element to the collection given an index
-        using SetElementAtIndexFunction = std::function<void(InputType index, InputType element)>;
-        SetElementAtIndexFunction SetElementAtIndex =
+        auto SetElementAtIndex =
                 [&input](InputType index, InputType element) mutable
                 {
                     assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
@@ -84,9 +83,8 @@ public:
                 };
 
         // Function to get an element from the collection given an iterator by using the iterator value as index
-        using GetElementAtFunction = std::function<InputType(IteratorType &iterator)>;
-        GetElementAtFunction GetElementAt =
-                [&input](IteratorType &it)
+        auto GetElementAt =
+                [&input](IteratorType &it) -> InputType
                 {
                     assert(*it >= 0);
                     assert(static_cast<IndexType>(*it) < input.size());
@@ -126,7 +124,7 @@ public:
                 case 1:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeOne<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                            std::make_unique<OpCodeOne<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
                                     (SetElementAtIndex, GetElementAt, parameterModes)));
                     break;
                 }
@@ -134,7 +132,7 @@ public:
                 case 2:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeTwo<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                            std::make_unique<OpCodeTwo<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
                                     (SetElementAtIndex, GetElementAt, parameterModes)));
                     break;
                 }
@@ -142,7 +140,7 @@ public:
                 case 3:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeThree<InputType, IteratorType, SetElementAtIndexFunction> >
+                            std::make_unique<OpCodeThree<InputType, IteratorType, decltype(SetElementAtIndex)> >
                                     (SetElementAtIndex, userSelection)));
                     break;
                 }
@@ -150,7 +148,7 @@ public:
                 case 4:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeFour<InputType, IteratorType, GetElementAtFunction> >
+                            std::make_unique<OpCodeFour<InputType, IteratorType, decltype(GetElementAt)> >
                                     (GetElementAt, parameterModes, printedOutput)));
                     break;
                 }
@@ -158,7 +156,7 @@ public:
                 case 5:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeFive<InputType, IteratorType, GetElementAtFunction, decltype(GetIterFromPosPlusOffset)> >
+                            std::make_unique<OpCodeFive<InputType, IteratorType, decltype(GetElementAt), decltype(GetIterFromPosPlusOffset)> >
                                     (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
                     break;
                 }
@@ -166,7 +164,7 @@ public:
                 case 6:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeSix<InputType, IteratorType, GetElementAtFunction, decltype(GetIterFromPosPlusOffset)> >
+                            std::make_unique<OpCodeSix<InputType, IteratorType, decltype(GetElementAt), decltype(GetIterFromPosPlusOffset)> >
                                     (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
                     break;
                 }
@@ -174,7 +172,7 @@ public:
                 case 7:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeSeven<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                            std::make_unique<OpCodeSeven<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
                                     (SetElementAtIndex, GetElementAt, parameterModes)));
                     break;
                 }
@@ -182,7 +180,7 @@ public:
                 case 8:
                 {
                     pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeEight<InputType, IteratorType, SetElementAtIndexFunction, GetElementAtFunction> >
+                            std::make_unique<OpCodeEight<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
                                     (SetElementAtIndex, GetElementAt, parameterModes)));
                     break;
                 }
