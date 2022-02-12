@@ -13,7 +13,8 @@ namespace InstructionProcessor
 enum class ParameterMode : uint8_t
 {
     Position,
-    Immediate
+    Immediate,
+    Relative
 };
 
 using ParameterModeVector = std::vector<ParameterMode>;

@@ -56,10 +56,14 @@ public:
             {
                 claimedComparisonNumbers.emplace_back(*iterBegin);
             }
-                // ParameterMode::Position
-            else
+            else if (_parameterModes[i] == ParameterMode::Position)
             {
                 claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin));
+            }
+            // ParameterMode::Relative
+            else
+            {
+
             }
             iterBegin++;
         }

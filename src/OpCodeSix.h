@@ -52,10 +52,14 @@ public:
         {
             option = *iterBegin;
         }
-            // ParameterMode::Position
-        else
+        else if (_parameterModes[0] == ParameterMode::Position)
         {
             option = _getElementAt(iterBegin);
+        }
+        // ParameterMode::Relative
+        else
+        {
+
         }
 
         // Jump to the next number.

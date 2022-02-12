@@ -49,10 +49,14 @@ public:
         {
             number = *iterBegin;
         }
-            // ParameterMode::Position
-        else
+        else if (_parameterModes[0] == ParameterMode::Position)
         {
             number = _getElementAt(iterBegin);
+        }
+        // ParameterMode::Relative
+        else
+        {
+
         }
 
         _printedOutput.emplace_back(number);

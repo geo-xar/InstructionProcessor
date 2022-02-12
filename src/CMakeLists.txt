@@ -16,6 +16,7 @@ target_sources(InstructionProcessor INTERFACE
     OpCodeSix.h
     OpCodeSeven.h
     OpCodeEight.h
+    OpCodeNine.h
     OpCodeNinetyNine.h
     OpCodeProcessor.h
     OpCodeProcessorUtils.h

@@ -7,13 +7,13 @@ namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeTwo specialisation.
-* Multiply 2 numbers.
+* @class OpCodeNine specialisation.
+* It adjusts the relative base by the value of its only parameter.
 */
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
-class OpCodeTwo final : public OpCode
+class OpCodeNine final : public OpCode
 {
-    static constexpr IndexType NumberOfParametersToClaim = 2;
+    static constexpr IndexType NumberOfParametersToClaim = 1;
 
 public:
     /**
@@ -22,17 +22,17 @@ public:
     * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeTwo(
+    OpCodeNine(
             SetElementAtIndexFunctionType &setElementAtIndex,
             GetElementAtFunctionType &getElementAt,
             const ParameterModeVector &parameterModes)
             : _setElementAtIndex{setElementAtIndex}, _getElementAt{getElementAt}, _parameterModes{parameterModes}
     {}
 
-    ~OpCodeTwo() final = default;
+    ~OpCodeNine() final = default;
 
     /**
-    * Multiply 2 numbers and store the result in the index pointed by the third number.
+    * It adjusts the relative base by the value of its only parameter.
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any &nextElementIter, std::any &endIter) final
     {
@@ -40,36 +40,27 @@ public:
         IteratorType &iterEnd = std::any_cast<IteratorType &>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
-        // Numbers to be claimed are 2 for the accumulation and 1 for the index to store the result.
+        // 1 number to be claimed.
         if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, NumberOfParametersToClaim + 1))
         {
             return {std::nullopt, {}};
         }
 
-        // Claim the numbers to be multiplied based on the parameter modes.
-        std::vector<InputType> claimedMultiplyNumbers;
-        for (IndexType i = 0; i < NumberOfParametersToClaim; i++)
+        InputType number;
+        if (_parameterModes[i] == ParameterMode::Immediate)
         {
-            if (_parameterModes[i] == ParameterMode::Immediate)
-            {
-                claimedMultiplyNumbers.emplace_back(*iterBegin);
-            }
-            else if (_parameterModes[i] == ParameterMode::Position)
-            {
-                claimedMultiplyNumbers.emplace_back(_getElementAt(iterBegin));
-            }
-            // ParameterMode::Relative
-            else
-            {
-
-            }
-            iterBegin++;
+            number = *iterBegin;
+        }
+        else if (_parameterModes[i] == ParameterMode::Position)
+        {
+            number = _getElementAt(iterBegin);
+        }
+        // ParameterMode::Relative
+        else
+        {
+            
         }
 
-        // Store the multiplication result.
-        _setElementAtIndex(*iterBegin, claimedMultiplyNumbers[0] * claimedMultiplyNumbers[1]);
-
-        // Jump to the next number (if any).
         iterBegin++;
 
         // What we return here it is only useful for error reporting.

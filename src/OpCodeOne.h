@@ -54,10 +54,14 @@ public:
             {
                 claimedAccumulationNumbers.emplace_back(*iterBegin);
             }
-                // ParameterMode::Position
-            else
+            else if (_parameterModes[i] == ParameterMode::Position)
             {
                 claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin));
+            }
+            // ParameterMode::Relative
+            else
+            {
+
             }
             iterBegin++;
         }
