@@ -61,7 +61,7 @@ public:
             // ParameterMode::Relative
             else
             {
-
+                claimedMultiplyNumbers.emplace_back(_getElementAt(iterBegin, {}));
             }
             iterBegin++;
         }

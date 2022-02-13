@@ -56,7 +56,7 @@ public:
         // ParameterMode::Relative
         else
         {
-
+            number = _getElementAt(iterBegin, {});
         }
 
         _printedOutput.emplace_back(number);

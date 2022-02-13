@@ -63,7 +63,7 @@ public:
             // ParameterMode::Relative
             else
             {
-
+                claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin, {}));
             }
             iterBegin++;
         }

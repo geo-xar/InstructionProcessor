@@ -61,7 +61,7 @@ public:
             // ParameterMode::Relative
             else
             {
-
+                claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin, {}));
             }
             iterBegin++;
         }

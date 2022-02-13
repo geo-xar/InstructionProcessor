@@ -11,6 +11,7 @@
 #include "OpCodeSix.h"
 #include "OpCodeSeven.h"
 #include "OpCodeEight.h"
+#include "OpCodeNine.h"
 #include "OpCodeNinetyNine.h"
 
 #include <vector>
@@ -45,6 +46,7 @@ public:
     *     Otherwise store 0.
     * 8:  If the first parameter is equal to the second parameter then store 1 in the position given by the third parameter.
     *     Otherwise store 0.
+    * 9:  It adjusts the relative base by the value of its only parameter.
     * 99: The program is finished and shall immediately halt.
     *
     * @param inputCollection Collection of numbers to be processed.
@@ -76,33 +78,54 @@ public:
 
         // Function to set the element to the collection given an index
         auto SetElementAtIndex =
-                [&input](InputType index, InputType element) mutable
-                {
-                    assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
-                    input[static_cast<IndexType>(index)] = element;
-                };
+            [&input](InputType index, InputType element) mutable -> void
+            {
+                assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
+                input[static_cast<IndexType>(index)] = element;
+            };
+
+        // Useful for ParameterMode::Relative
+        // Only modified by OpCodeNine
+        InputType relativeBase{ 0 };
 
         // Function to get an element from the collection given an iterator by using the iterator value as index
+        // It can optionally take into consideration the relative base
         auto GetElementAt =
-                [&input](IteratorType &it) -> InputType
+            [&input, &relativeBase](IteratorType &it, std::optional<void> withRelativeBase = std::nullopt) -> InputType
+            {
+                assert(*it >= 0);
+
+                if (withRelativeBase.has_value())
                 {
-                    assert(*it >= 0);
+                    assert(static_cast<IndexType>(*it + relativeBase) < input.size());
+                    return input[static_cast<IndexType>(*it + relativeBase)];
+                }
+                else
+                {
                     assert(static_cast<IndexType>(*it) < input.size());
                     return input[static_cast<IndexType>(*it)];
-                };
+                }
+            };
 
-        // Function to get an iterator from the beginning of the collection plus given offset
+        // Function to get an iterator from the given position of the collection plus given offset
         auto GetIterFromPosPlusOffset =
-                [&input](InputType offset, InputType pos = 0) -> IteratorType
-                {
-                    assert(!input.empty());
-                    assert(offset >= 0);
-                    assert(pos >= 0);
-                    assert(static_cast<IndexType>(pos + offset) < input.size());
-                    auto iter = input.begin() + static_cast<IndexType>(pos);
-                    std::advance(iter, static_cast<IndexType>(offset));
-                    return iter;
-                };
+            [&input](InputType offset, InputType pos = 0) -> IteratorType
+            {
+                assert(!input.empty());
+                assert(offset >= 0);
+                assert(pos >= 0);
+                assert(static_cast<IndexType>(pos + offset) < input.size());
+                auto iter = input.begin() + static_cast<IndexType>(pos);
+                std::advance(iter, static_cast<IndexType>(offset));
+                return iter;
+            };
+
+        // Function to update the relative base (called only by OpCodeNine)
+        auto UpdateRelativeBase =
+            [&relativeBase](InputType newRelativeBase) mutable -> void
+            {
+                relativeBase += newRelativeBase;
+            };
 
         // Declare an OpCode deque useful to manage the OpCode execution.
         using OpCodeUniquePtr = std::unique_ptr<OpCode>;
@@ -185,6 +208,14 @@ public:
                     break;
                 }
 
+                case 9:
+                {
+                    pendingInstructions.emplace_back(std::move(
+                        std::make_unique<OpCodeNine<InputType, IteratorType, decltype(GetElementAt), decltype(UpdateRelativeBase)> >
+                        (GetElementAt, UpdateRelativeBase, parameterModes)));
+                    break;
+                }
+
                 case 99:
                 {
                     pendingInstructions.emplace_back(std::make_unique<OpCodeNinetyNine>());
@@ -222,7 +253,7 @@ public:
             }
             else
             {
-                iterator = std::any_cast<IteratorType &>(result.second);
+                iterator = std::any_cast<IteratorType&>(result.second);
             }
 
             // Remove the instruction which was just executed.

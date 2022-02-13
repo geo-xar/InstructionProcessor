@@ -59,7 +59,7 @@ public:
         // ParameterMode::Relative
         else
         {
-
+            option = _getElementAt(iterBegin, {});
         }
 
         // Jump to the next number.

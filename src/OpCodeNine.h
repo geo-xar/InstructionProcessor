@@ -10,23 +10,21 @@ namespace InstructionProcessor
 * @class OpCodeNine specialisation.
 * It adjusts the relative base by the value of its only parameter.
 */
-template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
+template <typename InputType, typename IteratorType, typename GetElementAtType, typename UpdateRelativeBaseType>
 class OpCodeNine final : public OpCode
 {
-    static constexpr IndexType NumberOfParametersToClaim = 1;
-
 public:
     /**
     * Constructor
-    * @param setElementAtIndex Function to store an element to the given index.
     * @param getElementAt Function to retrieve an element given an iterator.
+    * @param updateRelativeBase Function to update relative base to the given one.
     * @param parameterModes The collection of the parameter modes.
     */
     OpCodeNine(
-            SetElementAtIndexFunctionType &setElementAtIndex,
-            GetElementAtFunctionType &getElementAt,
-            const ParameterModeVector &parameterModes)
-            : _setElementAtIndex{setElementAtIndex}, _getElementAt{getElementAt}, _parameterModes{parameterModes}
+        GetElementAtType& getElementAt,
+        UpdateRelativeBaseType& updateRelativeBase,
+        const ParameterModeVector& parameterModes)
+        : _getElementAt{ getElementAt }, _updateRelativeBase{ updateRelativeBase }, _parameterModes{ parameterModes }
     {}
 
     ~OpCodeNine() final = default;
@@ -40,27 +38,30 @@ public:
         IteratorType &iterEnd = std::any_cast<IteratorType &>(endIter);
 
         // Check if there are enough numbers to be claimed to complete the operation.
-        // 1 number to be claimed.
-        if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, NumberOfParametersToClaim + 1))
+        // A single number is needed to retrieve the relative base.
+        if (!AreThereEnoughElementsIntoTheCollection(iterBegin, iterEnd, 1))
         {
             return {std::nullopt, {}};
         }
 
-        InputType number;
-        if (_parameterModes[i] == ParameterMode::Immediate)
+        InputType newRelativeBase{0};
+        if (_parameterModes[0] == ParameterMode::Immediate)
         {
-            number = *iterBegin;
+            newRelativeBase = *iterBegin;
         }
-        else if (_parameterModes[i] == ParameterMode::Position)
+        else if (_parameterModes[0] == ParameterMode::Position)
         {
-            number = _getElementAt(iterBegin);
+            newRelativeBase = _getElementAt(iterBegin);
         }
         // ParameterMode::Relative
         else
         {
-            
+            newRelativeBase = _getElementAt(iterBegin, {});
         }
 
+        _updateRelativeBase(newRelativeBase);
+
+        // Jump to the next number (if any).
         iterBegin++;
 
         // What we return here it is only useful for error reporting.
@@ -69,9 +70,9 @@ public:
     }
 
 private:
-    SetElementAtIndexFunctionType &_setElementAtIndex;
-    GetElementAtFunctionType &_getElementAt;
-    const ParameterModeVector &_parameterModes;
+    GetElementAtType& _getElementAt;
+    UpdateRelativeBaseType& _updateRelativeBase;
+    const ParameterModeVector& _parameterModes;
 };
 
 }
