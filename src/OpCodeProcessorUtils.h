@@ -43,7 +43,7 @@ template <typename NumberType>
 
 inline void ValidateParameterMode(const DigitType digit)
 {
-    if (digit != 0 && digit != 1)
+    if (digit != 0 && digit != 1 && digit != 2)
     {
         throw std::runtime_error("Invalid OpCode mode: " + std::to_string(digit));
     }
@@ -74,6 +74,10 @@ template <typename NumberType>
         {
             parameterMode = ParameterMode::Immediate;
         }
+        else if (digits[2] == 2)
+        {
+            parameterMode = ParameterMode::Relative;
+        }
 
         return {parameterMode, ParameterMode::Position, ParameterMode::Position};
     }
@@ -87,11 +91,19 @@ template <typename NumberType>
         {
             parameterMode1 = ParameterMode::Immediate;
         }
+        else if (digits[2] == 2)
+        {
+            parameterMode1 = ParameterMode::Relative;
+        }
 
         ParameterMode parameterMode2 = ParameterMode::Position;
         if (digits[3] == 1)
         {
             parameterMode2 = ParameterMode::Immediate;
+        }
+        else if (digits[3] == 2)
+        {
+            parameterMode2 = ParameterMode::Relative;
         }
 
         return {parameterMode1, parameterMode2, ParameterMode::Position};
@@ -107,17 +119,29 @@ template <typename NumberType>
         {
             parameterMode1 = ParameterMode::Immediate;
         }
+        else if (digits[2] == 2)
+        {
+            parameterMode1 = ParameterMode::Relative;
+        }
 
         ParameterMode parameterMode2 = ParameterMode::Position;
         if (digits[3] == 1)
         {
             parameterMode2 = ParameterMode::Immediate;
         }
+        else if (digits[3] == 2)
+        {
+            parameterMode2 = ParameterMode::Relative;
+        }
 
         ParameterMode parameterMode3 = ParameterMode::Position;
         if (digits[4] == 1)
         {
             parameterMode3 = ParameterMode::Immediate;
+        }
+        else if (digits[4] == 2)
+        {
+            parameterMode3 = ParameterMode::Relative;
         }
 
         return {parameterMode1, parameterMode2, parameterMode3};
