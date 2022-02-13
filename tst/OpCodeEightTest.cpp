@@ -43,7 +43,7 @@ TEST_CASE("OpCodeEight - 3 elements, input shall not be processed", "[OpCodeProc
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
 
-TEST_CASE("OpCodeEight - First parameter equal to second parameter, store 1 in the position given by the third parameter", "[OpCodeProcessor]")
+TEST_CASE("OpCodeEight - 1st param == 2nd param, store 1 based on 3rd param", "[OpCodeProcessor]")
 {
     std::vector<int> input =
     {
@@ -56,7 +56,7 @@ TEST_CASE("OpCodeEight - First parameter equal to second parameter, store 1 in t
     CHECK(modifiedInput[0] == 1);
 }
 
-TEST_CASE("OpCodeEight - First parameter non-equal to second parameter, store 0 in the position given by the third parameter", "[OpCodeProcessor]")
+TEST_CASE("OpCodeEight - 1st param != 2nd param, store 0 based on 3rd param", "[OpCodeProcessor]")
 {
     std::vector<int> input =
     {

@@ -3,7 +3,7 @@
 
 using namespace InstructionProcessor;
 
-TEST_CASE("OpCodeThree - No user selection (ProcessInstructions 2nd argument is missing), input shall not be processed)", "[OpCodeProcessor]")
+TEST_CASE("OpCodeThree - No user selection (2nd argument is missing), no input process)", "[OpCodeProcessor]")
 {
     std::vector<uint8_t> input =
     {

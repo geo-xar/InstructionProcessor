@@ -17,7 +17,7 @@ TEST_CASE("OpCodeSix - Single element, input shall not be processed", "[OpCodePr
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
 
-TEST_CASE("OpCodeSix - First parameter is non-zero, do nothing (ParameterMode::Immediate)", "[OpCodeProcessor]")
+TEST_CASE("OpCodeSix - 1st parameter is non-zero, do nothing", "[OpCodeProcessor]")
 {
     std::vector<int> input =
     {
