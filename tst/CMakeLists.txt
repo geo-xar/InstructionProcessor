@@ -1,15 +1,9 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-Include(FetchContent)
-
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v2.13.4
-)
-
-FetchContent_MakeAvailable(Catch2)
+# Conan integration.
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 add_executable(
     InstructionProcessorTest
@@ -36,5 +30,5 @@ target_link_libraries(
     InstructionProcessorTest
     PRIVATE
         InstructionProcessor
-        Catch2::Catch2WithMain
+        ${CONAN_LIBS}
 )

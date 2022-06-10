@@ -91,7 +91,7 @@ public:
         // Function to get an element from the collection given an iterator by using the iterator value as index
         // It can optionally take into consideration the relative base
         auto GetElementAt =
-            [&input, &relativeBase](IteratorType &it, std::optional<void> withRelativeBase = std::nullopt) -> InputType
+            [&input, &relativeBase](IteratorType &it, std::optional<bool> withRelativeBase = std::nullopt) -> InputType
             {
                 assert(*it >= 0);
 
