@@ -97,7 +97,7 @@ def main():
         if compiler == 'clang':
             conan_setup = "conan install --profile ../conan_profiles/conan_clang_profile_windows.txt ../"
         else:
-            conan_setup = "conan install --profile ../conan_profiles/conan_msvc_profile_windows.txt ../"
+            conan_setup = "conan install --profile default ../"
 
     system(conan_setup)
 
@@ -105,13 +105,12 @@ def main():
 
     # Code coverage is enabled on Debug configuration on Linux.
     if cmd_line_arg_parser.get_config() == 'Debug' and (platform == 'linux' or platform == 'linux2'):
-	    cmake_command = cmake_command + ' -DCODE_COVERAGE=ON'
+           cmake_command = cmake_command + ' -DCODE_COVERAGE=ON'
 
     if cmd_line_arg_parser.get_compiler().lower() == 'clang':
         if platform == 'linux' or platform == 'linux2':
             cmake_command = cmake_command + ' -DCMAKE_CXX_COMPILER=clang++'
         elif platform == 'win32':
-            #TODO: There is an issue with Clang integration on Windows 11.
             cmake_command = cmake_command + ' -T ClangCL'
 
     if platform == 'win32':

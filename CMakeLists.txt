@@ -2,13 +2,13 @@
 # All rights reserved.
 
 # Set Cmake minimum required version.
-cmake_minimum_required(VERSION 3.22.1)
+cmake_minimum_required(VERSION 3.22)
 
 # Set Cmake project name.
 project(InstructionProcessor)
 
 # Set C++ language standard.
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # If compiler is either GCC or CLANG then
