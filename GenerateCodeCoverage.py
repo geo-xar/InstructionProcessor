@@ -46,7 +46,7 @@ def code_coverage_on_windows(build_directory):
     if not path.exists(build_directory):
         exit('BuildDebug directory does not exist, please execute "python CreateCMakeBuildDirectory.py" first')
 
-    command = r'OpenCppCoverage.exe --sources=pokerhands\src --excluded_line_regex \s*[{}]*\s* -- BuildDebug\tst\bin\PokerHandTest.exe'
+    command = r'OpenCppCoverage.exe --sources=InstructionProcessor\src --excluded_line_regex \s*[{}]*\s* -- BuildDebug\tst\bin\InstructionProcessorTest.exe'
     system(command)
 
 
