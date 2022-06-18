@@ -1,6 +1,7 @@
 # Copyright 2022 by Georgios Charitos.
 # All rights reserved.
 
+import os
 from os import path
 from os import system
 from os import chdir
