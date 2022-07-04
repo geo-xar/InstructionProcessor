@@ -2,9 +2,10 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <vector>
+#include <optional>
 
-namespace InstructionProcessor
-{
+namespace InstructionProcessor {
 
 using DigitType = uint8_t;
 using IndexType = std::size_t;
@@ -15,35 +16,29 @@ using IntegerType = uint32_t;
 * @param digits The collection of digits.
 */
 template <typename NumberType, typename DigitsCollection>
-[[nodiscard]] inline NumberType BuildNumberFromDigits(const DigitsCollection &digits)
-{
-    if (digits.empty())
-    {
-        return 0;
+requires std::integral<NumberType> && std::is_same<NumberType, typename DigitsCollection::value_type>::value
+[[nodiscard]] inline std::optional<NumberType> BuildNumberFromDigits(const DigitsCollection &digits) {
+    if (digits.empty()) {
+        return std::nullopt;
     }
 
     NumberType result = 0;
     NumberType multiplier = 1;
 
     auto iterator = digits.end() - 1;
-    while (true)
-    {
-        if (*iterator < 0)
-        {
+    while (true) {
+        if (*iterator < 0) {
             result += (static_cast<NumberType>(*iterator) * -1) * multiplier;
         }
-        else
-        {
+        else {
             result += *iterator * multiplier;
         }
         multiplier *= 10;
 
-        if (iterator == digits.begin())
-        {
+        if (iterator == digits.begin()) {
             break;
         }
-        else
-        {
+        else {
             iterator--;
         }
     }
@@ -54,27 +49,24 @@ template <typename NumberType, typename DigitsCollection>
 * Get the digits given a number.
 * @param number The number to be split to digits.
 */
+using DigitsCollection = std::vector<DigitType>;
 template <typename NumberType>
-[[nodiscard]] inline std::vector<DigitType> GetDigitsFromNumber(NumberType number)
-{
+requires std::integral<NumberType>
+[[nodiscard]] inline DigitsCollection GetDigitsFromNumber(NumberType number) {
     // If negative number then make it positive.
-    if constexpr(std::is_signed_v<NumberType>)
-    {
-        if (number < 0)
-        {
+    if constexpr(std::is_signed_v<NumberType>) {
+        if (number < 0) {
             number *= -1;
         }
     }
 
     // If 0 then return 0.
-    if (!number)
-    {
+    if (!number) {
         return {0};
     }
 
-    std::vector<DigitType> digits;
-    while (number)
-    {
+    DigitsCollection digits;
+    while (number) {
         digits.emplace_back(number % 10);
         number /= 10;
     }
@@ -84,17 +76,16 @@ template <typename NumberType>
 }
 
 /**
-* Find if the distance between iterator and collection end is more or less than given input.
+* Find if the distance between iterators is more or less than given input.
 * @param iteratorBegin An iterator pointing to the next collection element.
-* @param iteratorEnd An iterator pointing to the end of thr collection.
+* @param iteratorEnd An iterator pointing to the end of the collection.
 * @param numberOfElements The number of elements that are needed for the calculation.
 */
 template <typename IteratorType>
 [[nodiscard]] inline bool AreThereEnoughElementsIntoTheCollection(
         const IteratorType &iteratorBegin,
         const IteratorType &iteratorEnd,
-        IndexType numberOfElements)
-{
+        IndexType numberOfElements) {
     return static_cast<IndexType>(std::distance(iteratorBegin, iteratorEnd)) >= numberOfElements;
 }
 

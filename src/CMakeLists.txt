@@ -9,6 +9,7 @@ add_library(InstructionProcessor STATIC)
 target_sources(InstructionProcessor PUBLIC
     NonCopyable.h
     NonMovable.h
+    Utils.cpp
     Utils.h
     OpCodeInterface.h
     OpCodeOne.h
@@ -23,5 +24,4 @@ target_sources(InstructionProcessor PUBLIC
     OpCodeNinetyNine.h
     OpCodeProcessor.h
     OpCodeProcessorUtils.h
-	Empty.cpp
 )

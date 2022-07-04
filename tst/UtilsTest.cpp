@@ -5,11 +5,11 @@ using namespace InstructionProcessor;
 
 TEST_CASE("Build number from digits test", "[OpCodeProcessor]")
 {
-    std::vector<uint8_t> digits{1, 9, 8, 9};
+    std::vector<uint16_t> digits{1, 9, 8, 9};
     CHECK(BuildNumberFromDigits<uint16_t>(digits) == 1989);
 
     digits = {};
-    CHECK(BuildNumberFromDigits<uint16_t>(digits) == 0);
+    CHECK(!BuildNumberFromDigits<uint16_t>(digits).has_value());
 
     std::vector<int> negativeDigits{-1, -9, 8, -9};
     CHECK(BuildNumberFromDigits<int>(negativeDigits) == 1989);
