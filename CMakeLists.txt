@@ -1,13 +1,10 @@
 # Copyright 2022 by Georgios Charitos.
 # All rights reserved.
 
-# Set Cmake minimum required version.
 cmake_minimum_required(VERSION 3.22)
 
-# Set Cmake project name.
 project(InstructionProcessor)
 
-# Set C++ language standard.
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -69,6 +66,5 @@ message("CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
 message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 message("CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
 
-# Add subdirectories to be managed by Cmake.
 add_subdirectory(src)
 add_subdirectory(tst)
