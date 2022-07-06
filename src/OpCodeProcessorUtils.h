@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include <cassert>
 #include <stdexcept>
+#include <string>
 
 namespace InstructionProcessor
 {
