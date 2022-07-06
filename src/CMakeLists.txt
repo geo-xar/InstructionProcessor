@@ -23,6 +23,7 @@ target_sources(InstructionProcessor PUBLIC
     OpCodeFive.h
     OpCodeSix.cpp
     OpCodeSix.h
+    OpCodeSeven.cpp
     OpCodeSeven.h
     OpCodeEight.h
     OpCodeNine.h
