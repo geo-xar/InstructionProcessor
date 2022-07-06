@@ -15,6 +15,7 @@ target_sources(InstructionProcessor PUBLIC
     OpCodeOne.h
     OpCodeTwo.cpp
     OpCodeTwo.h
+    OpCodeThree.cpp
     OpCodeThree.h
     OpCodeFour.h
     OpCodeFive.h
