@@ -1,9 +1,13 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 
 #include "NonCopyable.h"
 #include "NonMovable.h"
 #include "OpCodeProcessorUtils.h"
 #include "OpCodeOne.h"
+#include "OpCodeOne.cpp"
 #include "OpCodeTwo.h"
 #include "OpCodeThree.h"
 #include "OpCodeFour.h"
@@ -55,7 +59,7 @@ public:
     * @return Modified input collection and printed output.
     */
     [[nodiscard]] ResultType ProcessInstructions(
-            const Vector &inputCollection, std::optional<InputType> userSelection = std::nullopt)
+            const Vector& inputCollection, std::optional<InputType> userSelection = std::nullopt)
     {
         // There is no reason doing any kind of calculations if the input collection is empty.
         if (!inputCollection.size())
@@ -91,7 +95,7 @@ public:
         // Function to get an element from the collection given an iterator by using the iterator value as index
         // It can optionally take into consideration the relative base
         auto GetElementAt =
-            [&input, &relativeBase](IteratorType &it, std::optional<bool> withRelativeBase = std::nullopt) -> InputType
+            [&input, &relativeBase](IteratorType& it, std::optional<bool> withRelativeBase = std::nullopt) -> InputType
             {
                 assert(*it >= 0);
 
@@ -243,7 +247,7 @@ public:
 
             // Retrieve the first instruction to be executed.
             // If the result optional has no value then terminate the execution.
-            OpCode *opCodeToBeExecuted = pendingInstructions.front().get();
+            OpCode* opCodeToBeExecuted = pendingInstructions.front().get();
             std::any nextElement{iterator};
             std::any iterEnd{input.end()};
             auto result = opCodeToBeExecuted->Execute(nextElement, iterEnd);
