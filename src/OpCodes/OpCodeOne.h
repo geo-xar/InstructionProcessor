@@ -2,9 +2,8 @@
 // All rights reserved.
 
 #pragma once
-
-#include "OpCodeInterface.h"
-#include "OpCodeProcessorUtils.h"
+#include <InstructionProcessorUtils.h>
+#include <OpCodeInterface.h>
 
 namespace InstructionProcessor
 {

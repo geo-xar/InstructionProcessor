@@ -7,8 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_executable(
-    InstructionProcessorTest
+add_executable(InstructionProcessorTest
     OpCodeOneTest.cpp
     OpCodeTwoTest.cpp
     OpCodeThreeTest.cpp
@@ -22,14 +21,12 @@ add_executable(
     UtilsTest.cpp
 )
 
-target_include_directories(
-    InstructionProcessorTest
+target_include_directories(InstructionProcessorTest
     PRIVATE
-      ${CMAKE_SOURCE_DIR}/src
+      $<TARGET_PROPERTY:InstructionProcessor,SOURCE_DIR>
 )
 
-target_link_libraries(
-    InstructionProcessorTest
+target_link_libraries(InstructionProcessorTest
     PRIVATE
       InstructionProcessor
       ${CONAN_LIBS}

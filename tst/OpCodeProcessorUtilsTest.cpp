@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "OpCodeProcessorUtils.h"
+#include <InstructionProcessorUtils.h>
 
 using namespace InstructionProcessor;
 

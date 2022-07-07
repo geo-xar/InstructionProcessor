@@ -4,7 +4,8 @@
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_subdirectory(OpCodeInterface)
-add_subdirectory(InstructionProcessor)
-add_subdirectory(OpCodes)
-add_subdirectory(Utils)
+add_library(OpCodeInterface INTERFACE)
+
+target_sources(OpCodeInterface INTERFACE
+    OpCodeInterface.h
+)

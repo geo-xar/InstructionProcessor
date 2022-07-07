@@ -1,17 +1,17 @@
 #pragma once
-
-#include "OpCodeInterface.h"
-#include "OpCodeProcessorUtils.h"
+#include <InstructionProcessorUtils.h>
+#include <OpCodeInterface.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeTwo specialisation.
-* Multiply 2 numbers.
+* @class OpCodeSeven specialisation.
+* If the first parameter is less than the second parameter then
+* store 1 in the position given by the third parameter, otherwise store 0.
 */
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
-class OpCodeTwo final : public OpCode
+class OpCodeSeven final : public OpCode
 {
     static constexpr IndexType NumberOfParametersToClaim = 2;
 
@@ -22,15 +22,16 @@ public:
     * @param getElementAt Function to retrieve an element given an iterator.
     * @param parameterModes The collection of the parameter modes.
     */
-    OpCodeTwo(
+    OpCodeSeven(
             SetElementAtIndexFunctionType &setElementAtIndex,
             GetElementAtFunctionType &getElementAt,
             const ParameterModeVector &parameterModes);
 
-    ~OpCodeTwo() final = default;
+    ~OpCodeSeven() final = default;
 
     /**
-    * Multiply 2 numbers and store the result in the index pointed by the third number.
+    * If the first parameter is less than the second parameter then
+    * store 1 in the position given by the third parameter, otherwise store 0.
     */
     [[nodiscard]] OpCode::ReturnType Execute(std::any &nextElementIter, std::any &endIter) final;
 
