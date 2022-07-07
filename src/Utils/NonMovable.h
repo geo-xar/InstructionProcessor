@@ -1,12 +1,14 @@
 #pragma once
 
-namespace InstructionProcessor {
+namespace InstructionProcessor
+{
 
 /**
  * NonMovable class.
  * Derive from this to make your class non-movable.
  */
-class NonMovable {
+class NonMovable
+{
 public:
     NonMovable() = default;
     virtual ~NonMovable() = default;

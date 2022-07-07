@@ -5,7 +5,8 @@
 #include <vector>
 #include <optional>
 
-namespace InstructionProcessor {
+namespace InstructionProcessor
+{
 
 using DigitType = uint8_t;
 using IndexType = std::size_t;
@@ -17,8 +18,10 @@ using IntegerType = uint32_t;
 */
 template <typename NumberType, typename DigitsCollection>
 requires std::integral<NumberType> && std::is_same<NumberType, typename DigitsCollection::value_type>::value
-[[nodiscard]] inline std::optional<NumberType> BuildNumberFromDigits(const DigitsCollection &digits) {
-    if (digits.empty()) {
+[[nodiscard]] inline std::optional<NumberType> BuildNumberFromDigits(const DigitsCollection &digits)
+{
+    if (digits.empty())
+    {
         return std::nullopt;
     }
 
@@ -26,19 +29,24 @@ requires std::integral<NumberType> && std::is_same<NumberType, typename DigitsCo
     NumberType multiplier = 1;
 
     auto iterator = digits.end() - 1;
-    while (true) {
-        if (*iterator < 0) {
+    while (true)
+    {
+        if (*iterator < 0)
+        {
             result += (static_cast<NumberType>(*iterator) * -1) * multiplier;
         }
-        else {
+        else
+        {
             result += *iterator * multiplier;
         }
         multiplier *= 10;
 
-        if (iterator == digits.begin()) {
+        if (iterator == digits.begin())
+        {
             break;
         }
-        else {
+        else
+        {
             iterator--;
         }
     }
@@ -52,21 +60,26 @@ requires std::integral<NumberType> && std::is_same<NumberType, typename DigitsCo
 using DigitsCollection = std::vector<DigitType>;
 template <typename NumberType>
 requires std::integral<NumberType>
-[[nodiscard]] inline DigitsCollection GetDigitsFromNumber(NumberType number) {
+[[nodiscard]] inline DigitsCollection GetDigitsFromNumber(NumberType number)
+{
     // If negative number then make it positive.
-    if constexpr(std::is_signed_v<NumberType>) {
-        if (number < 0) {
+    if constexpr(std::is_signed_v<NumberType>)
+    {
+        if (number < 0)
+        {
             number *= -1;
         }
     }
 
     // If 0 then return 0.
-    if (!number) {
+    if (!number)
+    {
         return {0};
     }
 
     DigitsCollection digits;
-    while (number) {
+    while (number)
+    {
         digits.emplace_back(number % 10);
         number /= 10;
     }
@@ -85,7 +98,8 @@ template <typename IteratorType>
 [[nodiscard]] inline bool AreThereEnoughElementsIntoTheCollection(
         const IteratorType &iteratorBegin,
         const IteratorType &iteratorEnd,
-        IndexType numberOfElements) {
+        IndexType numberOfElements)
+{
     return static_cast<IndexType>(std::distance(iteratorBegin, iteratorEnd)) >= numberOfElements;
 }
 

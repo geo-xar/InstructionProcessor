@@ -1,12 +1,14 @@
 #pragma once
 
-namespace InstructionProcessor {
+namespace InstructionProcessor
+{
 
 /**
  * NonCopyable class.
  * Derive from this to make your class non-copyable.
  */
-class NonCopyable {
+class NonCopyable
+{
 public:
     NonCopyable() = default;
     virtual ~NonCopyable() = default;
