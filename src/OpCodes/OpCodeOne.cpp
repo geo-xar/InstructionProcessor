@@ -34,14 +34,9 @@ OpCode::ReturnType OpCodeOne<InputType, IteratorType, SetElementAtIndexFunctionT
         {
             claimedAccumulationNumbers.emplace_back(*iterBegin);
         }
-        else if (_parameterModes[i] == ParameterMode::Position)
-        {
-            claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin));
-        }
-        // ParameterMode::Relative
         else
         {
-            claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin, {}));
+            claimedAccumulationNumbers.emplace_back(_getElementAt(iterBegin));
         }
         iterBegin++;
     }

@@ -103,20 +103,11 @@ public:
         // Function to get an element from the collection given an iterator by using the iterator value as index
         // It can optionally take into consideration the relative base
         auto GetElementAt =
-            [&input, &relativeBase](IteratorType& it, std::optional<bool> withRelativeBase = std::nullopt) -> InputType
+            [&input](IteratorType& it) -> InputType
             {
                 assert(*it >= 0);
-
-                if (withRelativeBase.has_value())
-                {
-                    assert(static_cast<IndexType>(*it + relativeBase) < input.size());
-                    return input[static_cast<IndexType>(*it + relativeBase)];
-                }
-                else
-                {
-                    assert(static_cast<IndexType>(*it) < input.size());
-                    return input[static_cast<IndexType>(*it)];
-                }
+                assert(static_cast<IndexType>(*it) < input.size());
+                return input[static_cast<IndexType>(*it)];
             };
 
         // Function to get an iterator from the given position of the collection plus given offset

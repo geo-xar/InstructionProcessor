@@ -34,14 +34,9 @@ OpCode::ReturnType OpCodeTwo<InputType, IteratorType, SetElementAtIndexFunctionT
         {
             claimedMultiplyNumbers.emplace_back(*iterBegin);
         }
-        else if (_parameterModes[i] == ParameterMode::Position)
-        {
-            claimedMultiplyNumbers.emplace_back(_getElementAt(iterBegin));
-        }
-        // ParameterMode::Relative
         else
         {
-            claimedMultiplyNumbers.emplace_back(_getElementAt(iterBegin, {}));
+            claimedMultiplyNumbers.emplace_back(_getElementAt(iterBegin));
         }
         iterBegin++;
     }

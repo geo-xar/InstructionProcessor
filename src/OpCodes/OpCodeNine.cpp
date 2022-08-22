@@ -32,14 +32,9 @@ OpCode::ReturnType OpCodeNine<InputType, IteratorType, GetElementAtType, UpdateR
     {
         newRelativeBase = *iterBegin;
     }
-    else if (_parameterModes[0] == ParameterMode::Position)
-    {
-        newRelativeBase = _getElementAt(iterBegin);
-    }
-    // ParameterMode::Relative
     else
     {
-        newRelativeBase = _getElementAt(iterBegin, {});
+        newRelativeBase = _getElementAt(iterBegin);
     }
 
     _updateRelativeBase(newRelativeBase);

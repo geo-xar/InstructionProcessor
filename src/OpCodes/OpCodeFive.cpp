@@ -33,14 +33,9 @@ OpCode::ReturnType OpCodeFive<InputType, IteratorType, GetElementAtFunctionType,
     {
         option = *iterBegin;
     }
-    else if (_parameterModes[0] == ParameterMode::Position)
-    {
-        option = _getElementAt(iterBegin);
-    }
-    // ParameterMode::Relative
     else
     {
-        option = _getElementAt(iterBegin, {});
+        option = _getElementAt(iterBegin);
     }
 
     // Jump to the next number no matter what the option value is.

@@ -31,14 +31,9 @@ OpCode::ReturnType OpCodeFour<InputType, IteratorType, GetElementAtFunctionType>
     {
         number = *iterBegin;
     }
-    else if (_parameterModes[0] == ParameterMode::Position)
-    {
-        number = _getElementAt(iterBegin);
-    }
-    // ParameterMode::Relative
     else
     {
-        number = _getElementAt(iterBegin, {});
+        number = _getElementAt(iterBegin);
     }
 
     _printedOutput.emplace_back(number);

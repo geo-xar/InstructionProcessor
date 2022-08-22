@@ -35,14 +35,9 @@ template <typename InputType, typename IteratorType, typename SetElementAtIndexF
         {
             claimedComparisonNumbers.emplace_back(*iterBegin);
         }
-        else if (_parameterModes[i] == ParameterMode::Position)
-        {
-            claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin));
-        }
-        // ParameterMode::Relative
         else
         {
-            claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin, {}));
+            claimedComparisonNumbers.emplace_back(_getElementAt(iterBegin));
         }
         iterBegin++;
     }
