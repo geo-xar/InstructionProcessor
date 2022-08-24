@@ -235,15 +235,6 @@ public:
 
             } // end of switch(OpCode)
 
-            // If no more instructions to be processed then terminate the execution.
-            // The following if statement will never be true at the moment since we always
-            // emplace an instruction to the queue and immediately execute it.
-            // It might be needed in the future if we produce more than we consume.
-            //if (pendingInstructions.empty())
-            //{
-            //    return {input, printedOutput};
-            //}
-
             // Retrieve the first instruction to be executed.
             // If the result optional has no value then terminate the execution.
             OpCode* opCodeToBeExecuted = pendingInstructions.front().get();
