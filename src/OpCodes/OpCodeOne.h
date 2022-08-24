@@ -3,7 +3,7 @@
 
 #pragma once
 #include <InstructionProcessorUtils.h>
-#include <OpCodeInterface.h>
+#include <OpCode.h>
 
 namespace InstructionProcessor
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpCodeInterface.h"
+#include "OpCode.h"
 
 namespace InstructionProcessor
 {

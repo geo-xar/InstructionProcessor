@@ -4,8 +4,8 @@
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_library(OpCodeInterface INTERFACE)
+add_library(OpCode INTERFACE)
 
-target_sources(OpCodeInterface INTERFACE
-    OpCodeInterface.h
+target_sources(OpCode INTERFACE
+    OpCode.h
 )
