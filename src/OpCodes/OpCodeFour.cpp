@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeFour.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename GetElementAtFunctionType>
 OpCodeFour<InputType, IteratorType, GetElementAtFunctionType>::OpCodeFour(
     GetElementAtFunctionType& getElementAt,

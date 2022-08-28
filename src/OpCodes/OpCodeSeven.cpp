@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeSeven.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 OpCodeSeven<InputType, IteratorType, SetElementAtIndexFunctionType, GetElementAtFunctionType>::OpCodeSeven(
     SetElementAtIndexFunctionType& setElementAtIndex,

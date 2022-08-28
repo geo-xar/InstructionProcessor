@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeNine.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename GetElementAtType, typename UpdateRelativeBaseType>
 OpCodeNine<InputType, IteratorType, GetElementAtType, UpdateRelativeBaseType>::OpCodeNine(
     GetElementAtType& getElementAt,

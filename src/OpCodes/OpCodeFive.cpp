@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeFive.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromPosPlusOffsetFunctionType>
 OpCodeFive<InputType, IteratorType, GetElementAtFunctionType, GetIterFromPosPlusOffsetFunctionType>::OpCodeFive(
     GetElementAtFunctionType& getElementAt,

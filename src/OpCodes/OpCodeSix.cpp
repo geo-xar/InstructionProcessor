@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeSix.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename GetElementAtFunctionType, typename GetIterFromPosPlusOffsetFunctionType>
 OpCodeSix<InputType, IteratorType, GetElementAtFunctionType, GetIterFromPosPlusOffsetFunctionType>::OpCodeSix(
     GetElementAtFunctionType& getElementAt,

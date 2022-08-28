@@ -1,26 +1,22 @@
 #pragma once
-
-#include "OpCode.h"
+#include <OpCode.h>
+#include <ExitCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
 * @class OpCodeNinetyNine specialisation.
-* The program is finished and should immediately halt.
 */
 class OpCodeNinetyNine final : public OpCode
 {
 public:
-    ~OpCodeNinetyNine() final = default;
+    OpCodeNinetyNine() = default;
+    ~OpCodeNinetyNine() override final = default;
 
-    /**
-    * The program is finished and should immediately halt.
-    */
-    [[nodiscard]] OpCode::ReturnType
-    Execute([[maybe_unused]]std::any &nextElementIter, [[maybe_unused]]std::any &endIter) final
+    [[nodiscard]] CmdPtrU Process() const override final
     {
-        return {std::nullopt, {}};
+        return std::make_unique<ExitCmd>();
     }
 };
 

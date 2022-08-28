@@ -3,28 +3,20 @@
 
 #pragma once
 
-#include "NonCopyable.h"
-#include "NonMovable.h"
-#include "InstructionProcessorUtils.h"
-#include "OpCodeOne.h"
-#include "OpCodeOne.cpp"
-#include "OpCodeTwo.h"
-#include "OpCodeTwo.cpp"
-#include "OpCodeThree.h"
-#include "OpCodeThree.cpp"
-#include "OpCodeFour.h"
-#include "OpCodeFour.cpp"
-#include "OpCodeFive.h"
-#include "OpCodeFive.cpp"
-#include "OpCodeSix.h"
-#include "OpCodeSix.cpp"
-#include "OpCodeSeven.h"
-#include "OpCodeSeven.cpp"
-#include "OpCodeEight.h"
-#include "OpCodeEight.cpp"
-#include "OpCodeNine.h"
-#include "OpCodeNine.cpp"
-#include "OpCodeNinetyNine.h"
+#include <NonCopyable.h>
+#include <NonMovable.h>
+#include <InstructionProcessorUtils.h>
+#include <OpCodeOne.h>
+#include <OpCodeTwo.h>
+#include <OpCodeThree.h>
+#include <OpCodeFour.h>
+#include <OpCodeFive.h>
+#include <OpCodeSix.h>
+#include <OpCodeSeven.h>
+#include <OpCodeEight.h>
+#include <OpCodeNine.h>
+#include <OpCodeNinetyNine.h>
+#include <Cmd.h>
 
 #include <vector>
 #include <optional>
@@ -130,9 +122,7 @@ public:
                 relativeBase += newRelativeBase;
             };
 
-        // Declare an OpCode deque useful to manage the OpCode execution.
-        using OpCodeUniquePtr = std::unique_ptr<OpCode>;
-        std::deque<OpCodeUniquePtr> pendingInstructions;
+        std::deque<CmdPtrU> pendingCommands;
 
         // Iterate the whole input.
         while (iterator < input.end())
@@ -149,79 +139,61 @@ public:
 
                 case 1:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeOne<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
-                                    (SetElementAtIndex, GetElementAt, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeOne{}.Process());
                     break;
                 }
 
                 case 2:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeTwo<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
-                                    (SetElementAtIndex, GetElementAt, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeTwo{}.Process());
                     break;
                 }
 
                 case 3:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeThree<InputType, IteratorType, decltype(SetElementAtIndex)> >
-                                    (SetElementAtIndex, userSelection)));
+                    pendingCommands.emplace_back(OpCodeThree{}.Process());
                     break;
                 }
 
                 case 4:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeFour<InputType, IteratorType, decltype(GetElementAt)> >
-                                    (GetElementAt, parameterModes, printedOutput)));
+                    pendingCommands.emplace_back(OpCodeFour{}.Process());
                     break;
                 }
 
                 case 5:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeFive<InputType, IteratorType, decltype(GetElementAt), decltype(GetIterFromPosPlusOffset)> >
-                                    (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeFive{}.Process());
                     break;
                 }
 
                 case 6:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeSix<InputType, IteratorType, decltype(GetElementAt), decltype(GetIterFromPosPlusOffset)> >
-                                    (GetElementAt, GetIterFromPosPlusOffset, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeSix{}.Process());
                     break;
                 }
 
                 case 7:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeSeven<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
-                                    (SetElementAtIndex, GetElementAt, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeSeven{}.Process());
                     break;
                 }
 
                 case 8:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                            std::make_unique<OpCodeEight<InputType, IteratorType, decltype(SetElementAtIndex), decltype(GetElementAt)> >
-                                    (SetElementAtIndex, GetElementAt, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeEight{}.Process());
                     break;
                 }
 
                 case 9:
                 {
-                    pendingInstructions.emplace_back(std::move(
-                        std::make_unique<OpCodeNine<InputType, IteratorType, decltype(GetElementAt), decltype(UpdateRelativeBase)> >
-                        (GetElementAt, UpdateRelativeBase, parameterModes)));
+                    pendingCommands.emplace_back(OpCodeNine{}.Process());
                     break;
                 }
 
                 case 99:
                 {
-                    pendingInstructions.emplace_back(std::make_unique<OpCodeNinetyNine>());
+                    pendingCommands.emplace_back(OpCodeNinetyNine{}.Process());
                     break;
                 }
 
@@ -235,12 +207,12 @@ public:
 
             } // end of switch(OpCode)
 
-            // Retrieve the first instruction to be executed.
+            // Retrieve the first command to be executed.
             // If the result optional has no value then terminate the execution.
-            OpCode* opCodeToBeExecuted = pendingInstructions.front().get();
+            Cmd* cmdToBeExecuted = pendingCommands.front().get();
             std::any nextElement{iterator};
             std::any iterEnd{input.end()};
-            auto result = opCodeToBeExecuted->Execute(nextElement, iterEnd);
+            auto result = cmdToBeExecuted->Execute();
             if (!result.first.has_value())
             {
                 return {input, printedOutput};
@@ -250,8 +222,8 @@ public:
                 iterator = std::any_cast<IteratorType&>(result.second);
             }
 
-            // Remove the instruction which was just executed.
-            pendingInstructions.pop_front();
+            // Remove the command which was just executed.
+            pendingCommands.pop_front();
         }
 
         return {input, printedOutput};

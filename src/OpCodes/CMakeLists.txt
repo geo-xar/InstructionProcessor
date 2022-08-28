@@ -4,39 +4,23 @@
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_library(OpCodes STATIC)
+add_library(OpCodes INTERFACE)
 
 target_sources(OpCodes
     PUBLIC
-      OpCodeOne.cpp
       OpCodeOne.h
-      OpCodeTwo.cpp
       OpCodeTwo.h
-      OpCodeThree.cpp
       OpCodeThree.h
-      OpCodeFour.cpp
       OpCodeFour.h
-      OpCodeFive.cpp
       OpCodeFive.h
-      OpCodeSix.cpp
       OpCodeSix.h
-      OpCodeSeven.cpp
       OpCodeSeven.h
-      OpCodeEight.cpp
       OpCodeEight.h
-      OpCodeNine.cpp
       OpCodeNine.h
       OpCodeNinetyNine.h
 )
 
 target_include_directories(OpCodes
-    PUBLIC
+    INTERFACE
       $<TARGET_PROPERTY:OpCode,SOURCE_DIR>
-      $<TARGET_PROPERTY:Utils,SOURCE_DIR>
-)
-
-target_link_libraries(OpCodes
-    PUBLIC
-      OpCode
-      Utils
 )

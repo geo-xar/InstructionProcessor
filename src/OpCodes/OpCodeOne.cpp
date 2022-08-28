@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeOne.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 OpCodeOne<InputType, IteratorType, SetElementAtIndexFunctionType, GetElementAtFunctionType>::OpCodeOne(
         SetElementAtIndexFunctionType& setElementAtIndex,

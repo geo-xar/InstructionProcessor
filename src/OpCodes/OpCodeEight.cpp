@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeEight.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType, typename GetElementAtFunctionType>
 OpCodeEight<InputType, IteratorType, SetElementAtIndexFunctionType, GetElementAtFunctionType>::OpCodeEight(
     SetElementAtIndexFunctionType& setElementAtIndex,

@@ -1,10 +1,6 @@
 // Copyright 2022 by Georgios Charitos.
 // All rights reserved.
 
-#include "OpCodeThree.h"
-
-using namespace InstructionProcessor;
-
 template <typename InputType, typename IteratorType, typename SetElementAtIndexFunctionType>
 OpCodeThree<InputType, IteratorType, SetElementAtIndexFunctionType>::OpCodeThree(
     SetElementAtIndexFunctionType& setElementAtIndex, const std::optional<InputType>& userInput)

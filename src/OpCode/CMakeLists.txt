@@ -9,3 +9,9 @@ add_library(OpCode INTERFACE)
 target_sources(OpCode INTERFACE
     OpCode.h
 )
+
+target_include_directories(OpCode
+    INTERFACE
+      $<TARGET_PROPERTY:Commands,SOURCE_DIR>
+      $<TARGET_PROPERTY:Utils,SOURCE_DIR>
+)

@@ -6,9 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_library(Utils INTERFACE)
 
-target_sources(Utils INTERFACE
-    InstructionProcessorUtils.h
-    NonCopyable.h
-    NonMovable.h
-    Utils.h
+target_sources(Utils
+    PUBLIC
+      InstructionProcessorUtils.h
+      NonCopyable.h
+      NonMovable.h
+      Utils.h
 )
