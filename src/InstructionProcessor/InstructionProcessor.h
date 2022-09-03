@@ -59,7 +59,7 @@ public:
     * @return Modified input collection and printed output.
     */
     [[nodiscard]] ResultType ProcessInstructions(
-            const Vector& inputCollection, std::optional<InputType> userSelection = std::nullopt)
+            const Vector& inputCollection, [[maybe_unused]] std::optional<InputType> userSelection = std::nullopt)
     {
         // There is no reason doing any kind of calculations if the input collection is empty.
         if (!inputCollection.size())
@@ -81,29 +81,29 @@ public:
         IteratorType iterator = input.begin();
 
         // Function to set the element to the collection given an index
-        auto SetElementAtIndex =
+/*         auto SetElementAtIndex =
             [&input](InputType index, InputType element) mutable -> void
             {
                 assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
                 input[static_cast<IndexType>(index)] = element;
             };
-
+ */
         // Useful for ParameterMode::Relative
         // Only modified by OpCodeNine
-        InputType relativeBase{ 0 };
+        //InputType relativeBase{ 0 };
 
         // Function to get an element from the collection given an iterator by using the iterator value as index
         // It can optionally take into consideration the relative base
-        auto GetElementAt =
+/*         auto GetElementAt =
             [&input](IteratorType& it) -> InputType
             {
                 assert(*it >= 0);
                 assert(static_cast<IndexType>(*it) < input.size());
                 return input[static_cast<IndexType>(*it)];
-            };
+            }; */
 
         // Function to get an iterator from the given position of the collection plus given offset
-        auto GetIterFromPosPlusOffset =
+/*         auto GetIterFromPosPlusOffset =
             [&input](InputType offset, InputType pos = 0) -> IteratorType
             {
                 assert(!input.empty());
@@ -113,14 +113,14 @@ public:
                 auto iter = input.begin() + static_cast<IndexType>(pos);
                 std::advance(iter, static_cast<IndexType>(offset));
                 return iter;
-            };
+            }; */
 
         // Function to update the relative base (called only by OpCodeNine)
-        auto UpdateRelativeBase =
+/*         auto UpdateRelativeBase =
             [&relativeBase](InputType newRelativeBase) mutable -> void
             {
                 relativeBase += newRelativeBase;
-            };
+            }; */
 
         std::deque<CmdPtrU> pendingCommands;
 
@@ -210,16 +210,16 @@ public:
             // Retrieve the first command to be executed.
             // If the result optional has no value then terminate the execution.
             Cmd* cmdToBeExecuted = pendingCommands.front().get();
-            std::any nextElement{iterator};
-            std::any iterEnd{input.end()};
+            //std::any nextElement{iterator};
+            //std::any iterEnd{input.end()};
             auto result = cmdToBeExecuted->Execute();
-            if (!result.first.has_value())
+            if (!result.has_value())
             {
                 return {input, printedOutput};
             }
             else
             {
-                iterator = std::any_cast<IteratorType&>(result.second);
+                //iterator = std::any_cast<IteratorType&>(result.second);
             }
 
             // Remove the command which was just executed.

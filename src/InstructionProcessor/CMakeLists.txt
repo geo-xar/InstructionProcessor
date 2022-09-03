@@ -13,5 +13,8 @@ target_sources(InstructionProcessor
 
 target_include_directories(InstructionProcessor
     INTERFACE
+      $<TARGET_PROPERTY:Commands,SOURCE_DIR>
+      $<TARGET_PROPERTY:OpCode,SOURCE_DIR>
       $<TARGET_PROPERTY:OpCodes,SOURCE_DIR>
+      $<TARGET_PROPERTY:Utils,SOURCE_DIR>
 )
