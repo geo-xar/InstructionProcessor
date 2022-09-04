@@ -33,12 +33,3 @@ TEST_CASE("Get digits from number test", "[OpCodeProcessor]")
     digits = GetDigitsFromNumber(100);
     CHECK(std::equal(digits.begin(), digits.end(), expectedDigits.begin()));
 }
-
-TEST_CASE("Check if there are enough elements in a collection", "[OpCodeProcessor]")
-{
-    std::vector<int> collection;
-    CHECK(!AreThereEnoughElementsIntoTheCollection(collection.begin(), collection.end(), 1));
-
-    collection.emplace_back(1);
-    CHECK(AreThereEnoughElementsIntoTheCollection(collection.begin(), collection.end(), 1));
-}

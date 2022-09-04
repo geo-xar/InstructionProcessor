@@ -88,19 +88,4 @@ requires std::integral<NumberType>
     return digits;
 }
 
-/**
-* Find if the distance between iterators is more or less than given input.
-* @param iteratorBegin An iterator pointing to the next collection element.
-* @param iteratorEnd An iterator pointing to the end of the collection.
-* @param numberOfElements The number of elements that are needed for the calculation.
-*/
-template <typename IteratorType>
-[[nodiscard]] inline bool AreThereEnoughElementsIntoTheCollection(
-        const IteratorType &iteratorBegin,
-        const IteratorType &iteratorEnd,
-        IndexType numberOfElements)
-{
-    return static_cast<IndexType>(std::distance(iteratorBegin, iteratorEnd)) >= numberOfElements;
-}
-
 }

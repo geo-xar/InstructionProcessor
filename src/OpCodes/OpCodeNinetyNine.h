@@ -1,20 +1,18 @@
 #pragma once
-#include <OpCode.h>
 #include <ExitCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeNinetyNine specialisation.
+* @class OpCodeNinetyNine.
 */
-class OpCodeNinetyNine final : public OpCode
+class OpCodeNinetyNine final
 {
 public:
     OpCodeNinetyNine() = default;
-    ~OpCodeNinetyNine() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    [[nodiscard]] CmdPtrU Process() const
     {
         return std::make_unique<ExitCmd>();
     }

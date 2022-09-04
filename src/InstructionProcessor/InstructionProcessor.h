@@ -6,6 +6,7 @@
 #include <NonCopyable.h>
 #include <NonMovable.h>
 #include <InstructionProcessorUtils.h>
+#include <InputContainer.h>
 #include <OpCodeOne.h>
 #include <OpCodeTwo.h>
 #include <OpCodeThree.h>
@@ -68,17 +69,10 @@ public:
                     {}};
         }
 
-        // Copy the input collection to a local variable.
-        Vector input;
-        input.resize(inputCollection.size());
-        std::copy(inputCollection.begin(), inputCollection.end(), input.begin());
+        InputContainer input{inputCollection};
 
         // Declare the printed output collection.
         Vector printedOutput;
-
-        // Declare the iterator which is used to manipulate the input collection.
-        using IteratorType = typename Vector::iterator;
-        IteratorType iterator = input.begin();
 
         // Function to set the element to the collection given an index
 /*         auto SetElementAtIndex =
@@ -125,7 +119,8 @@ public:
         std::deque<CmdPtrU> pendingCommands;
 
         // Iterate the whole input.
-        while (iterator < input.end())
+        auto iterator = inputCollection.begin();
+        while (iterator < inputCollection.end())
         {
             // Extract the next OpCode and the ParameterModes.
             const auto opCode = ExtractOpCodeFromNumber(*iterator);
@@ -136,66 +131,62 @@ public:
 
             switch (opCode)
             {
-
                 case 1:
                 {
-                    pendingCommands.emplace_back(OpCodeOne{}.Process());
+                    pendingCommands.emplace_back(OpCodeOne{}.Process(input));
                     break;
                 }
-
-                case 2:
+/*                 case 2:
                 {
-                    pendingCommands.emplace_back(OpCodeTwo{}.Process());
+                    pendingCommands.emplace_back(OpCodeTwo{}.Process(input));
                     break;
                 }
-
                 case 3:
                 {
-                    pendingCommands.emplace_back(OpCodeThree{}.Process());
+                    pendingCommands.emplace_back(OpCodeThree{}.Process(input));
                     break;
                 }
-
                 case 4:
                 {
-                    pendingCommands.emplace_back(OpCodeFour{}.Process());
+                    pendingCommands.emplace_back(OpCodeFour{}.Process(input));
                     break;
                 }
 
                 case 5:
                 {
-                    pendingCommands.emplace_back(OpCodeFive{}.Process());
+                    pendingCommands.emplace_back(OpCodeFive{}.Process(input));
                     break;
                 }
 
                 case 6:
                 {
-                    pendingCommands.emplace_back(OpCodeSix{}.Process());
+                    pendingCommands.emplace_back(OpCodeSix{}.Process(input));
                     break;
                 }
 
                 case 7:
                 {
-                    pendingCommands.emplace_back(OpCodeSeven{}.Process());
+                    pendingCommands.emplace_back(OpCodeSeven{}.Process(input));
                     break;
                 }
 
                 case 8:
                 {
-                    pendingCommands.emplace_back(OpCodeEight{}.Process());
+                    pendingCommands.emplace_back(OpCodeEight{}.Process(input));
                     break;
                 }
 
                 case 9:
                 {
-                    pendingCommands.emplace_back(OpCodeNine{}.Process());
+                    pendingCommands.emplace_back(OpCodeNine{}.Process(input));
                     break;
                 }
 
                 case 99:
                 {
-                    pendingCommands.emplace_back(OpCodeNinetyNine{}.Process());
+                    pendingCommands.emplace_back(OpCodeNinetyNine{}.Process(input));
                     break;
-                }
+                } */
 
                 default:
                 {
@@ -215,7 +206,7 @@ public:
             auto result = cmdToBeExecuted->Execute();
             if (!result.has_value())
             {
-                return {input, printedOutput};
+                return {input.GetInput(), printedOutput};
             }
             else
             {
@@ -226,7 +217,7 @@ public:
             pendingCommands.pop_front();
         }
 
-        return {input, printedOutput};
+        return {input.GetInput(), printedOutput};
     }
 };
 

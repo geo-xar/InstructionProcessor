@@ -19,8 +19,3 @@ target_sources(OpCodes
       OpCodeNine.h
       OpCodeNinetyNine.h
 )
-
-target_include_directories(OpCodes
-    INTERFACE
-      $<TARGET_PROPERTY:OpCode,SOURCE_DIR>
-)

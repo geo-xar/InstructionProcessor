@@ -1,20 +1,18 @@
 #pragma once
-#include <OpCode.h>
 #include <FirstParamEqToSecondCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeEight specialisation.
+* @class OpCodeEight.
 */
-class OpCodeEight final : public OpCode
+class OpCodeEight final
 {
 public:
     OpCodeEight() = default;
-    ~OpCodeEight() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    [[nodiscard]] CmdPtrU Process() const
     {
         return std::make_unique<FirstParamEqToSecondCmd>();
     }

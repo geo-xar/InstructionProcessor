@@ -24,6 +24,9 @@ add_executable(InstructionProcessorTest
 target_include_directories(InstructionProcessorTest
     PRIVATE
       $<TARGET_PROPERTY:InstructionProcessor,SOURCE_DIR>
+      $<TARGET_PROPERTY:Utils,SOURCE_DIR>
+      $<TARGET_PROPERTY:OpCodes,SOURCE_DIR>
+      $<TARGET_PROPERTY:Commands,SOURCE_DIR>
 )
 
 target_link_libraries(InstructionProcessorTest

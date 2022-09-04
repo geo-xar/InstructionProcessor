@@ -6,6 +6,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(Commands)
 add_subdirectory(InstructionProcessor)
-add_subdirectory(OpCode)
 add_subdirectory(OpCodes)
 add_subdirectory(Utils)

@@ -1,20 +1,18 @@
 #pragma once
-#include <OpCode.h>
 #include <StoreOutputCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeFour specialisation.
+* @class OpCodeFour.
 */
-class OpCodeFour final : public OpCode
+class OpCodeFour final
 {
 public:
     OpCodeFour() = default;
-    ~OpCodeFour() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    [[nodiscard]] CmdPtrU Process() const
     {
         return std::make_unique<StoreOutputCmd>();
     }

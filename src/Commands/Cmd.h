@@ -1,6 +1,7 @@
 #pragma once
 #include <optional>
 #include <memory>
+#include <InputContainer.h>
 
 namespace InstructionProcessor
 {
@@ -39,5 +40,14 @@ public:
 * Unique pointer to a Cmd object.
 */
 using CmdPtrU = std::unique_ptr<Cmd>;
+
+template <typename InputContainerType>
+class BasicCmd : public Cmd
+{
+protected:
+    explicit BasicCmd(InputContainerType& input) : _input{input} {};
+    virtual ~BasicCmd() override = default; 
+    InputContainerType& _input;
+};
 
 }

@@ -1,20 +1,18 @@
 #pragma once
-#include <OpCode.h>
 #include <NonZeroParamCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeFive specialisation.
+* @class OpCodeFive.
 */
-class OpCodeFive final : public OpCode
+class OpCodeFive final
 {
 public:
     OpCodeFive() = default;
-    ~OpCodeFive() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    [[nodiscard]] CmdPtrU Process() const
     {
         return std::make_unique<NonZeroParamCmd>();
     }

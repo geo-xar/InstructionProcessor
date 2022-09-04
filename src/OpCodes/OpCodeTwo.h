@@ -1,20 +1,18 @@
 #pragma once
-#include <OpCode.h>
 #include <MultiplyCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeTwo specialisation.
+* @class OpCodeTwo.
 */
-class OpCodeTwo final : public OpCode
+class OpCodeTwo final
 {
 public:
     OpCodeTwo() = default;
-    ~OpCodeTwo() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    [[nodiscard]] CmdPtrU Process() const
     {
         return std::make_unique<MultiplyCmd>();
     }

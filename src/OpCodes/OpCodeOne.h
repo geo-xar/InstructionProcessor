@@ -2,24 +2,23 @@
 // All rights reserved.
 
 #pragma once
-#include <OpCode.h>
 #include <AddCmd.h>
 
 namespace InstructionProcessor
 {
 
 /**
-* @class OpCodeOne specialisation.
+* @class OpCodeOne.
 */
-class OpCodeOne final : public OpCode
+class OpCodeOne final
 {
 public:
     OpCodeOne() = default;
-    ~OpCodeOne() override final = default;
 
-    [[nodiscard]] CmdPtrU Process() const override final
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<AddCmd>();
+        return std::make_unique<AddCmd<InputContainerType>>(input);
     }
 };
 
