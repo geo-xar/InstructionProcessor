@@ -11,7 +11,9 @@ TEST_CASE("OpCodeThree - No user selection (2nd argument is missing), no input p
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    auto [modifiedInput, printedOut] = result.value();
+    REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput == input);
 }
 
@@ -23,7 +25,9 @@ TEST_CASE("OpCodeThree - Single element, input shall not be processed", "[OpCode
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 5);
+    auto result = opCodeProcessor.ProcessInstructions(input, 5);
+    auto [modifiedInput, printedOut] = result.value();
+    REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput == input);
 }
 
@@ -35,7 +39,9 @@ TEST_CASE("OpCodeThree - Two elements", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, -5);
+    auto result = opCodeProcessor.ProcessInstructions(input, -5);
+    auto [modifiedInput, printedOut] = result.value();
+    REQUIRE(modifiedInput.size() == input.size());
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == -5);
 }

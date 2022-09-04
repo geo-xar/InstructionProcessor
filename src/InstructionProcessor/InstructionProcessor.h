@@ -34,7 +34,7 @@ template <typename InputType>
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
     using Vector = std::vector<InputType>;
-    using ResultType = std::tuple<Vector, Vector>;
+    using ResultType = std::optional<std::tuple<Vector, Vector>>;
 
 public:
     /**
@@ -62,65 +62,24 @@ public:
     [[nodiscard]] ResultType ProcessInstructions(
             const Vector& inputCollection, [[maybe_unused]] std::optional<InputType> userSelection = std::nullopt)
     {
-        // There is no reason doing any kind of calculations if the input collection is empty.
-        if (!inputCollection.size())
+        // There is no reason doing any kind of calculations
+        // if the input collection is less than 2.
+        if (inputCollection.size() <= 2U)
         {
-            return {{},
-                    {}};
+            return std::nullopt;
         }
 
+        // InputContainer class will encapsulate and manage the user input.
         InputContainer input{inputCollection};
 
         // Declare the printed output collection.
         Vector printedOutput;
 
-        // Function to set the element to the collection given an index
-/*         auto SetElementAtIndex =
-            [&input](InputType index, InputType element) mutable -> void
-            {
-                assert((index >= 0) && (static_cast<IndexType>(index) < input.size()));
-                input[static_cast<IndexType>(index)] = element;
-            };
- */
-        // Useful for ParameterMode::Relative
-        // Only modified by OpCodeNine
-        //InputType relativeBase{ 0 };
-
-        // Function to get an element from the collection given an iterator by using the iterator value as index
-        // It can optionally take into consideration the relative base
-/*         auto GetElementAt =
-            [&input](IteratorType& it) -> InputType
-            {
-                assert(*it >= 0);
-                assert(static_cast<IndexType>(*it) < input.size());
-                return input[static_cast<IndexType>(*it)];
-            }; */
-
-        // Function to get an iterator from the given position of the collection plus given offset
-/*         auto GetIterFromPosPlusOffset =
-            [&input](InputType offset, InputType pos = 0) -> IteratorType
-            {
-                assert(!input.empty());
-                assert(offset >= 0);
-                assert(pos >= 0);
-                assert(static_cast<IndexType>(pos + offset) < input.size());
-                auto iter = input.begin() + static_cast<IndexType>(pos);
-                std::advance(iter, static_cast<IndexType>(offset));
-                return iter;
-            }; */
-
-        // Function to update the relative base (called only by OpCodeNine)
-/*         auto UpdateRelativeBase =
-            [&relativeBase](InputType newRelativeBase) mutable -> void
-            {
-                relativeBase += newRelativeBase;
-            }; */
-
+        // Commands to be executed.
         std::deque<CmdPtrU> pendingCommands;
 
-        // Iterate the whole input.
-        auto iterator = inputCollection.begin();
-        while (iterator < inputCollection.end())
+        // Iterate the whole input and run the following function.
+        auto func = [&input, &printedOutput, &pendingCommands](typename Vector::const_iterator iterator) mutable -> ResultType
         {
             // Extract the next OpCode and the ParameterModes.
             const auto opCode = ExtractOpCodeFromNumber(*iterator);
@@ -187,7 +146,6 @@ public:
                     pendingCommands.emplace_back(OpCodeNinetyNine{}.Process(input));
                     break;
                 } */
-
                 default:
                 {
                     // We should never reach this point.
@@ -195,29 +153,24 @@ public:
                     oss << "Non-supported OpCode:" << opCode;
                     throw std::runtime_error(oss.str());
                 }
-
             } // end of switch(OpCode)
 
             // Retrieve the first command to be executed.
             // If the result optional has no value then terminate the execution.
             Cmd* cmdToBeExecuted = pendingCommands.front().get();
-            //std::any nextElement{iterator};
-            //std::any iterEnd{input.end()};
             auto result = cmdToBeExecuted->Execute();
             if (!result.has_value())
             {
-                return {input.GetInput(), printedOutput};
-            }
-            else
-            {
-                //iterator = std::any_cast<IteratorType&>(result.second);
+                return { {input.GetInput(), printedOutput} };
             }
 
             // Remove the command which was just executed.
             pendingCommands.pop_front();
-        }
 
-        return {input.GetInput(), printedOutput};
+            return std::nullopt;
+        };
+
+        return { {input.IterateCollection(func), printedOutput} };
     }
 };
 

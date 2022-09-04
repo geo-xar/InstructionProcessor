@@ -11,7 +11,9 @@ TEST_CASE("OpCodeFour - Single element, input shall not be processed", "[OpCodeP
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     CHECK(printedOut.empty());
 }
 
@@ -23,7 +25,9 @@ TEST_CASE("OpCodeFour - Two elements - Position mode", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size());
     CHECK(printedOut[0] == 4);
 }
@@ -36,7 +40,9 @@ TEST_CASE("OpCodeFour - Two elements - Parameter mode", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size());
     CHECK(printedOut[0] == -500);
 }

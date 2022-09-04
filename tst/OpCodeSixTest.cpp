@@ -12,7 +12,9 @@ TEST_CASE("OpCodeSix - Single element, input shall not be processed", "[OpCodePr
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -25,7 +27,9 @@ TEST_CASE("OpCodeSix - 1st parameter is non-zero, do nothing", "[OpCodeProcessor
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -38,7 +42,8 @@ TEST_CASE("OpCodeSix - Move the instruction pointer to the end of the input and 
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -51,7 +56,8 @@ TEST_CASE("OpCodeSix - Move the instruction pointer to the end of the input and 
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }

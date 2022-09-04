@@ -12,7 +12,9 @@ TEST_CASE("OpCodeFive - Single element, input shall not be processed", "[OpCodeP
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -25,7 +27,9 @@ TEST_CASE("OpCodeFive - First parameter is zero, do nothing (ParameterMode::Imme
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -38,7 +42,9 @@ TEST_CASE("OpCodeFive - Move the instruction pointer to the end of the input and
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -51,7 +57,9 @@ TEST_CASE("OpCodeFive - Move the instruction pointer to the end of the input and
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }

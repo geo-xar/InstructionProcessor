@@ -12,7 +12,9 @@ TEST_CASE("OpCodeEight - Single element, input shall not be processed", "[OpCode
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -25,7 +27,9 @@ TEST_CASE("OpCodeEight - 2 elements, input shall not be processed", "[OpCodeProc
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -38,7 +42,9 @@ TEST_CASE("OpCodeEight - 3 elements, input shall not be processed", "[OpCodeProc
     };
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(std::equal(modifiedInput.begin(), modifiedInput.end(), input.begin()));
 }
@@ -51,7 +57,9 @@ TEST_CASE("OpCodeEight - 1st param == 2nd param, store 1 based on 3rd param", "[
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput[0] == 1);
 }
@@ -64,7 +72,9 @@ TEST_CASE("OpCodeEight - 1st param != 2nd param, store 0 based on 3rd param", "[
     };
 
     OpCodeProcessor<int> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size() == input.size());
     CHECK(modifiedInput[0] == 0);
 }

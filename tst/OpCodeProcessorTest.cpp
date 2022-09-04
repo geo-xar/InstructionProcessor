@@ -9,7 +9,9 @@ TEST_CASE("Process instructions - empty input", "[OpCodeProcessor]")
     std::vector<uint8_t> input;
 
     OpCodeProcessor<uint8_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     CHECK(modifiedInput.empty());
     CHECK(printedOut.empty());
 }
@@ -33,7 +35,9 @@ TEST_CASE("Process instructions - 1st part - 2nd day - 1st sample", "[OpCodeProc
     };
 
     OpCodeProcessor<uint16_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == 3500);
 }
@@ -46,7 +50,9 @@ TEST_CASE("Process instructions - 1st part - 2nd day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<uint32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[0] == 3790645);
 }
@@ -59,7 +65,9 @@ TEST_CASE("Process instructions - 1st part - 5th day- 1st sample", "[OpCodeProce
     };
 
     OpCodeProcessor<uint16_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 1989);
+    auto result = opCodeProcessor.ProcessInstructions(input, 1989);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1989);
 }
@@ -72,7 +80,9 @@ TEST_CASE("Process instructions - 1st part - 5th day - 2nd sample", "[OpCodeProc
     };
 
     OpCodeProcessor<uint16_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[4] == 99);
 }
@@ -85,7 +95,9 @@ TEST_CASE("Process instructions - 1st part - 5th day - 3rd sample", "[OpCodeProc
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input);
+    auto result = opCodeProcessor.ProcessInstructions(input);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(modifiedInput.size());
     CHECK(modifiedInput[4] == 99);
 }
@@ -98,7 +110,9 @@ TEST_CASE("Process instructions - 1st part - 5th day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 1);
+    auto result = opCodeProcessor.ProcessInstructions(input, 1);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size());
     CHECK(*(printedOut.end() - 1) == 13818007);
 }
@@ -111,7 +125,9 @@ TEST_CASE("Input not equal to 8 - position mode - 2nd part - 5th day", "[OpCodeP
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 1);
+    auto result = opCodeProcessor.ProcessInstructions(input, 1);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -124,7 +140,9 @@ TEST_CASE("Input equal to 8 - position mode - 2nd part - 5th day", "[OpCodeProce
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 8);
+    auto result = opCodeProcessor.ProcessInstructions(input, 8);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -137,7 +155,9 @@ TEST_CASE("Input less than 8 - position mode - 2nd part - 5th day", "[OpCodeProc
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 2);
+    auto result = opCodeProcessor.ProcessInstructions(input, 2);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -150,7 +170,9 @@ TEST_CASE("Input greater than 8 - position mode - 2nd part - 5th day", "[OpCodeP
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 9);
+    auto result = opCodeProcessor.ProcessInstructions(input, 9);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -163,7 +185,9 @@ TEST_CASE("Input not equal to 8 - immediate mode - 2nd part - 5th day", "[OpCode
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 10);
+    auto result = opCodeProcessor.ProcessInstructions(input, 10);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -176,7 +200,9 @@ TEST_CASE("Input equal to 8 - immediate mode - 2nd part - 5th day", "[OpCodeProc
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 8);
+    auto result = opCodeProcessor.ProcessInstructions(input, 8);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -189,7 +215,9 @@ TEST_CASE("Input less than 8 - immediate mode - 2nd part - 5th day", "[OpCodePro
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 7);
+    auto result = opCodeProcessor.ProcessInstructions(input, 7);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -202,7 +230,9 @@ TEST_CASE("Input greater than 8 - immediate mode - 2nd part - 5th day", "[OpCode
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 9);
+    auto result = opCodeProcessor.ProcessInstructions(input, 9);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -215,7 +245,9 @@ TEST_CASE("Input equal to 0 - position mode - 2nd part - 5th day", "[OpCodeProce
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 0);
+    auto result = opCodeProcessor.ProcessInstructions(input, 0);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -228,7 +260,9 @@ TEST_CASE("Input not equal to 0 - position mode - 2nd part - 5th day", "[OpCodeP
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, -5);
+    auto result = opCodeProcessor.ProcessInstructions(input, -5);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -241,7 +275,9 @@ TEST_CASE("Input equal to 0 - immediate mode - 2nd part - 5th day", "[OpCodeProc
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 0);
+    auto result = opCodeProcessor.ProcessInstructions(input, 0);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 0);
 }
@@ -254,7 +290,9 @@ TEST_CASE("Input not equal to 0 - immediate mode - 2nd part - 5th day", "[OpCode
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 250);
+    auto result = opCodeProcessor.ProcessInstructions(input, 250);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1);
 }
@@ -267,7 +305,9 @@ TEST_CASE("Input less than 8 - 2nd part - 5th day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<uint32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 7);
+    auto result = opCodeProcessor.ProcessInstructions(input, 7);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 999);
 }
@@ -280,7 +320,9 @@ TEST_CASE("Input equal to 8 - 2nd part - 5th day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<uint32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 8);
+    auto result = opCodeProcessor.ProcessInstructions(input, 8);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1000);
 }
@@ -293,7 +335,9 @@ TEST_CASE("Input greater than 8 - 2nd part - 5th day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<uint32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 9);
+    auto result = opCodeProcessor.ProcessInstructions(input, 9);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 1001);
 }
@@ -306,7 +350,9 @@ TEST_CASE("Process instructions - 2nd part - 5th day", "[OpCodeProcessor]")
     };
 
     OpCodeProcessor<int32_t> opCodeProcessor;
-    auto [modifiedInput, printedOut] = opCodeProcessor.ProcessInstructions(input, 5);
+    auto result = opCodeProcessor.ProcessInstructions(input, 5);
+    REQUIRE(result.has_value());
+    auto [modifiedInput, printedOut] = result.value();
     REQUIRE(printedOut.size() == 1);
     CHECK(printedOut[0] == 3176266);
 }
