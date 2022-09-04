@@ -12,9 +12,10 @@ class OpCodeNine final
 public:
     OpCodeNine() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<AdjustRelBaseCmd>();
+        return std::make_unique<AdjustRelBaseCmd<InputContainerType>>(input);
     }
 };
 

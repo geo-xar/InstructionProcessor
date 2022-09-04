@@ -12,9 +12,10 @@ class OpCodeSix final
 public:
     OpCodeSix() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<ZeroParamCmd>();
+        return std::make_unique<ZeroParamCmd<InputContainerType>>(input);
     }
 };
 

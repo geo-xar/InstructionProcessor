@@ -12,9 +12,10 @@ class OpCodeNinetyNine final
 public:
     OpCodeNinetyNine() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<ExitCmd>();
+        return std::make_unique<ExitCmd<InputContainerType>>(input);
     }
 };
 

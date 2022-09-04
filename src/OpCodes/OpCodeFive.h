@@ -12,9 +12,10 @@ class OpCodeFive final
 public:
     OpCodeFive() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<NonZeroParamCmd>();
+        return std::make_unique<NonZeroParamCmd<InputContainerType>>(input);
     }
 };
 

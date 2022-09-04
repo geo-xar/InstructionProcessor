@@ -1,7 +1,6 @@
 #pragma once
 #include <optional>
 #include <memory>
-#include <InputContainer.h>
 
 namespace InstructionProcessor
 {

@@ -7,10 +7,11 @@ namespace InstructionProcessor
 /**
 * @class The program is finished and should immediately halt.
 */
-class ExitCmd final : public Cmd
+template <typename InputContainerType>
+class ExitCmd final : public BasicCmd<InputContainerType>
 {
 public:
-    ExitCmd() = default;
+    ExitCmd(InputContainerType& input) : BasicCmd<InputContainerType>(input) {};
     ~ExitCmd() override final = default;
     [[nodiscard]] CmdResult Execute() const override final
     {

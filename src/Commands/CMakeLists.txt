@@ -20,8 +20,3 @@ target_sources(Commands
       StoreOutputCmd.h
       ZeroParamCmd.h
 )
-
-target_include_directories(Commands
-    INTERFACE
-      $<TARGET_PROPERTY:OpCode,SOURCE_DIR>
-)

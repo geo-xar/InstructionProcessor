@@ -12,9 +12,10 @@ class OpCodeTwo final
 public:
     OpCodeTwo() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<MultiplyCmd>();
+        return std::make_unique<MultiplyCmd<InputContainerType>>(input);
     }
 };
 

@@ -9,13 +9,21 @@ namespace InstructionProcessor
 * then store 1 in the position given by the third parameter,
 * otherwise store 0.
 */
-class FirstParamEqToSecondCmd final : public Cmd
+template <typename InputContainerType>
+class FirstParamEqToSecondCmd final : public BasicCmd<InputContainerType>
 {
 public:
-    FirstParamEqToSecondCmd() = default;
+    FirstParamEqToSecondCmd(InputContainerType& input) : BasicCmd<InputContainerType>(input) {};
     ~FirstParamEqToSecondCmd() override final = default;
     [[nodiscard]] CmdResult Execute() const override final
     {
+        // Check if there are enough numbers to be claimed to complete the operation.
+        // Numbers to be claimed are 2 for the condition check and 1 for the index to store the result.
+        if (!this->_input.AreThereEnoughElementsToBeClaimed(3))
+        {
+            return std::nullopt;
+        }
+
         return std::nullopt;
     }
 };

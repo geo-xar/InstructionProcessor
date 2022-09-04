@@ -12,9 +12,10 @@ class OpCodeEight final
 public:
     OpCodeEight() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<FirstParamEqToSecondCmd>();
+        return std::make_unique<FirstParamEqToSecondCmd<InputContainerType>>(input);
     }
 };
 

@@ -12,9 +12,10 @@ class OpCodeFour final
 public:
     OpCodeFour() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<StoreOutputCmd>();
+        return std::make_unique<StoreOutputCmd<InputContainerType>>(input);
     }
 };
 

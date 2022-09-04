@@ -12,9 +12,10 @@ class OpCodeSeven final
 public:
     OpCodeSeven() = default;
 
-    [[nodiscard]] CmdPtrU Process() const
+    template <typename InputContainerType>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
     {
-        return std::make_unique<FirstParamLessThanSecondCmd>();
+        return std::make_unique<FirstParamLessThanSecondCmd<InputContainerType>>(input);
     }
 };
 
