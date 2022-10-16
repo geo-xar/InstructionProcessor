@@ -34,7 +34,7 @@ template <typename InputType>
 class OpCodeProcessor final : public NonCopyable, NonMovable
 {
     using Vector = std::vector<InputType>;
-    using ResultType = std::optional<std::tuple<Vector, Vector>>;
+    using ResultType = std::optional<std::pair<Vector, Vector>>;
 
 public:
     /**
@@ -72,23 +72,13 @@ public:
         // InputContainer class will encapsulate and manage the user input.
         InputContainer input{inputCollection};
 
-        // Declare the printed output collection.
         Vector printedOutput;
 
-        // Commands to be executed.
         std::deque<CmdPtrU> pendingCommands;
 
-        // Iterate the whole input and run the following function.
-        auto func = [&input, &printedOutput, &pendingCommands](typename Vector::const_iterator iterator) mutable -> ResultType
+        while (input.AreThereAnyNonProcessedOpCodes())
         {
-            // Extract the next OpCode and the ParameterModes.
-            const auto opCode = ExtractOpCodeFromNumber(*iterator);
-            auto parameterModes = ExtractParameterModesFromNumber(*iterator);
-
-            // Jump to the next number.
-            iterator++;
-
-            switch (opCode)
+            switch (input.GetOpCode())
             {
                 case 1:
                 {
@@ -150,7 +140,7 @@ public:
                 {
                     // We should never reach this point.
                     std::ostringstream oss;
-                    oss << "Non-supported OpCode:" << opCode;
+                    oss << "Non-supported OpCode:" << input.GetOpCode();
                     throw std::runtime_error(oss.str());
                 }
             } // end of switch(OpCode)
@@ -161,16 +151,14 @@ public:
             auto result = cmdToBeExecuted->Execute();
             if (!result.has_value())
             {
-                return { {input.GetInput(), printedOutput} };
+                return std::make_pair<>(input.GetInputCollection(), printedOutput);
             }
 
-            // Remove the command which was just executed.
+            // Remove the command which has just been executed.
             pendingCommands.pop_front();
+        }
 
-            return std::nullopt;
-        };
-
-        return { {input.IterateCollection(func), printedOutput} };
+        return std::make_pair<>(input.GetInputCollection(), printedOutput);
     }
 };
 

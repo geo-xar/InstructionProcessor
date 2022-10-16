@@ -25,7 +25,7 @@ TEST_CASE("Get OpCode from number test", "[OpCodeProcessor]")
 TEST_CASE("Get parameter modes from number test", "[OpCodeProcessor]")
 {
     uint32_t number = 1;
-    ParameterModeVector expectedModes = { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
+    ParameterModes expectedModes = { ParameterMode::Position, ParameterMode::Position, ParameterMode::Position };
     CHECK(ExtractParameterModesFromNumber(number) == expectedModes);
 
     number = 12;

@@ -18,7 +18,7 @@ enum class ParameterMode : uint8_t
     Relative
 };
 
-using ParameterModeVector = std::vector<ParameterMode>;
+using ParameterModes = std::tuple<ParameterMode, ParameterMode, ParameterMode>;
 
 /**
 * Extract the OpCode given a number.
@@ -55,7 +55,7 @@ inline void ValidateParameterMode(const DigitType digit)
 * @param number The number to extract the parameter modes.
 */
 template <typename NumberType>
-[[nodiscard]] inline ParameterModeVector ExtractParameterModesFromNumber(const NumberType number)
+[[nodiscard]] inline ParameterModes ExtractParameterModesFromNumber(const NumberType number)
 {
     auto digits = GetDigitsFromNumber(number);
 
