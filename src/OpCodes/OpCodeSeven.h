@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 #include <FirstParamLessThanSecondCmd.h>
 

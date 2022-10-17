@@ -25,8 +25,9 @@ public:
     /**
     * Check if there are any non-processed OpCodes.
     */
-    bool AreThereAnyNonProcessedOpCodes() const
+    bool AreThereAnyNonProcessedOpCodes()
     {
+        _currentElementIndex++;
         return _currentElementIndex < _lastElementIndex;
     }
 

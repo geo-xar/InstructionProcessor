@@ -105,24 +105,22 @@ public:
                     pendingCommands.emplace_back(OpCodeFour{}.Process(input, storeElementToOutput));
                     break;
                 }
-/*                case 5:
+                case 5:
                 {
                     pendingCommands.emplace_back(OpCodeFive{}.Process(input));
                     break;
                 }
-
                 case 6:
                 {
                     pendingCommands.emplace_back(OpCodeSix{}.Process(input));
                     break;
                 }
-
                 case 7:
                 {
                     pendingCommands.emplace_back(OpCodeSeven{}.Process(input));
                     break;
                 }
-
+/*
                 case 8:
                 {
                     pendingCommands.emplace_back(OpCodeEight{}.Process(input));
