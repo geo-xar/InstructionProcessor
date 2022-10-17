@@ -27,8 +27,10 @@ public:
     [[nodiscard]] CmdResult Execute() const override final
     {
         // Check if there are enough numbers to be claimed to complete the operation.
-        // Numbers to be claimed are: 1 for the index to store the result.
-        if (!this->_input.AreThereEnoughElementsToBeClaimed(1))
+        // Numbers to be claimed are:
+        // - 1 or the OpCode,
+        // - 1 for the index to store the result.
+        if (!this->_input.AreThereEnoughElementsToBeClaimed(2))
         {
             return std::nullopt;
         }

@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 #include <StoreOutputCmd.h>
 
@@ -12,10 +15,10 @@ class OpCodeFour final
 public:
     OpCodeFour() = default;
 
-    template <typename InputContainerType>
-    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
+    template <typename InputContainerType, typename Functor>
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input, Functor& storeElementToOutput) const
     {
-        return std::make_unique<StoreOutputCmd<InputContainerType>>(input);
+        return std::make_unique<StoreOutputCmd<InputContainerType, Functor>>(input, storeElementToOutput);
     }
 };
 

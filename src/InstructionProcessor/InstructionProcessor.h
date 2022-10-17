@@ -76,6 +76,11 @@ public:
 
         std::deque<CmdPtrU> pendingCommands;
 
+        auto storeElementToOutput = [&printedOutput](InputType element) mutable -> void
+        {
+            printedOutput.emplace_back(element);
+        };
+
         while (input.AreThereAnyNonProcessedOpCodes())
         {
             switch (input.GetOpCode())
@@ -95,13 +100,12 @@ public:
                     pendingCommands.emplace_back(OpCodeThree{}.Process(input, userSelection));
                     break;
                 }
-/*                 case 4:
+                case 4:
                 {
-                    pendingCommands.emplace_back(OpCodeFour{}.Process(input));
+                    pendingCommands.emplace_back(OpCodeFour{}.Process(input, storeElementToOutput));
                     break;
                 }
-
-                case 5:
+/*                case 5:
                 {
                     pendingCommands.emplace_back(OpCodeFive{}.Process(input));
                     break;
