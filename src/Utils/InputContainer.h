@@ -119,6 +119,24 @@ public:
     }
 
     /**
+    * Update the current index based on the current element value.
+    * @param mode ParameterMode
+    */
+    void UpdateCurrentElementIndex(ParameterMode mode)
+    {
+        if (mode == ParameterMode::Position)
+        {
+            assert(static_cast<IndexType>(_input[_currentElementIndex]) <= _lastElementIndex);
+            assert(_input[_currentElementIndex] >= 0);
+            _currentElementIndex = _input[_input[_currentElementIndex]];
+        }
+        else // ParameterMode::Immediate
+        {
+            _currentElementIndex = _input[_currentElementIndex];
+        }
+    }
+
+    /**
     * Get an element given iterator.
     * @param it Iterator that points to the element to be returned.
     */

@@ -28,7 +28,7 @@ public:
         // Numbers to be claimed are:
         // - 1 for the OpCode,
         // - 1 for the number to be stored to the output. 
-        if (!this->_input.AreThereEnoughElementsToBeClaimed(1))
+        if (!this->_input.AreThereEnoughElementsToBeClaimed(2))
         {
             return std::nullopt;
         }
