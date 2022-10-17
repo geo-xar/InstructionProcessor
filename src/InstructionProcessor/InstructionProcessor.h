@@ -120,13 +120,12 @@ public:
                     pendingCommands.emplace_back(OpCodeSeven{}.Process(input));
                     break;
                 }
-/*
                 case 8:
                 {
                     pendingCommands.emplace_back(OpCodeEight{}.Process(input));
                     break;
                 }
-
+/*
                 case 9:
                 {
                     pendingCommands.emplace_back(OpCodeNine{}.Process(input));
