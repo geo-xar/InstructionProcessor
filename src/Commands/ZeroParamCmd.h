@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 #include "Cmd.h"
 
@@ -13,19 +16,40 @@ template <typename InputContainerType>
 class ZeroParamCmd final : public Cmd
 {
 public:
-    ZeroParamCmd(InputContainerType& input) : BasicCmd<InputContainerType>(input) {};
+    ZeroParamCmd(InputContainerType& input) : _input{input} {};
     ~ZeroParamCmd() override final = default;
     [[nodiscard]] CmdResult Execute() const override final
     {
         // Check if there are enough numbers to be claimed to complete the operation.
-        // 2 numbers to be claimed
-        if (!this->_input.AreThereEnoughElementsToBeClaimed(2))
+        // Numbers to be claimed are:
+        // - 1 for the OpCode,
+        // - 1 for the parameter to check if it is a zero one,
+        // - 1 for the index to set the instruction pointer. 
+        if (!this->_input.AreThereEnoughElementsToBeClaimed(3))
         {
             return std::nullopt;
         }
 
-        return std::nullopt;
+        const auto [mode1, mode2, mode3] = _input.GetModes();
+
+        // Get number.
+        _input.MoveToTheNextElement();
+        const auto number = _input.GetCurrentElementValue(mode1);
+
+        _input.MoveToTheNextElement();
+        if (number == 0)
+        {
+            // set the instruction pointer to the value from the second number
+            _input.UpdateCurrentElementIndex(mode2);
+        }
+
+        // What we return here it is only useful for error reporting.
+        // Whatever different than std::nullopt is equal to SUCCESS.
+        return std::make_optional<Result>();
     }
+
+private:
+    InputContainerType& _input;
 };
 
 }
