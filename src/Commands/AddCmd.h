@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 #include "Cmd.h"
 
@@ -37,7 +40,7 @@ public:
 
         // Store the accumulation result.
         _input.MoveToTheNextElement();
-        _input.StoreElement(firstNumber * secondNumber, mode3);
+        _input.StoreElement(firstNumber + secondNumber, mode3);
 
         _input.MoveToTheNextElement();
 

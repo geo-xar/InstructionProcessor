@@ -85,12 +85,12 @@ public:
                     pendingCommands.emplace_back(OpCodeOne{}.Process(input));
                     break;
                 }
-/*                 case 2:
+                case 2:
                 {
                     pendingCommands.emplace_back(OpCodeTwo{}.Process(input));
                     break;
                 }
-                case 3:
+/*                case 3:
                 {
                     pendingCommands.emplace_back(OpCodeThree{}.Process(input));
                     break;
