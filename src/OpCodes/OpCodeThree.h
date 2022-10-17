@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 #include <StoreInputCmd.h>
 
@@ -13,9 +16,10 @@ public:
     OpCodeThree() = default;
 
     template <typename InputContainerType>
-    [[nodiscard]] CmdPtrU Process(InputContainerType& input) const
+    [[nodiscard]] CmdPtrU Process(InputContainerType& input,
+        std::optional<typename InputContainerType::InputValueType>& userSelection) const
     {
-        return std::make_unique<StoreInputCmd<InputContainerType>>(input);
+        return std::make_unique<StoreInputCmd<InputContainerType>>(input, userSelection);
     }
 };
 

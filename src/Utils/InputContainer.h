@@ -11,9 +11,9 @@ namespace InstructionProcessor
 template <typename InputType>
 class InputContainer final
 {
-using InputValueType = InputType::value_type;
-
 public:
+    using InputValueType = InputType::value_type;
+
     InputContainer(const InputType& input)
     : _input{input} // do a copy here
     , _currentElementIndex{0}
@@ -83,8 +83,8 @@ public:
     }
 
     /**
-    * Store an element based on given index.
-    * @param element The element to store at the given index.
+    * Store an element based on current index.
+    * @param element The element to store at the current index.
     * @param mode ParameterMode
     */
     void StoreElement(InputValueType element, ParameterMode mode)
@@ -99,6 +99,15 @@ public:
         {
             _input[_currentElementIndex] = element;
         }
+    };
+
+    /**
+    * Store an element based on current index.
+    * @param element The element to store at the current index.
+    */
+    void StoreElement(InputValueType element)
+    {
+        _input[_currentElementIndex] = element;
     };
 
     /**
