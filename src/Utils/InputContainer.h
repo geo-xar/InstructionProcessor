@@ -12,7 +12,7 @@ template <typename InputType>
 class InputContainer final
 {
 public:
-    using InputValueType = InputType::value_type;
+    using InputValueType = typename InputType::value_type;
 
     InputContainer(const InputType& input)
     : _input{input} // do a copy here
