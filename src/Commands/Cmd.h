@@ -43,13 +43,4 @@ public:
 */
 using CmdPtrU = std::unique_ptr<Cmd>;
 
-template <typename InputContainerType>
-class BasicCmd : public Cmd
-{
-protected:
-    explicit BasicCmd(InputContainerType& input) : _input{input} {};
-    virtual ~BasicCmd() override = default; 
-    InputContainerType& _input;
-};
-
 }

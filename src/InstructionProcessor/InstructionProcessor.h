@@ -125,18 +125,16 @@ public:
                     pendingCommands.emplace_back(OpCodeEight{}.Process(input));
                     break;
                 }
-/*
                 case 9:
                 {
                     pendingCommands.emplace_back(OpCodeNine{}.Process(input));
                     break;
                 }
-
                 case 99:
                 {
                     pendingCommands.emplace_back(OpCodeNinetyNine{}.Process(input));
                     break;
-                } */
+                }
                 default:
                 {
                     // We should never reach this point.

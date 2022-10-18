@@ -138,6 +138,24 @@ public:
     }
 
     /**
+    * Update the relative base.
+    * @param mode ParameterMode
+    */
+    void UpdateRelativeBase(ParameterMode mode)
+    {
+        if (mode == ParameterMode::Position)
+        {
+            assert(static_cast<IndexType>(_input[_currentElementIndex]) <= _lastElementIndex);
+            assert(_input[_currentElementIndex] >= 0);
+            _relativeBase += _input[_input[_currentElementIndex]];
+        }
+        else // ParameterMode::Immediate
+        {
+            _relativeBase += _input[_currentElementIndex];
+        }
+    }
+
+    /**
     * Get an element given iterator.
     * @param it Iterator that points to the element to be returned.
     */
@@ -202,7 +220,7 @@ private:
     // This might happen because of resizing the collection.
     IndexType _lastElementIndex;
     // Only modified by OpCodeNine
-    InputType _relativeBase;
+    InputValueType _relativeBase;
 };
 
 }
