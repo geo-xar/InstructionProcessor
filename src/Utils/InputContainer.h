@@ -17,7 +17,7 @@ public:
     InputContainer(const InputType& input)
     : _input{input} // do a copy here
     , _currentElementIndex{0}
-    // We assume thah the provided collection is full
+    // We assume that the provided collection is full
     , _lastElementIndex{_input.size() - 1}
     , _relativeBase{0}
     {}
@@ -27,8 +27,7 @@ public:
     */
     bool AreThereAnyNonProcessedOpCodes()
     {
-        _currentElementIndex++;
-        return _currentElementIndex < _lastElementIndex;
+        return _currentElementIndex <= _lastElementIndex;
     }
 
     /**
@@ -55,7 +54,6 @@ public:
     void MoveToTheNextElement()
     {
         _currentElementIndex++;
-        assert(_currentElementIndex < _input.size());
     }
 
     /**
@@ -108,7 +106,9 @@ public:
     */
     void StoreElement(InputValueType element)
     {
-        _input[_currentElementIndex] = element;
+        assert(static_cast<IndexType>(_input[_currentElementIndex]) <= _lastElementIndex);
+        assert(_input[_currentElementIndex] >= 0);
+        _input[_input[_currentElementIndex]] = element;
     };
 
     /**

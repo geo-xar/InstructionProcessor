@@ -40,6 +40,7 @@ public:
         // Store the user selection.
         _input.MoveToTheNextElement();
         _input.StoreElement(_userSelection.value());
+        _input.MoveToTheNextElement();
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.

@@ -62,17 +62,17 @@ public:
     [[nodiscard]] ResultType ProcessInstructions(
             const Vector& inputCollection, [[maybe_unused]] std::optional<InputType> userSelection = std::nullopt)
     {
-        // There is no reason doing any kind of calculations
-        // if the input collection is less than 2.
-        if (inputCollection.size() <= 2U)
-        {
-            return std::nullopt;
-        }
-
         // InputContainer class will encapsulate and manage the user input.
         InputContainer input{inputCollection};
 
         Vector printedOutput;
+
+        // There is no reason doing any kind of calculations
+        // if the input collection is empty.
+        if (inputCollection.empty())
+        {
+            return std::make_pair<>(input.GetInputCollection(), printedOutput);
+        }
 
         std::deque<CmdPtrU> pendingCommands;
 

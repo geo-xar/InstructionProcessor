@@ -25,7 +25,7 @@ public:
         // - 1 for the OpCode,
         // - 2 for the parameters to be compared,
         // - 1 for the index to store 1.
-        if (!this->_input.AreThereEnoughElementsToBeClaimed(3))
+        if (!this->_input.AreThereEnoughElementsToBeClaimed(4))
         {
             return std::nullopt;
         }
@@ -45,6 +45,12 @@ public:
             // Store 1.
             _input.StoreElement(1, mode3);
         }
+        else
+        {
+            // Store 0.
+            _input.StoreElement(0, mode3);
+        }
+        _input.MoveToTheNextElement();
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.

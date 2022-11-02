@@ -42,6 +42,7 @@ public:
         // Store the multiplication result.
         _input.MoveToTheNextElement();
         _input.StoreElement(firstNumber * secondNumber, mode3);
+        _input.MoveToTheNextElement();
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.

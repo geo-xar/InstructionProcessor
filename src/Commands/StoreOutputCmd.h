@@ -38,6 +38,7 @@ public:
         // Store the element to the output collection.
         _input.MoveToTheNextElement();
         _storeElementToOutput(_input.GetCurrentElementValue(mode1));
+        _input.MoveToTheNextElement();
 
         // What we return here it is only useful for error reporting.
         // Whatever different than std::nullopt is equal to SUCCESS.
