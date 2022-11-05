@@ -8,6 +8,7 @@ add_library(Utils INTERFACE)
 
 target_sources(Utils
     PUBLIC
+      InputContainer.h
       InstructionProcessorUtils.h
       NonCopyable.h
       NonMovable.h

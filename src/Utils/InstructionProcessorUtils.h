@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #pragma once
 
 #include "Utils.h"
@@ -25,7 +28,7 @@ using ParameterModes = std::tuple<ParameterMode, ParameterMode, ParameterMode>;
 * @param number The number to extract the OpCode
 */
 template <typename NumberType>
-[[nodiscard]] inline uint16_t ExtractOpCodeFromNumber(const NumberType number)
+[[nodiscard]] inline uint8_t ExtractOpCodeFromNumber(const NumberType number)
 {
     auto digits = GetDigitsFromNumber(number);
 

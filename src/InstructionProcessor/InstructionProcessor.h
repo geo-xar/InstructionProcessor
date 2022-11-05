@@ -17,14 +17,12 @@
 #include <OpCodeEight.h>
 #include <OpCodeNine.h>
 #include <OpCodeNinetyNine.h>
-#include <Cmd.h>
 
 #include <vector>
 #include <optional>
 #include <tuple>
 #include <deque>
 #include <memory>
-#include <functional>
 #include <sstream>
 
 namespace InstructionProcessor

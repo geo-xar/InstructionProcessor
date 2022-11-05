@@ -1,3 +1,6 @@
+// Copyright 2022 by Georgios Charitos.
+// All rights reserved.
+
 #include "catch2/catch.hpp"
 #include "Utils.h"
 
