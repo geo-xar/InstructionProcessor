@@ -12,7 +12,7 @@ namespace InstructionProcessor
 {
 
 using DigitType = uint8_t;
-using IndexType = std::size_t;
+using IndexType = size_t;
 using IntegerType = uint32_t;
 
 /**
