@@ -1,6 +1,3 @@
-# Copyright 2022 by Georgios Charitos.
-# All rights reserved.
-
 cmake_minimum_required(VERSION 3.22)
 
 project(InstructionProcessor)
@@ -12,14 +9,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # - enable all warnings (-Wall),
 # - treat all warnings as errors (-Werror),
 # - enable additional warnings (-Wextra).
-# Else if in Windows i.e. MSVC compiler then
-# - enable all warnings (/Wall).
+# Else if MSVC compiler then
+# - enable level 4 warnings (/W4).
 if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra")
-# /Wall flag generates a lot of clutter on Windows
-# Activate it only for debugging purposes
-#elseif (WIN32)
-#  set(CMAKE_CXX_FLAGS "/Wall")
+elseif (WIN32)
+  set(CMAKE_CXX_FLAGS "/W4")
+endif()
+
+# Set CLANG compiler related CMAKE variables.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(CMAKE_C_COMPILER "clang-cl")
+  set(CMAKE_CXX_COMPILER "clang-cl")
 endif()
 
 # Set optimisation related flag

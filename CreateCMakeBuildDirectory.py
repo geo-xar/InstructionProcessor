@@ -1,6 +1,3 @@
-# Copyright 2022 by Georgios Charitos.
-# All rights reserved.
-
 from os import chdir
 from os import path
 from os import system
@@ -12,7 +9,6 @@ class CmdLineArgParser:
     """
     The command line argument parser.
     """
-
     def is_valid_configuration(self, configuration):
         """
         Check if given configuration is valid.
@@ -29,7 +25,7 @@ class CmdLineArgParser:
         Parse command line arguments.
         """
         self.parser = argparse.ArgumentParser(description='Command Line Argument Parser')
-        self.parser.add_argument('--configuration', type=self.is_valid_configuration, required=False, default='Debug', help='Build configuration i.e. Debug or Release')
+        self.parser.add_argument('--configuration', type=self.is_valid_configuration, required=False, default='Release', help='Build configuration i.e. Debug or Release')
         self.parser.add_argument('--compiler', type=str, required=False, default='g++', help='Default compiler in Linux is GCC and in Windows is MSVC. Please specify your desired compiler i.e. Clang')
         self.parser.add_argument('--no-build', dest='build', action='store_false', help='Do not build code after generating build directory')
         self.parser.set_defaults(build=True)
@@ -56,9 +52,11 @@ class CmdLineArgParser:
 
 def main():
     """The main application that parses the given command line arguments and creates the build directory."""
-
     cmd_line_arg_parser = CmdLineArgParser()
     cmd_line_arg_parser.parse()
+
+    if cmd_line_arg_parser.get_compiler().lower() == 'clang' and platform == 'win32':
+        exit(f"clang is not supported on Windows")
 
     build_directory = 'Build' + cmd_line_arg_parser.get_config()
     build_directory_exists = False
@@ -86,18 +84,21 @@ def main():
 
     chdir(f"{build_directory}")
 
-    # Install conan 3rd party packages using the correct profile.
-    compiler = cmd_line_arg_parser.get_compiler()
+    conan_setup = 'conan install -s arch=x86_64 -of ./'
+
+    if cmd_line_arg_parser.get_compiler().lower() == 'clang':
+        conan_setup = conan_setup + ' -s compiler=clang -s compiler.version=15'
+        if platform == 'linux' or platform == 'linux2':
+            conan_setup = conan_setup + ' -e CC=/usr/bin/clang -e CXX=/usr/bin/clang++'
+    else:
+        conan_setup = conan_setup + ' --profile default'
+
     if platform == 'linux' or platform == 'linux2':
-        if compiler == 'clang':
-            conan_setup = "conan install --profile ../conan_profiles/conan_clang_profile_linux.txt ../"
-        else: # GCC
-            conan_setup = "conan install --profile ../conan_profiles/conan_gcc_profile_linux.txt ../"
-    else: # Windows
-        if compiler == 'clang':
-            conan_setup = "conan install --profile ../conan_profiles/conan_clang_profile_windows.txt ../"
-        else:
-            conan_setup = "conan install --profile default ../"
+        conan_setup = conan_setup + ' -s os=Linux -s compiler.libcxx=libstdc++11'
+    else:
+        conan_setup = conan_setup + ' -s os=Windows'
+
+    conan_setup = conan_setup + f" --build=missing -s build_type={cmd_line_arg_parser.get_config()} ../"
 
     system(conan_setup)
 
@@ -108,10 +109,7 @@ def main():
            cmake_command = cmake_command + ' -DCODE_COVERAGE=ON'
 
     if cmd_line_arg_parser.get_compiler().lower() == 'clang':
-        if platform == 'linux' or platform == 'linux2':
-            cmake_command = cmake_command + ' -DCMAKE_CXX_COMPILER=clang++'
-        elif platform == 'win32':
-            cmake_command = cmake_command + ' -T ClangCL'
+            cmake_command = cmake_command + ' -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang'
 
     if platform == 'win32':
         cmake_command = cmake_command + ' -A x64'
@@ -121,7 +119,7 @@ def main():
 
     # Build code if it is enabled (enabled by default).
     if cmd_line_arg_parser.do_build():
-        build_result = system('cmake --build .')
+        build_result = system(f"cmake --build . --config {cmd_line_arg_parser.get_config()}")
         if (build_result):
             exit(f"Build failed, error code: {build_result}")
 

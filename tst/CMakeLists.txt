@@ -1,11 +1,9 @@
-# Copyright 2022 by Georgios Charitos.
-# All rights reserved.
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
+find_package(Catch2 REQUIRED CONFIG)
 
 add_executable(InstructionProcessorTest
     OpCodeOneTest.cpp
@@ -32,5 +30,5 @@ target_include_directories(InstructionProcessorTest
 target_link_libraries(InstructionProcessorTest
     PRIVATE
       InstructionProcessor
-      ${CONAN_LIBS}
+      Catch2::Catch2
 )
